@@ -1,0 +1,57 @@
+{
+  "name": "web-document-writer",
+  "version": "0.0.1",
+  "description": "Tool for embedding a document writer as part of your webview.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build-server": "babel ./src-server --out-dir ./dist-server --copy-files",
+    "build": "npm run build-server && node dist-server/index.js --build",
+    "serve": "npm run build-server && node dist-server/index.js --serve",
+    "test": "babel jest",
+    "lint": "eslint ./src/**/*.js",
+    "flow": "flow"
+  },
+  "keywords": [
+    "Documents",
+    "text",
+    "editor",
+    "writer"
+  ],
+  "author": "Carl Pryke (FSG)",
+  "license": "MIT",
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "css-loader": "^1.0.1",
+    "express": "^4.16.4",
+    "express-history-api-fallback": "^2.2.1",
+    "file-loader": "^2.0.0",
+    "immutable": "^4.0.0-rc.12",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-redux": "^5.1.1",
+    "redux": "^4.0.1",
+    "resolve-url-loader": "^3.0.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.26.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.6",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/preset-env": "^7.1.6",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.4",
+    "eslint": "^5.9.0",
+    "eslint-plugin-flowtype": "^3.2.0",
+    "eslint-plugin-jest": "^22.1.0",
+    "eslint-plugin-react": "^7.11.1",
+    "flow-bin": "^0.87.0",
+    "flow-cli": "0.0.0-pre",
+    "jest": "^23.6.0",
+    "node-sass": "^4.10.0"
+  }
+}
