@@ -5,3 +5,13 @@
 **/test
 **/flow
 **/flow-typed
+**/.circleci
+
+# Files
+**/errors.json
+**/wallaby.js
+**/.babelrc
+**/.eslintignore
+**/.eslintrc
+**/.flowconfig
+**/.gitignore

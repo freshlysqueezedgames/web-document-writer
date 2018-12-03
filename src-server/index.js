@@ -31,14 +31,14 @@ type RunReject = (error: {}) => void
 
 function Run (): Promise<void> {
   const app: express = express()
-  const dir: string = `${__dirname}/../dist`
+  const root: string = `${__dirname}/../dist`
 
   const port: number = 3000
 
   return new Promise((resolve: RunResolve, reject: RunReject): void => {
     try {
-      app.use(express.static(dir))
-      app.use(fallback('index.html', {root: dir}))
+      app.use(express.static(root))
+      app.use(fallback('index.html', {root}))
 
       app.listen(port, (): void => console.log(`Listening on port ${port}`))
     } catch (error) {
@@ -75,6 +75,7 @@ function Build (): Promise<void> {
 
 (async (): Promise<void> => {
   const l: number = flags.length
+  const errorFile: string = 'errors.json'
 
   console.log('flags are', flags)
 
@@ -93,7 +94,7 @@ function Build (): Promise<void> {
       }
     } catch (error) {
       console.log(`Error occurred with process: ${flag.name}, see errors.json for further details`)
-      fs.writeFileSync('errors.json', JSON.stringify(error, null, '\t'))
+      fs.writeFileSync(errorFile, JSON.stringify(error, null, '\t'))
       process.exit(1)
     }
 
@@ -103,6 +104,8 @@ function Build (): Promise<void> {
   }
 
   await RunFlag()
+
+  fs.existsSync(errorFile) && fs.unlinkSync(errorFile)
 
   process.exit()
 })()
