@@ -7,7 +7,7 @@
     "build-server": "babel ./src-server --out-dir ./dist-server --copy-files",
     "build": "npm run build-server && node dist-server/index.js --build",
     "serve": "npm run build-server && node dist-server/index.js --serve",
-    "test": "babel jest",
+    "test": "jest ./src",
     "lint": "eslint ./src/**/*.js",
     "flow": "flow"
   },
@@ -22,6 +22,8 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "css-loader": "^1.0.1",
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.7.0",
     "express": "^4.16.4",
     "express-history-api-fallback": "^2.2.1",
     "file-loader": "^2.0.0",
@@ -43,6 +45,7 @@
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
     "eslint": "^5.9.0",
@@ -51,10 +54,15 @@
     "eslint-plugin-react": "^7.11.1",
     "flow-bin": "^0.87.0",
     "flow-cli": "0.0.0-pre",
-    "jest": "^23.6.0",
+    "jest": "^21.3.0-beta.15",
     "node-sass": "^4.10.0"
   },
   "jest": {
-    "testRegex": "src/.*\\.test\\.js$"
+    "testRegex": "src/.*\\.test\\.js$",
+    "setupTestFrameworkScriptFile": "<rootDir>/src/setup-tests.js",
+    "moduleNameMapper": {
+      "\\.s?css$": "<rootDir>/mocks/css.js"
+    },
+    "testURL": "http://localhost"
   }
 }

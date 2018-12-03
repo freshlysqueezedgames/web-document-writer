@@ -9,7 +9,7 @@ export type DocumentState = $ReadOnly<{
 }>
 
 const defaultReducerState: DocumentState = {
-  slug: ''
+  slug: 'default-slug'
 }
 
 export const DocumentReducer = (state: DocumentState = defaultReducerState, action: Action): DocumentState => {
