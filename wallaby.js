@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = wallaby => ({
   files: [
     'src/**/*.js',
     '!src/**/*.test.js'
@@ -18,5 +18,9 @@ module.exports = {
 
   testFramework: 'jest',
 
-  debug: true
-}
+  debug: true,
+
+  setup: function () {
+    wallaby.testFramework.configure(require('./package.json').jest)
+  }
+})

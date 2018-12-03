@@ -16,4 +16,8 @@ describe('#Store', (): void => {
       slug: 'test'
     })
   })
+
+  test('Should add two numbers', (): void => {
+    expect(2 + 2).toStrictEqual(3)
+  })
 })

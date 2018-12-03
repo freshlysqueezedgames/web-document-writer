@@ -53,5 +53,8 @@
     "flow-cli": "0.0.0-pre",
     "jest": "^23.6.0",
     "node-sass": "^4.10.0"
+  },
+  "jest": {
+    "testRegex": "src/.*\\.test\\.js$"
   }
 }
