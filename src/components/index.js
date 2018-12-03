@@ -5,7 +5,7 @@ import {type DocumentContainerProps} from '../containers'
 
 import './index.scss'
 
-const DocumentComponent = (props: DocumentContainerProps): React.ReactElement<HTMLDivElement> =>
+const DocumentComponent = (props: DocumentContainerProps): ReactElement<HTMLDivElement> =>
   <div className="document-component">
     <h1>Welcome To Your Document Editor</h1>
     <div className="document-component__slug">{props.slug}</div>
