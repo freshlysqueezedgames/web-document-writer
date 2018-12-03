@@ -9,7 +9,7 @@ import {store} from './store'
 import DocumentContainer, {type DocumentContainerProps} from './containers'
 import DocumentComponent from './components'
 
-import 'file-loader?name=[name].[ext]!./index.html'
+import './index.html'
 import './index.scss'
 
 const app: HTMLElement | null = document.getElementById('app')

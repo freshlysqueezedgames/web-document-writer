@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react'
-import {shallow} from 'enzyme'
+import {shallow, type ShallowWrapper} from 'enzyme'
 
 import DocumentComponent from './index'
 

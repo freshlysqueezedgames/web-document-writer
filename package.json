@@ -9,7 +9,7 @@
     "serve": "npm run build-server && node dist-server/index.js --serve",
     "test": "jest ./src",
     "lint": "eslint ./src/**/*.js",
-    "flow": "flow"
+    "flow": "flow check"
   },
   "keywords": [
     "Documents",

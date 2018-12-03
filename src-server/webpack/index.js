@@ -52,6 +52,9 @@ const DEFAULT: Object = {
     }, {
       test: /\.(svg|woff|ttf|otf|eot|xml)$/,
       use: 'file-loader'
+    }, {
+      test : /\.html$/,
+      use: 'file-loader?name=[name].[ext]'
     }]
   },
 
