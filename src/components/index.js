@@ -3,10 +3,10 @@
 import * as React from 'react'
 import {type DocumentContainerProps} from '../containers'
 
-import styles from './index.scss'
+import './index.scss'
 
 const DocumentEditorComponent = (props: DocumentContainerProps): React.Element<'div'> =>
-  <div className={styles['document-editor-component']}>
+  <div className="document-editor-component">
     <h1>Welcome To Your Document Editor</h1>
     <div>{props.slug}</div>
   </div>

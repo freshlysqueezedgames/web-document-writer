@@ -37,7 +37,7 @@ const DEFAULT: Object = {
         {
           loader : 'css-loader',
           options : {
-            modules : true
+            modules : false
           }
         },
         'resolve-url-loader',
