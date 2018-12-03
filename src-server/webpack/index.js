@@ -34,7 +34,12 @@ const DEFAULT: Object = {
       test: /\.s?css$/,
       use: [
         'style-loader',
-        'css-loader',
+        {
+          loader : 'css-loader',
+          options : {
+            modules : true
+          }
+        },
         'resolve-url-loader',
         {
           loader : 'sass-loader',
