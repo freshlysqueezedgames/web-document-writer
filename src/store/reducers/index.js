@@ -23,12 +23,13 @@ export const DocumentReducer = (state: DocumentState = defaultDocumentState, act
   switch (action.type) {
     case 'DOCUMENT': {
       return {
-        slug: action.slug
+        ...state,
+        slug: action.slug,
       }
     }
     case 'COMPONENT': {
       return {
-        slug: action.slug,
+        ...state,
         components : [...state.components, {
           id: action.id,
           content: action.content

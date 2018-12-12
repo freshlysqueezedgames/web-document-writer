@@ -7,7 +7,7 @@ import DocumentEditorComponent from './index'
 
 describe('<DocumentEditorComponent/>', (): void => {
   test('Should render the title and slug of the project', (): void => {
-    const wrapper: ShallowWrapper = shallow(<DocumentEditorComponent slug="test"/>)
+    const wrapper: ShallowWrapper = shallow(<DocumentEditorComponent slug="test" components={[]}/>)
 
     expect(wrapper.find('.document-editor-component')).toHaveLength(1)
   })

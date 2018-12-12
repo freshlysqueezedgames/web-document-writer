@@ -1,12 +1,12 @@
 // @flow
 
 export type DocumentAction = {
-  type: string,
+  type: 'DOCUMENT',
   slug: string
 }
 
 export type ComponentAction = {
-  type: string,
+  type: 'COMPONENT',
   id: string,
   content: string
 }
