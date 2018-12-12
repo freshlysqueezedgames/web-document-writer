@@ -4,16 +4,19 @@ import * as React from 'react'
 import * as ReactRedux from 'react-redux'
 
 import type {
-  DocumentState
+  DocumentState,
+  ComponentState
 } from '../store/reducers'
 
 export type DocumentContainerProps = {
   slug: string,
+  components: Array<ComponentState>,
   presentation?: (props: DocumentContainerProps) => React.Node
 }
 
 const MapStateToProps = (state: DocumentState): DocumentContainerProps => ({
-  slug: state.slug
+  slug: state.slug,
+  content : state.content
 })
 
 const DocumentContainer = (props: DocumentContainerProps): React.Node =>

@@ -11,8 +11,4 @@ describe('<DocumentEditorComponent/>', (): void => {
 
     expect(wrapper.find('.document-editor-component')).toHaveLength(1)
   })
-
-  test('', (): void => {
-    
-  })
 })
