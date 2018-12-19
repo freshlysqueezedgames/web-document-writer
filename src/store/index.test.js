@@ -1,9 +1,8 @@
 // @flow
-import shortid from 'shortid'
-
 import {
   Document,
-  Component
+  Component,
+  UpdateComponent
 } from './actions'
 
 import {store} from './index'
@@ -20,19 +19,36 @@ describe('#Store', (): void => {
     })
   })
 
+  const id: string = 'test'
+  const content: string = 'testing the component'
+
   test('Should be able to add a component to the list of components', (): void => {
     expect(store.getState().toJS()).toMatchObject({
-      slug : 'test'
+      slug : 'test',
+      components: []
     })
-
-    const id: string = shortid.generate()
-    const content: string = 'testing the component'
 
     store.dispatch(Component(id, content))
 
     expect(store.getState().toJS()).toMatchObject({
       slug: 'test',
       components: [{id, content}]
+    })
+  })
+
+  test('Should be able to modify the value of an item to a playlist', (): void => {
+    expect(store.getState().toJS()).toMatchObject({
+      slug: 'test',
+      components: [{content, id}]      
+    })
+
+    const newValue: string = 'this is the next value'
+
+    store.dispatch(UpdateComponent(id, newValue))
+
+    expect(store.getState().toJS()).toMatchObject({
+      slug: 'test',
+      components: [{id, content: newValue}]
     })
   })
 })
