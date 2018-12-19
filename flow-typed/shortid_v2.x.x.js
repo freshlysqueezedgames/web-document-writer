@@ -5,4 +5,3 @@ declare module 'shortid' {
   declare function worker(integer: number): void
   declare function seed(integer: number): void
 }
-
