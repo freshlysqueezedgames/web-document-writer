@@ -42,6 +42,19 @@ export const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStat
         return list.push(DocumentComponentStateFactory({id, content}))
       })
     }
+    case 'UPDATE_COMPONENT': {
+      const {id, content} = action
+
+      return state.update<List<DocumentComponentStateRecord>>('components', (list: List<DocumentComponentStateRecord>): List<DocumentComponentStateRecord> => {
+        const key: number | void = list.findKey((value: DocumentComponentStateRecord) => value.get<string, string>('id') === id)
+
+        if (key === undefined) {
+          return list
+        }
+
+        return list.update<DocumentComponentStateRecord>(key, (record: DocumentComponentStateRecord): DocumentComponentStateRecord => record.set('content', content))
+      })
+    }
     default: {
       return state
     }

@@ -7,16 +7,17 @@ import shortid from 'shortid'
 
 import type {
   DocumentStateRecord,
-  DocumentComponentState
+    DocumentComponentState
 } from '../store/reducers'
 
 import {
   Component,
+  UpdateComponent,
   type Action
 } from '../store/actions'
 
 export type DocumentComponent = {
-  
+
 }
 
 export type Document = {
@@ -28,7 +29,8 @@ export type DocumentContainerProps = {
   slug: string,
   components: Array<DocumentComponentState>,
   presentation?: (props: DocumentContainerProps) => React.Node,
-  AddComponent?: () => void
+  AddComponent?: () => void,
+  ComponentContentChange?: (id: string, content: string) => void
 }
 
 const MapStateToProps = (state: DocumentStateRecord): DocumentContainerProps => {
@@ -41,7 +43,8 @@ const MapStateToProps = (state: DocumentStateRecord): DocumentContainerProps => 
 }
 
 const MapDispatchToProps = (dispatch: (action: Action) => void): Object => ({
-  AddComponent: () => dispatch(Component(shortid.generate(), 'this is a test'))
+  AddComponent: (): void => dispatch(Component(shortid.generate(), 'this is a test')),
+  ComponentContentChange: (id: string, content: string): void => dispatch(UpdateComponent(id, content))
 })
 
 const DocumentContainer = (props: DocumentContainerProps): React.Node =>
