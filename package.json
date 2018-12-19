@@ -9,7 +9,7 @@
     "serve": "npm run build-server && node dist-server/index.js --serve",
     "test": "jest ./src",
     "lint": "eslint ./src/**/*.js",
-    "flow": "flow"
+    "flow": "flow check"
   },
   "keywords": [
     "Documents",
@@ -32,6 +32,7 @@
     "redux": "^4.0.1",
     "resolve-url-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
+    "shortid": "^2.2.14",
     "style-loader": "^0.23.1",
     "webpack": "^4.26.1"
   },

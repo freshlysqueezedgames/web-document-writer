@@ -1,14 +1,28 @@
 // @flow
 
 import * as React from 'react'
+
+import {type DocumentComponentState} from '../store/reducers'
 import {type DocumentContainerProps} from '../containers'
 
 import './index.scss'
 
-const DocumentComponent = (props: DocumentContainerProps): React.ReactElement<HTMLDivElement> =>
-  <div className="document-component">
-    <h1>Welcome To Your Document Editor</h1>
-    <div className="document-component__slug">{props.slug}</div>
+export type DocumentComponentComponentProps = {
+  id: string,
+  content: string
+}
+
+const DocumentComponentComponent = (props: DocumentComponentComponentProps): React.Element<'div'> => 
+  <div className="document-editor-component">
+    {props.content}
   </div>
 
-export default DocumentComponent
+const DocumentEditorComponent = (props: DocumentContainerProps): React.Element<'div'> =>
+  <div className="document-editor-component">
+    <h1>Welcome To Your Document Editor</h1>
+    <div>{props.slug}</div>
+    {props.components && props.components.map((component: DocumentComponentState) => <DocumentComponentComponent key={component.id} {...component}/>)}
+    <button onClick={props.AddComponent}>Click Me</button>
+  </div>
+
+export default DocumentEditorComponent

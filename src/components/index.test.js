@@ -1,14 +1,14 @@
 // @flow
 
 import * as React from 'react'
-import {shallow} from 'enzyme'
+import {shallow, type ShallowWrapper} from 'enzyme'
 
-import DocumentComponent from './index'
+import DocumentEditorComponent from '.'
 
-describe('<DocumentComponent/>', (): void => {
+describe('<DocumentEditorComponent/>', (): void => {
   test('Should render the title and slug of the project', (): void => {
-    const wrapper: ShallowWrapper = shallow(<DocumentComponent slug="test"/>)
+    const wrapper: ShallowWrapper = shallow(<DocumentEditorComponent slug="test" components={[]}/>)
 
-    expect(wrapper.find('.document-component')).toHaveLength(1)
+    expect(wrapper.find('.document-editor-component')).toHaveLength(1)
   })
 })

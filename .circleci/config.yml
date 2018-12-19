@@ -34,6 +34,12 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
         
       # run tests!
-      - run: npm test && npm lint
+      - run: npm run test
+
+      # run linting!
+      - run: npm run lint
+
+      # run flow to check for any possible type errors
+      - run: npm run flow
 
 

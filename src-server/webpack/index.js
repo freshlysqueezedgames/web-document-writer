@@ -34,7 +34,12 @@ const DEFAULT: Object = {
       test: /\.s?css$/,
       use: [
         'style-loader',
-        'css-loader',
+        {
+          loader : 'css-loader',
+          options : {
+            modules : false
+          }
+        },
         'resolve-url-loader',
         {
           loader : 'sass-loader',
@@ -52,6 +57,9 @@ const DEFAULT: Object = {
     }, {
       test: /\.(svg|woff|ttf|otf|eot|xml)$/,
       use: 'file-loader'
+    }, {
+      test : /\.html$/,
+      use: 'file-loader?name=[name].[ext]'
     }]
   },
 

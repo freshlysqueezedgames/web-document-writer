@@ -1,23 +1,46 @@
 // @flow
 
+import {Record, RecordInstance, List} from 'immutable'
+
 import {
   type Action
 } from '../actions'
 
-export type DocumentState = $ReadOnly<{
-  slug: string
-}>
-
-const defaultReducerState: DocumentState = {
-  slug: 'default-slug'
+export type DocumentComponentState = {
+  id: string,
+  content: string
 }
 
-export const DocumentReducer = (state: DocumentState = defaultReducerState, action: Action): DocumentState => {
+export type DocumentComponentStateRecord = RecordInstance<DocumentComponentState>
+
+export type DocumentState = {
+  slug: string,
+  components: List<DocumentComponentState>
+}
+
+export type DocumentStateRecord = RecordInstance<DocumentState>
+
+const defaultDocumentStateRecord: DocumentStateRecord = Record({
+  slug: 'default-slug',
+  components: List()
+})()
+
+const DocumentComponentStateFactory: (state: DocumentComponentState) => DocumentComponentStateRecord = Record({
+  id: '',
+  content: ''
+})
+
+export const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord, action: Action): DocumentStateRecord => {
   switch (action.type) {
     case 'DOCUMENT': {
-      return {
-        slug: action.slug
-      }
+      return state.set('slug', action.slug)
+    }
+    case 'COMPONENT': {
+      const {id, content} = action
+
+      return state.update<List<DocumentComponentStateRecord>>('components', (list: List<DocumentComponentStateRecord>): List<DocumentComponentStateRecord> => {
+        return list.push(DocumentComponentStateFactory({id, content}))
+      })
     }
     default: {
       return state
