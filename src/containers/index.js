@@ -3,6 +3,8 @@
 import * as React from 'react'
 import * as ReactRedux from 'react-redux'
 
+import shortid from 'shortid'
+
 import type {
   DocumentStateRecord,
   DocumentComponentState
@@ -39,7 +41,7 @@ const MapStateToProps = (state: DocumentStateRecord): DocumentContainerProps => 
 }
 
 const MapDispatchToProps = (dispatch: (action: Action) => void): Object => ({
-  AddComponent: () => dispatch(Component('test', 'this is a test'))
+  AddComponent: () => dispatch(Component(shortid.generate(), 'this is a test'))
 })
 
 const DocumentContainer = (props: DocumentContainerProps): React.Node =>
