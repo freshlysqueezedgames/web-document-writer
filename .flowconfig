@@ -1,6 +1,6 @@
 [ignore]
 
-
+.*/node_modules/immutable/*
 
 [include]
 
@@ -8,6 +8,8 @@
 ./src-server
 
 [libs]
+
+./flow-typed
 
 [options]
 

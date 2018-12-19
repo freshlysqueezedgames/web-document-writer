@@ -10,17 +10,18 @@ import {store} from './index'
 
 describe('#Store', (): void => {
   test('Should be able to set the document details', (): void => {
-    expect(store.getState()).toMatchObject({})
+    expect(store.getState().toJS()).toMatchObject({})
 
     store.dispatch(Document('test'))
 
-    expect(store.getState()).toMatchObject({
-      slug: 'test'
+    expect(store.getState().toJS()).toMatchObject({
+      slug: 'test',
+      components: []
     })
   })
 
   test('Should be able to add a component to the list of components', (): void => {
-    expect(store.getState()).toMatchObject({
+    expect(store.getState().toJS()).toMatchObject({
       slug : 'test'
     })
 
@@ -29,7 +30,7 @@ describe('#Store', (): void => {
 
     store.dispatch(Component(id, content))
 
-    expect(store.getState()).toMatchObject({
+    expect(store.getState().toJS()).toMatchObject({
       slug: 'test',
       components: [{id, content}]
     })

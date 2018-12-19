@@ -22,6 +22,7 @@ const DocumentEditorComponent = (props: DocumentContainerProps): React.Element<'
     <h1>Welcome To Your Document Editor</h1>
     <div>{props.slug}</div>
     {props.components && props.components.map((component: DocumentComponentState) => <DocumentComponentComponent key={component.id} {...component}/>)}
+    <button onClick={props.AddComponent}>Click Me</button>
   </div>
 
 export default DocumentEditorComponent
