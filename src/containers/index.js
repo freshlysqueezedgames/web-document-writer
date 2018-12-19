@@ -3,7 +3,7 @@
 import * as React from 'react'
 import * as ReactRedux from 'react-redux'
 
-import {shortid} from 'shortid'
+import shortid from 'shortid'
 
 import type {
   DocumentStateRecord,
