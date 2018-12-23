@@ -25,7 +25,7 @@ export default class DocumentEditorAddition extends React.Component<DocumentEdit
     let value: string = this.inputRef ? this.inputRef.value : ''
 
     if (event.keyCode === KEY_CODE.RETURN) {
-      props.OnAddition && this.inputRef && props.OnAddition(value)
+      props.OnAddition && props.OnAddition(value)
       value = ''
     }
 
@@ -37,6 +37,6 @@ export default class DocumentEditorAddition extends React.Component<DocumentEdit
   }
 
   render (): React.Element<'input'> {
-    return <input onKeyDown={this.OnKeyDown} onChange={this.OnChange} ref={this.InputRef} value={this.state.value}/>
+    return <input className="document-editor-addition" onKeyDown={this.OnKeyDown} onChange={this.OnChange} ref={this.InputRef} value={this.state.value}/>
   }
 }
