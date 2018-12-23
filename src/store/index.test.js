@@ -51,4 +51,6 @@ describe('#Store', (): void => {
       components: [{id, content: newValue}]
     })
   })
+
+  
 })

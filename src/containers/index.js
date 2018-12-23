@@ -43,7 +43,7 @@ const MapStateToProps = (state: DocumentStateRecord): DocumentContainerProps => 
 }
 
 const MapDispatchToProps = (dispatch: (action: Action) => void): Object => ({
-  AddComponent: (): void => dispatch(Component(shortid.generate(), 'this is a test')),
+  AddComponent: (value: string): void => dispatch(Component(shortid.generate(), value)),
   ComponentContentChange: (id: string, content: string): void => dispatch(UpdateComponent(id, content))
 })
 
