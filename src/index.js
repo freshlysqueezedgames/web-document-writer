@@ -7,7 +7,7 @@ import {render} from 'react-dom'
 import {store} from './store'
 
 import DocumentContainer, {type DocumentContainerProps} from './containers'
-import DocumentComponent from './components'
+import DocumentEditorComponent from './components'
 
 import './index.html'
 import './index.scss'
@@ -24,5 +24,5 @@ if (app) {
 }
 
 function RenderDocument (props: DocumentContainerProps): React.Node {
-  return <DocumentComponent {...props} />
+  return <DocumentEditorComponent {...props} />
 }
