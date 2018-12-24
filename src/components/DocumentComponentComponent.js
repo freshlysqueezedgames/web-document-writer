@@ -25,7 +25,10 @@ export default class DocumentComponentComponent extends React.Component<Document
     const props: DocumentComponentComponentProps = this.props
 
     return <div className="document-component-component">
-      <textarea onChange={this.HandleTextAreaChange} ref={this.TextAreaRef}>{props.content}</textarea>
+      <textarea onChange={this.HandleTextAreaChange} ref={this.TextAreaRef} value={props.content}/>
+      <div className="document-component-component__content">
+        {props.content}
+      </div>
     </div>
   }
 }
