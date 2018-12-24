@@ -59,7 +59,7 @@ describe('<DocumentComponentComponent/>', (): void => {
 
     const node: HTMLElement | HTMLInputElement = textarea.getDOMNode()
 
-    if (!(node instanceof HTMLInputElement)) {
+    if (!(node instanceof HTMLTextAreaElement)) {
       throw new Error('input type not returned')
     }
 
@@ -87,7 +87,7 @@ describe('<DocumentComponentComponent/>', (): void => {
 
     const node: HTMLElement | HTMLInputElement = textarea.getDOMNode()
 
-    if (!(node instanceof HTMLInputElement)) {
+    if (!(node instanceof HTMLTextAreaElement)) {
       throw new Error('input type not returned')
     }
 
