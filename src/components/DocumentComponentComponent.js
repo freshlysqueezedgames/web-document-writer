@@ -34,16 +34,18 @@ export default class DocumentComponentComponent extends React.Component<Document
   }
 
   HandleContentClick = (): void => {
-    if (!this.textAreaRef) {
+    const textAreaRef: HTMLTextAreaElement | null = this.textAreaRef
+
+    if (textAreaRef === null) {
       return
     }
 
     const selection: Selection = window.getSelection()
     const {startOffset, endOffset} = selection.rangeCount ? selection.getRangeAt(0) : OFFSET_ZERO
 
-    this.textAreaRef.focus()
-    this.textAreaRef.selectionStart = startOffset
-    this.textAreaRef.selectionEnd = endOffset
+    textAreaRef.focus()
+    textAreaRef.selectionStart = startOffset
+    textAreaRef.selectionEnd = endOffset
   }
 
   render (): React.Element<'div'> {

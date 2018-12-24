@@ -40,7 +40,7 @@ describe('<DocumentComponentComponent/>', (): void => {
   test('Should focus on the clicked position in the textarea when the content is clicked', (): void => {
     const getSelection: () => Selection = window.getSelection
     
-    window.getSelection = jest.fn().mockImplementation((): Selection => ({
+    window.getSelection = jest.fn().mockImplementation((): {getRangeAt: () => Range, rangeCount: number} => ({
       getRangeAt: (): Range => ({
         startOffset: 5,
         endOffset: 5
@@ -56,8 +56,15 @@ describe('<DocumentComponentComponent/>', (): void => {
     const textarea: ReactWrapper = wrapper.find('textarea')
 
     expect(textarea).toHaveLength(1)
-    expect(textarea.getDOMNode().selectionStart).toEqual(5)
-    expect(textarea.getDOMNode().selectionEnd).toEqual(5)
+
+    const node: HTMLElement | HTMLInputElement = textarea.getDOMNode()
+
+    if (!(node instanceof HTMLInputElement)) {
+      throw new Error('input type not returned')
+    }
+
+    expect(node.selectionStart).toEqual(5)
+    expect(node.selectionEnd).toEqual(5)
 
     window.getSelection = getSelection
   })
@@ -65,7 +72,7 @@ describe('<DocumentComponentComponent/>', (): void => {
   test('Should have a default range of 0, 0 if the selection range is not available', () => {
     const getSelection: () => Selection = window.getSelection
     
-    window.getSelection = jest.fn().mockImplementation((): Selection => ({
+    window.getSelection = jest.fn().mockImplementation((): {rangeCount: number} => ({
       rangeCount: 0
     }))
 
@@ -77,8 +84,15 @@ describe('<DocumentComponentComponent/>', (): void => {
     const textarea: ReactWrapper = wrapper.find('textarea')
 
     expect(textarea).toHaveLength(1)
-    expect(textarea.getDOMNode().selectionStart).toEqual(0)
-    expect(textarea.getDOMNode().selectionEnd).toEqual(0)
+
+    const node: HTMLElement | HTMLInputElement = textarea.getDOMNode()
+
+    if (!(node instanceof HTMLInputElement)) {
+      throw new Error('input type not returned')
+    }
+
+    expect(node.selectionStart).toEqual(0)
+    expect(node.selectionEnd).toEqual(0)
 
     window.getSelection = getSelection    
   })
