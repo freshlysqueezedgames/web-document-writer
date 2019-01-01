@@ -6,13 +6,15 @@ import * as ReactRedux from 'react-redux'
 import shortid from 'shortid'
 
 import type {
-  DocumentStateRecord,
-    DocumentComponentState
+  DocumentStateRecord
 } from '../store/reducers'
 
 import {
-  Component,
+  SetDocument,
+  AppendComponent,
   UpdateComponent,
+  FocusComponent,
+  type DocumentComponentState,
   type Action
 } from '../store/actions'
 
@@ -29,8 +31,10 @@ export type DocumentContainerProps = {
   slug: string,
   components: Array<DocumentComponentState>,
   presentation?: (props: DocumentContainerProps) => React.Node,
-  AddComponent?: () => void,
-  ComponentContentChange?: (id: string, content: string) => void
+  OnSetDocument?: (slug: string, content: DocumentComponentState[]) => void,
+  OnAppendContent?: () => void,
+  OnContentChange?: (id: string, content: string) => void,
+  OnFocusChange?: (id: string) => void
 }
 
 const MapStateToProps = (state: DocumentStateRecord): DocumentContainerProps => {
@@ -43,13 +47,32 @@ const MapStateToProps = (state: DocumentStateRecord): DocumentContainerProps => 
 }
 
 const MapDispatchToProps = (dispatch: (action: Action) => void): Object => ({
-  AddComponent: (value: string): void => dispatch(Component(shortid.generate(), value)),
-  ComponentContentChange: (id: string, content: string): void => dispatch(UpdateComponent(id, content))
+  OnSetDocument: (slug: string, content: DocumentComponentState[]): void => dispatch(SetDocument(slug, content)),
+  OnAppendContent: (id: string, value: string): void => dispatch(AppendComponent(id, shortid.generate(), value)),
+  OnContentChange: (id: string, content: string): void => dispatch(UpdateComponent(id, content)),
+  OnFocusChange: (id: string): void => dispatch(FocusComponent(id))
 })
 
-const DocumentContainer = (props: DocumentContainerProps): React.Node =>
-  <React.Fragment>
-    {props.presentation && props.presentation(props)}
-  </React.Fragment>
+class DocumentContainer extends React.Component<DocumentContainerProps> {
+  constructor (props: DocumentContainerProps) {
+    super(props)
+
+    const OnSetDocument: void | (slug: string, content: DocumentComponentState[]) => void = props.OnSetDocument
+
+    OnSetDocument && OnSetDocument('test-document', [{
+      id: shortid.generate(),
+      content: 'This is where you start',
+      focused: true
+    }])
+  }
+
+  render (): React.Node {
+    const props: DocumentContainerProps = this.props
+
+    return <React.Fragment>
+      {props.presentation && props.presentation(props)}
+    </React.Fragment>
+  }
+}
 
 export default ReactRedux.connect(MapStateToProps, MapDispatchToProps)(DocumentContainer)

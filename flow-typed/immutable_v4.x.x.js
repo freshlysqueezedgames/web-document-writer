@@ -22,6 +22,9 @@ declare module 'immutable' {
     push (value: T) : this,
     toJS (): Array<T>,
     set (key: number, value: T): List<T>,
-    findKey (predicate: (value: T, key: number, iter: this) => boolean, context?: any): number | typeof undefined
+    map (mapper: (value: T, key?: number, iter?: this) => T, context?: any): List<T>,
+    findKey (predicate: (value: T, key: number, iter: this) => boolean, context?: any): number | typeof undefined,
+    findIndex (predicate: (value: T, index: number, iter: this) => boolean, context?: any): number,
+    splice (index: number, removeNum: number, ...values: Array<T>): List<T>
   }
 }

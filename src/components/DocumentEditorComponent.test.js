@@ -15,10 +15,12 @@ describe('<DocumentEditorComponent/>', (): void => {
   test('Should be able to render a list of document component components for its content', () => {
     const wrapper: ReactWrapper = mount(<DocumentEditorComponent slug="test" components={[{
       id: 'test1',
-      content: 'test1'
+      content: 'test1',
+      focused: false,
     }, {
       id: 'test2',
-      content: 'test2'
+      content: 'test2',
+      focused: false
     }]}/>)
 
     expect(wrapper.find('.document-component-component')).toHaveLength(2)
