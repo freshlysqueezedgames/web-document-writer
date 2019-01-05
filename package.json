@@ -7,7 +7,7 @@
     "build-server": "babel ./src-server --out-dir ./dist-server --copy-files",
     "build": "npm run build-server && node dist-server/index.js --build",
     "serve": "npm run build-server && node dist-server/index.js --serve",
-    "test": "jest ./src",
+    "test": "jest ./src --verbose --coverage",
     "lint": "eslint ./src/**/*.js",
     "flow": "flow check"
   },
@@ -64,6 +64,17 @@
     "moduleNameMapper": {
       "\\.s?css$": "<rootDir>/mocks/css.js"
     },
-    "testURL": "http://localhost"
+    "testURL": "http://localhost",
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/src/.*\\.test\\.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
+    }
   }
 }
