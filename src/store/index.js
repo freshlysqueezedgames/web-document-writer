@@ -4,7 +4,7 @@ import * as Redux from 'redux'
 import {createStore} from 'redux'
 
 import {
-  DocumentReducer
+  EditorReducer
 } from './reducers'
 
-export const store: Redux.Store = createStore(DocumentReducer)
+export const store: Redux.Store = createStore(EditorReducer)

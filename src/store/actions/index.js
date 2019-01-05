@@ -13,6 +13,16 @@ export type DocumentState = {
   components: List<DocumentComponentState>
 }
 
+export type CursorState = {
+  x: number,
+  y: number
+}
+
+export type EditorState = {
+  cursor: CursorState,
+  document: DocumentState
+}
+
 export type DocumentAction = {
   type: 'SET_DOCUMENT',
   slug: string,
@@ -38,12 +48,19 @@ export type FocusComponentAction = {
   id: string
 }
 
+export type CursorPositionAction = {
+  type: 'CURSOR_POSITION',
+  x: number,
+  y: number
+}
+
 type DocumentActionCreator = (slug: string, content: DocumentComponentState[]) => DocumentAction
 type AppendComponentActionCreator = (after: string, id: string, content: string, focused?: boolean) => AppendComponentAction
 type UpdateComponentActionCreator = (id: string, content: string) => UpdateComponentAction
 type FocusComponentActionCreator = (id: string) => FocusComponentAction
+type CursorPositionActionCreator = (x: number, y: number) => CursorPositionAction
 
-export type Action = DocumentAction | AppendComponentAction | UpdateComponentAction | FocusComponentAction
+export type Action = DocumentAction | AppendComponentAction | UpdateComponentAction | FocusComponentAction | CursorPositionAction | {|type: 'EMPTY'|}
 
 export const SetDocument: DocumentActionCreator = (slug: string, content: DocumentComponentState[]): DocumentAction => ({
   type: 'SET_DOCUMENT',
@@ -68,4 +85,10 @@ export const UpdateComponent: UpdateComponentActionCreator = (id: string, conten
 export const FocusComponent: FocusComponentActionCreator = (id: string): FocusComponentAction => ({
   type: 'FOCUS_COMPONENT',
   id
+})
+
+export const CursorPosition: CursorPositionActionCreator = (x: number, y: number): CursorPositionAction => ({
+  type: 'CURSOR_POSITION',
+  x,
+  y
 })

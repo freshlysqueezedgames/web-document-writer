@@ -1,19 +1,30 @@
 // @flow
 
 import * as React from 'react'
-import {shallow, mount, type ShallowWrapper, type ReactWrapper} from 'enzyme'
+import {mount, type ReactWrapper} from 'enzyme'
+
+import {Provider} from 'react-redux'
+import {store} from '../store'
+
+import {SetDocument} from '../store/actions'
 
 import DocumentEditorComponent from './DocumentEditorComponent'
+import KEY_CODE from '../utils'
+
 
 describe('<DocumentEditorComponent/>', (): void => {
   test('Should render the title and slug of the project', (): void => {
-    const wrapper: ShallowWrapper = shallow(<DocumentEditorComponent slug="test" components={[]}/>)
+    store.dispatch(SetDocument('test-document', []))
+
+    const wrapper: ReactWrapper = mount(<Provider store={store}>
+      <DocumentEditorComponent/>
+    </Provider>)
 
     expect(wrapper.find('.document-editor-component')).toHaveLength(1)
   })
 
   test('Should be able to render a list of document component components for its content', () => {
-    const wrapper: ReactWrapper = mount(<DocumentEditorComponent slug="test" components={[{
+    store.dispatch(SetDocument('test', [{
       id: 'test1',
       content: 'test1',
       focused: false,
@@ -21,8 +32,92 @@ describe('<DocumentEditorComponent/>', (): void => {
       id: 'test2',
       content: 'test2',
       focused: false
-    }]}/>)
+    }]))
+
+    const wrapper: ReactWrapper = mount(<Provider store={store}>
+      <DocumentEditorComponent/>
+    </Provider>)
 
     expect(wrapper.find('.document-component-component')).toHaveLength(2)
+  })
+
+  test('Should append new DocumentComponentComponent\'s when ctrl+return is used within a DocumentComponentComponent', (): void => {
+    store.dispatch(SetDocument('test-document', [{
+      id: 'test1',
+      content: 'test1',
+      focused: false,
+    }]))
+
+    const wrapper: ReactWrapper = mount(
+      <Provider store={store}>
+        <DocumentEditorComponent/>
+      </Provider>
+    )
+
+    const textarea: ReactWrapper = wrapper.find('.document-component-component textarea')
+
+    expect(textarea).toHaveLength(1)
+
+    textarea.simulate('keydown', {keyCode: KEY_CODE.CTRL})
+    textarea.simulate('keydown', {keyCode: KEY_CODE.RETURN})
+
+    expect(wrapper.find('.document-component-component')).toHaveLength(2)
+  })
+
+  test('Should update the content within a component when the user makes a change to the text', (): void => {
+    store.dispatch(SetDocument('test-document', [{
+      id: 'test1',
+      content: '',
+      focused: false,
+    }]))
+
+    const wrapper: ReactWrapper = mount(
+      <Provider store={store}>
+        <DocumentEditorComponent/>
+      </Provider>
+    )
+
+    const textarea: ReactWrapper = wrapper.find('.document-component-component textarea')
+
+    expect(textarea).toHaveLength(1)
+
+    textarea.instance().value = 'test'
+    textarea.simulate('change')
+
+    expect(wrapper.find('.document-component-component__content').text()).toEqual('test')
+  })
+
+  test('Should be able to focus into a particular DocumentComponentComponent', (): void => {
+    store.dispatch(SetDocument('test-document', [{
+      id: 'test1',
+      content: '',
+      focused: false,
+    }]))
+
+    const wrapper: ReactWrapper = mount(
+      <Provider store={store}>
+        <DocumentEditorComponent/>
+      </Provider>
+    )
+
+    const content: ReactWrapper = wrapper.find('.document-component-component .document-component-component__content')
+
+    expect(content).toHaveLength(1)
+
+    const getSelection: () => Selection = window.getSelection
+    
+    window.getSelection = jest.fn().mockImplementation((): {rangeCount: number} => ({
+      rangeCount: 0
+    }))
+
+    content.simulate('click')
+
+    const textarea: ReactWrapper = wrapper.find('.document-component-component textarea')
+
+    expect(textarea).toHaveLength(1)
+
+    expect(textarea.instance()).toEqual(document.activeElement)
+    
+    window.getSelection = getSelection
   })
 })

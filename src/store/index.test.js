@@ -3,18 +3,20 @@ import {
   SetDocument,
   AppendComponent,
   UpdateComponent,
-  FocusComponent
+  FocusComponent,
+  CursorPosition,
+  type EditorState
 } from './actions'
 
 import {store} from './index'
 
 describe('#Store', (): void => {
   test('Should be able to set the document details', (): void => {
-    expect(store.getState().toJS()).toMatchObject({})
+    expect(store.getState().toJS().document).toMatchObject({})
 
     store.dispatch(SetDocument('test', []))
 
-    expect(store.getState().toJS()).toMatchObject({
+    expect(store.getState().toJS().document).toMatchObject({
       slug: 'test',
       components: []
     })
@@ -27,7 +29,7 @@ describe('#Store', (): void => {
       focused: false
     }]))
 
-    expect(store.getState().toJS()).toMatchObject({
+    expect(store.getState().toJS().document).toMatchObject({
       slug: 'another test',
       components: [{
         id: 'test',
@@ -43,14 +45,14 @@ describe('#Store', (): void => {
   test('Should be able to add a component to the list of components', (): void => {
     store.dispatch(SetDocument('test', []))
 
-    expect(store.getState().toJS()).toMatchObject({
+    expect(store.getState().toJS().document).toMatchObject({
       slug: 'test',
       components: []
     })
 
     store.dispatch(AppendComponent('', id, content))
 
-    expect(store.getState().toJS()).toMatchObject({
+    expect(store.getState().toJS().document).toMatchObject({
       slug: 'test',
       components: [{id, content}]
     })
@@ -60,7 +62,7 @@ describe('#Store', (): void => {
     store.dispatch(AppendComponent(id, 'test 2', 'This should be last'))
     store.dispatch(AppendComponent(id, 'test 3', 'This should be in the middle'))
 
-    expect(store.getState().toJS()).toMatchObject({
+    expect(store.getState().toJS().document).toMatchObject({
       slug: 'test',
       components: [{
         id,
@@ -78,7 +80,7 @@ describe('#Store', (): void => {
   test('Should be able to modify the value of an item to a playlist', (): void => {
     store.dispatch(SetDocument('test', [{id, content, focused: false}]))
 
-    expect(store.getState().toJS()).toMatchObject({
+    expect(store.getState().toJS().document).toMatchObject({
       slug: 'test',
       components: [{content, id}]
     })
@@ -87,7 +89,7 @@ describe('#Store', (): void => {
 
     store.dispatch(UpdateComponent(id, newValue))
 
-    expect(store.getState().toJS()).toMatchObject({
+    expect(store.getState().toJS().document).toMatchObject({
       slug: 'test',
       components: [{id, content: newValue}]
     })
@@ -101,17 +103,17 @@ describe('#Store', (): void => {
       components: [{content, id}]
     }
 
-    expect(store.getState().toJS()).toMatchObject(result)
+    expect(store.getState().toJS().document).toMatchObject(result)
 
     store.dispatch(UpdateComponent('non-existent id', 'some new value'))
 
-    expect(store.getState().toJS()).toMatchObject(result)
+    expect(store.getState().toJS().document).toMatchObject(result)
   })
 
   test('Should allow focus to be set on a component, making the other components lose their component flag', (): void => {
     store.dispatch(SetDocument('test', [{id, content, focused: true}, {id: 'test 2', content, focused: false}]))
 
-    expect(store.getState().toJS().components).toMatchObject([{
+    expect(store.getState().toJS().document.components).toMatchObject([{
       id,
       content,
       focused: true
@@ -123,7 +125,7 @@ describe('#Store', (): void => {
 
     store.dispatch(FocusComponent('test 2'))
 
-    expect(store.getState().toJS().components).toMatchObject([{
+    expect(store.getState().toJS().document.components).toMatchObject([{
       id,
       content,
       focused: false
@@ -134,10 +136,10 @@ describe('#Store', (): void => {
     }])
   })
 
-  test('Appending a component should auto-focus to the new one', () => {
+  test('Appending a component should auto-focus to the new one', (): void => {
     store.dispatch(AppendComponent('test 2', 'test 3', 'this should be focused on'))
 
-    expect(store.getState().toJS().components).toMatchObject([{
+    expect(store.getState().toJS().document.components).toMatchObject([{
       id,
       content,
       focused: false
@@ -150,5 +152,22 @@ describe('#Store', (): void => {
       content: 'this should be focused on',
       focused: true
     }])
+  })
+
+  test('Should be able to set the cursor position', (): void => {
+    store.dispatch(CursorPosition(10, 10))
+
+    expect(store.getState().toJS().cursor).toMatchObject({
+      x: 10,
+      y: 10
+    })
+  })
+
+  test('Should return default state is action provided requires not reduction', (): void => {
+    const originalState: EditorState = store.getState().toJS()
+    
+    store.dispatch({'type': 'NOTHING_SPECIAL'})
+
+    expect(store.getState().toJS()).toMatchObject(originalState)
   })
 })

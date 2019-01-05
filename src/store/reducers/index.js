@@ -4,22 +4,39 @@ import {Record, RecordInstance, List} from 'immutable'
 
 import type {
   DocumentState,
-  DocumentComponentState, 
+  DocumentComponentState,
+  EditorState,
+  CursorState,
   Action
 } from '../actions'
 
 export type DocumentComponentStateRecord = RecordInstance<DocumentComponentState>
 export type DocumentStateRecord = RecordInstance<DocumentState>
+export type EditorStateRecord = RecordInstance<EditorState>
+export type CursorStateRecord = RecordInstance<CursorState>
 
-const DocumentComponentStateFactory: (state: DocumentComponentState) => DocumentComponentStateRecord = Record({
+const DocumentComponentStateFactory: (state?: DocumentComponentState) => DocumentComponentStateRecord = Record({
   id: '',
   content: '',
   focused: false
 })
 
-const defaultDocumentStateRecord: DocumentStateRecord = Record({
+const DocumentStateFactory: (state?: DocumentState) => DocumentStateRecord = Record({
   slug: 'default-slug',
   components: List()
+})
+
+const CursorStateFactory: (state?: CursorState) => CursorStateRecord = Record({
+  x: 0,
+  y: 0
+})
+
+export const defaultDocumentStateRecord: DocumentStateRecord = DocumentStateFactory()
+export const defaultCursorStateRecord: CursorStateRecord = CursorStateFactory()
+
+const defaultEditorStateRecord: EditorStateRecord = Record({
+  cursor: defaultCursorStateRecord,
+  document: defaultDocumentStateRecord
 })()
 
 export const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord, action: Action): DocumentStateRecord => {
@@ -72,4 +89,36 @@ export const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStat
 
 function SetFocusedByID (id: string, list: List<DocumentComponentStateRecord>): List<DocumentComponentStateRecord> {
   return list.map((record: DocumentComponentStateRecord): DocumentComponentStateRecord => record.set('focused', id === record.get('id')))
+}
+
+export const CursorReducer = (state: CursorStateRecord = defaultCursorStateRecord, action: Action): CursorStateRecord => {
+  switch (action.type) {
+    case 'CURSOR_POSITION': {
+      const {x, y} = action
+
+      console.log('boing flip', x, y)
+
+      return state.set('x', x).set('y', y)
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+export const EditorReducer = (state: EditorStateRecord = defaultEditorStateRecord, action: Action): EditorStateRecord => {
+  switch (action.type) {
+    case 'CURSOR_POSITION': {
+      return state.update<CursorStateRecord>('cursor', (record: CursorStateRecord): CursorStateRecord => CursorReducer(record, action))
+    }
+    case 'SET_DOCUMENT':
+    case 'APPEND_COMPONENT':
+    case 'UPDATE_COMPONENT':
+    case 'FOCUS_COMPONENT': {
+      return state.update<DocumentStateRecord>('document', (record: DocumentStateRecord): DocumentStateRecord => DocumentReducer(record, action))
+    }
+    default: {
+      return state
+    }
+  }
 }
