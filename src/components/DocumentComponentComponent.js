@@ -99,12 +99,31 @@ export default class DocumentComponentComponent extends React.Component<Document
     if (this.ctrlPressed && event.keyCode === KEY_CODE.RETURN) {
       props.OnContentAddition && props.OnContentAddition(props.id, '')
     }
+
+    this.SetStateOffset()
   }
 
   HandleKeyUp = (event: SyntheticKeyboardEvent<HTMLInputElement>): void => {
     if (event.keyCode === KEY_CODE.CTRL) {
       this.ctrlPressed = false
     }
+
+    this.SetStateOffset()
+  }
+
+  SetStateOffset () {
+    const textAreaRef: HTMLTextAreaElement | null = this.textAreaRef
+
+    if (!textAreaRef) {
+      return
+    }
+
+    this.offsetUpdate = true
+
+    this.setState({
+      startOffset: textAreaRef.selectionStart,
+      endOffset: textAreaRef.selectionEnd
+    })
   }
 
   render (): React.Element<'div'> {
@@ -141,7 +160,7 @@ export default class DocumentComponentComponent extends React.Component<Document
       const {left, top} = spanRef.getBoundingClientRect()
 
       t.props.OnCursorChange && t.props.OnCursorChange(left, top)
-    
+
       t.offsetUpdate = false
     }
   }
