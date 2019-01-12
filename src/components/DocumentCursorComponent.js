@@ -15,7 +15,7 @@ export default class DocumentCursorComponent extends React.Component<CursorConta
   lastTop: ?number
   lastLeft: ?number
   
-  time: number = 62.5
+  time: number = 62.5 // 
   
   constructor (props: CursorContainerProps) {
     super(props)
@@ -67,7 +67,6 @@ export default class DocumentCursorComponent extends React.Component<CursorConta
 
         requestAnimationFrame(OnAnimationFrame)
       } else {
-        console.log('I want to go here!', top, left)
         this.setState({top, left})
       }
     }
