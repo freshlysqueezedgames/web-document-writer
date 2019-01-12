@@ -1,9 +1,16 @@
 div.document-component-component {
+  white-space: pre-wrap;
+
   textarea {
     width: 1px;
     height: 1px;
     position: absolute;
     top: 0px;
     opacity: 0.01;
+  }
+
+  span {
+    height: 100%;
+    display: inline-block;
   }
 }

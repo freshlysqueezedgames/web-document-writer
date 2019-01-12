@@ -159,6 +159,7 @@ export default class DocumentComponentComponent extends React.Component<Document
     if (t.offsetUpdate && spanRef) {
       const {left, top} = spanRef.getBoundingClientRect()
 
+      console.log('we need to go from here', left, top)
       t.props.OnCursorChange && t.props.OnCursorChange(left, top)
 
       t.offsetUpdate = false

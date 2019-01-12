@@ -67,6 +67,7 @@ export default class DocumentCursorComponent extends React.Component<CursorConta
 
         requestAnimationFrame(OnAnimationFrame)
       } else {
+        console.log('I want to go here!', top, left)
         this.setState({top, left})
       }
     }
