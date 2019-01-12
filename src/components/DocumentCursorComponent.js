@@ -12,12 +12,12 @@ type CursorComponentState = $ReadOnly<{
 }>
 
 export default class DocumentCursorComponent extends React.Component<CursorContainerProps, CursorComponentState> {
-  lastTop: number | undefined
-  lastLeft: number | undefined
+  lastTop: number | typeof undefined
+  lastLeft: number | typeof undefined
   
   time: number = 62.5
   
-  constructor (props: CursonContainerProps) {
+  constructor (props: CursorContainerProps) {
     super(props)
 
     this.state = {
@@ -26,7 +26,7 @@ export default class DocumentCursorComponent extends React.Component<CursorConta
     }
   }
 
-  OnAnimationFrame: (timestamp: number) => boolean | undefined
+  OnAnimationFrame: (timestamp: number) => boolean | typeof undefined
 
   componentDidUpdate (): void {
     const props: CursorContainerProps = this.props
@@ -43,7 +43,7 @@ export default class DocumentCursorComponent extends React.Component<CursorConta
       return
     }
 
-    let first: number | undefined
+    let first: number | typeof undefined
 
     const topDifference: number = state.top - top
     const leftDifference: number = state.left - left
@@ -75,7 +75,7 @@ export default class DocumentCursorComponent extends React.Component<CursorConta
   }
 
   render (): React.Element<'div'> {
-    const state: CursorContainerProps = this.state
+    const state: CursorComponentState = this.state
     
     return <div className="document-cursor-component" style={state}/>
   }
