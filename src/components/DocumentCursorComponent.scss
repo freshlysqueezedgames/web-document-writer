@@ -12,4 +12,15 @@ div.document-cursor-component {
     style: solid;
     color: darkred;
   }
+
+  animation: pulse 0.5s infinite alternate;
+
+  @keyframes pulse {
+    0% {
+      border-right-color: rgba(255,0,0,0)
+    }
+    100% {
+      border-right-color: rgba(255,0,0,1)
+    }
+  }
 }
