@@ -15,7 +15,7 @@ export default class DocumentCursorComponent extends React.Component<CursorConta
   lastTop: ?number
   lastLeft: ?number
   
-  time: number = 62.5 // 
+  time: number = 62.5 // milliseconds
   
   constructor (props: CursorContainerProps) {
     super(props)
