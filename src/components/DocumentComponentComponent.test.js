@@ -136,4 +136,8 @@ describe('<DocumentComponentComponent/>', (): void => {
 
     expect(additionMock).toHaveBeenCalledTimes(1)
   })
+
+  test('Should trigger a position change when a key is pressed', (): void => {
+    
+  })
 })
