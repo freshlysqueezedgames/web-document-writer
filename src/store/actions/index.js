@@ -1,6 +1,8 @@
 // @flow
-import type {
-  DocumentComponentState
+import {
+  DOCUMENT_COMPONENT_TYPE,
+  type DocumentComponentType,
+  type DocumentComponentState
 } from '../types'
 
 export type DocumentAction = {
@@ -14,13 +16,20 @@ export type AppendComponentAction = {
   after: string,
   id: string,
   content: string,
-  focused: boolean
+  focused: boolean,
+  componentType: DocumentComponentType
 }
 
 export type UpdateComponentAction = {
   type: 'UPDATE_COMPONENT',
   id: string,
   content: string
+}
+
+export type UpdateComponentTypeAction = {
+  type: 'UPDATE_COMPONENT_TYPE',
+  id: string,
+  componentType: DocumentComponentType
 }
 
 export type FocusComponentAction = {
@@ -34,7 +43,14 @@ export type CursorPositionAction = {
   y: number
 }
 
-export type Action = DocumentAction | AppendComponentAction | UpdateComponentAction | FocusComponentAction | CursorPositionAction | $Exact<{type: 'EMPTY'}>
+export type Action = 
+  DocumentAction | 
+  AppendComponentAction | 
+  UpdateComponentAction |
+  UpdateComponentTypeAction | 
+  FocusComponentAction | 
+  CursorPositionAction | 
+  $Exact<{type: 'EMPTY'}>
 
 export const SetDocument = (slug: string, content: DocumentComponentState[]): DocumentAction => ({
   type: 'SET_DOCUMENT',
@@ -42,18 +58,25 @@ export const SetDocument = (slug: string, content: DocumentComponentState[]): Do
   content
 })
 
-export const AppendComponent = (after: string, id: string, content: string, focused: boolean = true): AppendComponentAction => ({
+export const AppendComponent = (after: string, id: string, content: string, focused: boolean = true, componentType: DocumentComponentType = DOCUMENT_COMPONENT_TYPE.PARAGRAPH): AppendComponentAction => ({
   type: 'APPEND_COMPONENT',
   after,
   id,
   content,
-  focused
+  focused,
+  componentType
 })
 
 export const UpdateComponent = (id: string, content: string): UpdateComponentAction => ({
   type: 'UPDATE_COMPONENT',
   id,
   content
+})
+
+export const UpdateComponentType = (id: string, componentType: DocumentComponentType) => ({
+  type: 'UPDATE_COMPONENT_TYPE',
+  id,
+  componentType
 })
 
 export const FocusComponent = (id: string): FocusComponentAction => ({

@@ -21,6 +21,7 @@ const EditorReducer = (state: EditorStateRecord = defaultEditorStateRecord, acti
     case 'SET_DOCUMENT':
     case 'APPEND_COMPONENT':
     case 'UPDATE_COMPONENT':
+    case 'UPDATE_COMPONENT_TYPE':
     case 'FOCUS_COMPONENT': {
       return state.update<DocumentStateRecord>('document', (record: DocumentStateRecord): DocumentStateRecord => DocumentReducer(record, action))
     }

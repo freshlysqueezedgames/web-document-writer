@@ -3,11 +3,13 @@ import {
   SetDocument,
   AppendComponent,
   UpdateComponent,
+  UpdateComponentType,
   FocusComponent,
   CursorPosition
 } from './actions'
 
 import {
+  DOCUMENT_COMPONENT_TYPE,
   type EditorState
 } from './types'
 
@@ -29,7 +31,8 @@ describe('#Store', (): void => {
     store.dispatch(SetDocument('another test', [{
       id: 'test',
       content: 'this is a test',
-      focused: false
+      focused: false,
+      componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
     }]))
 
     expect(store.getState().toJS().document).toMatchObject({
@@ -81,7 +84,7 @@ describe('#Store', (): void => {
   })
 
   test('Should be able to modify the value of an item to a playlist', (): void => {
-    store.dispatch(SetDocument('test', [{id, content, focused: false}]))
+    store.dispatch(SetDocument('test', [{id, content, focused: false, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}]))
 
     expect(store.getState().toJS().document).toMatchObject({
       slug: 'test',
@@ -99,7 +102,7 @@ describe('#Store', (): void => {
   })
 
   test('Should fail silently, with no updates if the targeted updated component does not exist', (): void => {
-    store.dispatch(SetDocument('test', [{id, content, focused: false}]))
+    store.dispatch(SetDocument('test', [{id, content, focused: false, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}]))
 
     const result: {slug: string, components: Array<{id: string, content: string}>} = {
       slug: 'test',
@@ -114,7 +117,7 @@ describe('#Store', (): void => {
   })
 
   test('Should allow focus to be set on a component, making the other components lose their component flag', (): void => {
-    store.dispatch(SetDocument('test', [{id, content, focused: true}, {id: 'test 2', content, focused: false}]))
+    store.dispatch(SetDocument('test', [{id, content, focused: true, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}, {id: 'test 2', content, focused: false, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}]))
 
     expect(store.getState().toJS().document.components).toMatchObject([{
       id,
@@ -166,11 +169,51 @@ describe('#Store', (): void => {
     })
   })
 
-  test('Should return default state is action provided requires not reduction', (): void => {
+  test('Should return default state if action provided requires no reduction', (): void => {
     const originalState: EditorState = store.getState().toJS()
     
     store.dispatch({'type': 'NOTHING_SPECIAL'})
 
     expect(store.getState().toJS()).toMatchObject(originalState)
+  })
+
+  test('Should be able to modify the component type', (): void => {
+    store.dispatch(SetDocument('test', [{id, content, focused: false, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}]))
+
+    expect(store.getState().toJS().document.components).toMatchObject([{
+      id,
+      content,
+      focused: false,
+      componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
+    }])
+
+    store.dispatch(UpdateComponentType(id, DOCUMENT_COMPONENT_TYPE.HEADER))
+
+    expect(store.getState().toJS().document.components).toMatchObject([{
+      id,
+      content,
+      focused: false,
+      componentType: DOCUMENT_COMPONENT_TYPE.HEADER
+    }])
+  })
+
+  test('Should fail silently if no matching component is found', (): void => {
+    store.dispatch(SetDocument('test', [{id, content, focused: false, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}]))
+
+    expect(store.getState().toJS().document.components).toMatchObject([{
+      id,
+      content,
+      focused: false,
+      componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
+    }])
+
+    store.dispatch(UpdateComponentType('non existent id', DOCUMENT_COMPONENT_TYPE.HEADER))
+
+    expect(store.getState().toJS().document.components).toMatchObject([{
+      id,
+      content,
+      focused: false,
+      componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
+    }])
   })
 })

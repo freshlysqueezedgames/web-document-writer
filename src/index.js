@@ -8,6 +8,7 @@ import {render} from 'react-dom'
 
 import {store} from './store'
 import {SetDocument} from './store/actions'
+import {DOCUMENT_COMPONENT_TYPE} from './store/types'
 
 import DocumentEditorComponent from './components'
 
@@ -19,7 +20,8 @@ const app: HTMLElement | null = document.getElementById('app')
 store.dispatch(SetDocument('test-document', [{
   id: shortid.generate(),
   content: 'This is where you start',
-  focused: true
+  focused: true,
+  componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
 }]))
 
 if (app) {
