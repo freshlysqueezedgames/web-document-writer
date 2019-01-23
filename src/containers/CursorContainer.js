@@ -5,11 +5,11 @@ import * as ReactRedux from 'react-redux'
 
 import {
   type CursorState
-} from '../store/actions'
+} from '../store/types'
 
 import type {
   EditorStateRecord
-} from '../store/reducers'
+} from '../store/reducers/EditorReducer'
 
 export type CursorContainerProps = {
   top: number,

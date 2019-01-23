@@ -4,9 +4,12 @@ import {
   AppendComponent,
   UpdateComponent,
   FocusComponent,
-  CursorPosition,
-  type EditorState
+  CursorPosition
 } from './actions'
+
+import {
+  type EditorState
+} from './types'
 
 import {store} from './index'
 

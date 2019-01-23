@@ -1,27 +1,7 @@
 // @flow
-
-import {List} from 'immutable'
-
-export type DocumentComponentState = {
-  id: string,
-  content: string,
-  focused: boolean
-}
-
-export type DocumentState = {
-  slug: string,
-  components: List<DocumentComponentState>
-}
-
-export type CursorState = {
-  x: number,
-  y: number
-}
-
-export type EditorState = {
-  cursor: CursorState,
-  document: DocumentState
-}
+import type {
+  DocumentComponentState
+} from '../types'
 
 export type DocumentAction = {
   type: 'SET_DOCUMENT',
@@ -54,21 +34,15 @@ export type CursorPositionAction = {
   y: number
 }
 
-type DocumentActionCreator = (slug: string, content: DocumentComponentState[]) => DocumentAction
-type AppendComponentActionCreator = (after: string, id: string, content: string, focused?: boolean) => AppendComponentAction
-type UpdateComponentActionCreator = (id: string, content: string) => UpdateComponentAction
-type FocusComponentActionCreator = (id: string) => FocusComponentAction
-type CursorPositionActionCreator = (x: number, y: number) => CursorPositionAction
+export type Action = DocumentAction | AppendComponentAction | UpdateComponentAction | FocusComponentAction | CursorPositionAction | $Exact<{type: 'EMPTY'}>
 
-export type Action = DocumentAction | AppendComponentAction | UpdateComponentAction | FocusComponentAction | CursorPositionAction | {|type: 'EMPTY'|}
-
-export const SetDocument: DocumentActionCreator = (slug: string, content: DocumentComponentState[]): DocumentAction => ({
+export const SetDocument = (slug: string, content: DocumentComponentState[]): DocumentAction => ({
   type: 'SET_DOCUMENT',
   slug,
   content
 })
 
-export const AppendComponent: AppendComponentActionCreator = (after: string, id: string, content: string, focused: boolean = true): AppendComponentAction => ({
+export const AppendComponent = (after: string, id: string, content: string, focused: boolean = true): AppendComponentAction => ({
   type: 'APPEND_COMPONENT',
   after,
   id,
@@ -76,18 +50,18 @@ export const AppendComponent: AppendComponentActionCreator = (after: string, id:
   focused
 })
 
-export const UpdateComponent: UpdateComponentActionCreator = (id: string, content: string): UpdateComponentAction => ({
+export const UpdateComponent = (id: string, content: string): UpdateComponentAction => ({
   type: 'UPDATE_COMPONENT',
   id,
   content
 })
 
-export const FocusComponent: FocusComponentActionCreator = (id: string): FocusComponentAction => ({
+export const FocusComponent = (id: string): FocusComponentAction => ({
   type: 'FOCUS_COMPONENT',
   id
 })
 
-export const CursorPosition: CursorPositionActionCreator = (x: number, y: number): CursorPositionAction => ({
+export const CursorPosition = (x: number, y: number): CursorPositionAction => ({
   type: 'CURSOR_POSITION',
   x,
   y

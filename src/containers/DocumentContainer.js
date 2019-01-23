@@ -7,17 +7,19 @@ import shortid from 'shortid'
 
 import type {
   EditorStateRecord
-} from '../store/reducers'
+} from '../store/reducers/EditorReducer'
 
 import {
   AppendComponent,
   UpdateComponent,
   FocusComponent,
   CursorPosition,
-
-  type DocumentComponentState,
   type Action
 } from '../store/actions'
+
+import {
+  type DocumentComponentState
+} from '../store/types'
 
 export type DocumentComponent = {
 

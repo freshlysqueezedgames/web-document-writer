@@ -5,7 +5,7 @@ import * as React from 'react'
 import DocumentComponentComponent from './DocumentComponentComponent'
 import DocumentCursorComponent from './DocumentCursorComponent'
 
-import {type DocumentComponentState} from '../store/actions'
+import {type DocumentComponentState} from '../store/types'
 import {type DocumentContainerProps, DocumentContainer, CursorContainer, type CursorContainerProps} from '../containers'
 
 import './DocumentEditorComponent.scss'
