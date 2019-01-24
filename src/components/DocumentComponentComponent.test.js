@@ -3,12 +3,14 @@
 import * as React from 'react'
 import {shallow, mount, type ShallowWrapper, type ReactWrapper} from 'enzyme'
 
+import {DOCUMENT_COMPONENT_TYPE} from '../store/types'
+
 import DocumentComponentComponent, {type Range} from './DocumentComponentComponent'
 import KEY_CODE from '../utils'
 
 describe('<DocumentComponentComponent/>', (): void => {
   test('Should render the content of document component state', (): void => {
-    const wrapper: ShallowWrapper = shallow(<DocumentComponentComponent id="test id" content="This is the content" focused={true}/>)
+    const wrapper: ShallowWrapper = shallow(<DocumentComponentComponent id="test id" content="This is the content" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} focused={true}/>)
 
     const element: ShallowWrapper = wrapper.find('.document-component-component')
 
@@ -18,7 +20,7 @@ describe('<DocumentComponentComponent/>', (): void => {
 
   test('Should trigger a change whenever the value is updated', (): void => {
     const contentChangeMock: JestMockFn<$ReadOnlyArray<string>, void> = jest.fn()
-    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" content="This is the content"  focused={true} OnContentChange={contentChangeMock} />)
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" content="This is the content"  componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} focused={true} OnContentChange={contentChangeMock} />)
 
     const textArea: ReactWrapper = wrapper.find('textarea')
 
@@ -31,7 +33,7 @@ describe('<DocumentComponentComponent/>', (): void => {
   })
 
   test('Should have an area that reflects the content in textarea', (): void => {
-    const wrapper: ShallowWrapper = shallow(<DocumentComponentComponent id="test" content="This is the content" focused={true}/>)
+    const wrapper: ShallowWrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="This is the content" focused={true}/>)
     const content: ShallowWrapper = wrapper.find('.document-component-component__content')
     const textArea: ShallowWrapper = wrapper.find('textarea')
     
@@ -49,7 +51,7 @@ describe('<DocumentComponentComponent/>', (): void => {
       rangeCount: 1
     }))
 
-    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" content="This is the content" focused={true}/>)
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test"  componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="This is the content" focused={true}/>)
     const content: ReactWrapper = wrapper.find('.document-component-component__content')
 
     content.simulate('click')
@@ -77,7 +79,7 @@ describe('<DocumentComponentComponent/>', (): void => {
       rangeCount: 0
     }))
 
-    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" content="This is the content" focused={true}/>)
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test"  componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="This is the content" focused={true}/>)
     const content: ReactWrapper = wrapper.find('.document-component-component__content')
 
     content.simulate('click')
@@ -100,7 +102,7 @@ describe('<DocumentComponentComponent/>', (): void => {
 
   test('Should trigger the creation of a new component whenever ctrl+return is pressed', (): void => {
     const additionMock: JestMockFn<$ReadOnlyArray<string>, void> = jest.fn() 
-    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" content="this is the content" focused={true} OnContentAddition={additionMock}/>)
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} OnContentAddition={additionMock}/>)
 
     const textarea: ReactWrapper = wrapper.find('textarea')
 
@@ -115,7 +117,7 @@ describe('<DocumentComponentComponent/>', (): void => {
 
   test('Should not trigger a change using return if ctrl is not pressed', (): void => {
     const additionMock: JestMockFn<$ReadOnlyArray<string>, void> = jest.fn() 
-    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" content="this is the content" focused={true} OnContentAddition={additionMock}/>)
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} OnContentAddition={additionMock}/>)
 
     const textarea: ReactWrapper = wrapper.find('textarea')
 
@@ -135,9 +137,5 @@ describe('<DocumentComponentComponent/>', (): void => {
     textarea.simulate('keydown', {keyCode: KEY_CODE.RETURN})
 
     expect(additionMock).toHaveBeenCalledTimes(1)
-  })
-
-  test('Should trigger a position change when a key is pressed', (): void => {
-    
   })
 })

@@ -2,9 +2,12 @@
 
 import {List} from 'immutable'
 
-export const DOCUMENT_COMPONENT_TYPE: {[index: string]: string} = {
-  PARAGRAPH: 'PARAGRAPH',
-  HEADER: 'HEADER'
+export const DOCUMENT_COMPONENT_TYPE: {[index: string]: number} = {
+  PARAGRAPH: 0,
+  HEADER_1: 1,
+  HEADER_2: 2,
+  HEADER_3: 3,
+  CODE: 4
 }
 
 export type DocumentComponentType = $Values<typeof DOCUMENT_COMPONENT_TYPE>

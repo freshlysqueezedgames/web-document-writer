@@ -178,22 +178,22 @@ describe('#Store', (): void => {
   })
 
   test('Should be able to modify the component type', (): void => {
-    store.dispatch(SetDocument('test', [{id, content, focused: false, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}]))
+    store.dispatch(SetDocument('test', [{id, content, focused: true, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}]))
 
     expect(store.getState().toJS().document.components).toMatchObject([{
       id,
       content,
-      focused: false,
+      focused: true,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
     }])
 
-    store.dispatch(UpdateComponentType(id, DOCUMENT_COMPONENT_TYPE.HEADER))
+    store.dispatch(UpdateComponentType(DOCUMENT_COMPONENT_TYPE.HEADER_1))
 
     expect(store.getState().toJS().document.components).toMatchObject([{
       id,
       content,
-      focused: false,
-      componentType: DOCUMENT_COMPONENT_TYPE.HEADER
+      focused: true,
+      componentType: DOCUMENT_COMPONENT_TYPE.HEADER_1
     }])
   })
 
@@ -207,7 +207,7 @@ describe('#Store', (): void => {
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
     }])
 
-    store.dispatch(UpdateComponentType('non existent id', DOCUMENT_COMPONENT_TYPE.HEADER))
+    store.dispatch(UpdateComponentType(DOCUMENT_COMPONENT_TYPE.HEADER_1))
 
     expect(store.getState().toJS().document.components).toMatchObject([{
       id,

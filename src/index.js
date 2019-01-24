@@ -19,8 +19,13 @@ const app: HTMLElement | null = document.getElementById('app')
 
 store.dispatch(SetDocument('test-document', [{
   id: shortid.generate(),
+  content: 'Welcome To Your Document Editor',
+  focused: false,
+  componentType: DOCUMENT_COMPONENT_TYPE.HEADER_1
+}, {
+  id: shortid.generate(),
   content: 'This is where you start',
-  focused: true,
+  focused: false,
   componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
 }]))
 

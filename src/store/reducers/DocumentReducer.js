@@ -62,10 +62,10 @@ const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord
       })
     }
     case 'UPDATE_COMPONENT_TYPE': {
-      const {id, componentType} = action
+      const {componentType} = action
 
       return state.update<List<DocumentComponentStateRecord>>('components', (list: List<DocumentComponentStateRecord>): List<DocumentComponentStateRecord> => {
-        const key: number | typeof undefined = list.findKey((record: DocumentComponentStateRecord): boolean => record.get<string, string>('id') === id)
+        const key: number | typeof undefined = list.findKey((record: DocumentComponentStateRecord): boolean => record.get<string, boolean>('focused'))
 
         if (key === undefined) {
           return list

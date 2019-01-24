@@ -28,7 +28,6 @@ export type UpdateComponentAction = {
 
 export type UpdateComponentTypeAction = {
   type: 'UPDATE_COMPONENT_TYPE',
-  id: string,
   componentType: DocumentComponentType
 }
 
@@ -73,9 +72,8 @@ export const UpdateComponent = (id: string, content: string): UpdateComponentAct
   content
 })
 
-export const UpdateComponentType = (id: string, componentType: DocumentComponentType) => ({
+export const UpdateComponentType = (componentType: DocumentComponentType) => ({
   type: 'UPDATE_COMPONENT_TYPE',
-  id,
   componentType
 })
 

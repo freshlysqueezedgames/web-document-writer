@@ -1,0 +1,26 @@
+div.document-component-type-selection {
+  position: absolute;
+  display: flex;
+  top: 0px;
+
+  flex-wrap: wrap;
+  flex-direction: row;
+
+  $border: 1px solid #777;
+  $border-radius: 10px;
+
+  border-left: $border;
+  border-right: $border;
+  border-bottom: $border;
+
+  border-bottom-left-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
+
+  div.button {
+    padding: 10px;
+  }
+
+  div.button:not(:last-child) {
+    border-right: $border;
+  }
+}

@@ -3,12 +3,18 @@
 import * as React from 'react'
 import KEY_CODE from '../utils'
 
+import {
+  DOCUMENT_COMPONENT_TYPE,
+  type DocumentComponentType
+} from '../store/types'
+
 import './DocumentComponentComponent.scss'
 
 export type DocumentComponentComponentProps = $ReadOnly<{
   id: string,
   content: string,
   focused: boolean,
+  componentType: DocumentComponentType,
   OnContentChange?: (id: string, content: string) => void,
   OnContentAddition?: (id: string, content: string) => void,
   OnFocus?: (id: string) => void,
@@ -126,13 +132,52 @@ export default class DocumentComponentComponent extends React.Component<Document
     })
   }
 
+  RenderComponentType (): React.Element<'h1' | 'h2' | 'h3' | 'div'> {
+    switch (this.props.componentType) {
+      case DOCUMENT_COMPONENT_TYPE.HEADER_1 : {
+        return <h1 className="document-component-component__content" onClick={this.HandleContentClick}>
+          {this.RenderContentSpan()}
+        </h1>
+      }
+      case DOCUMENT_COMPONENT_TYPE.HEADER_2 : {
+        return <h2 className="document-component-component__content" onClick={this.HandleContentClick}>
+          {this.RenderContentSpan()}
+        </h2>
+      }
+      case DOCUMENT_COMPONENT_TYPE.HEADER_3 : {
+        return <h3 className="document-component-component__content" onClick={this.HandleContentClick}>
+          {this.RenderContentSpan()}
+        </h3>
+      }
+      case DOCUMENT_COMPONENT_TYPE.CODE : {
+        return <div className="document-component-component__content code" onClick={this.HandleContentClick}>
+          {this.RenderContentSpan()}
+        </div>
+      }
+      default: {
+        return <div className="document-component-component__content" onClick={this.HandleContentClick}>
+          {this.RenderContentSpan()}
+        </div>
+      }
+    }
+  }
+
+  RenderContentSpan () {
+    const content: string = this.props.content
+    const {startOffset, endOffset} = this.state
+
+    return <>
+      {content.substr(0, startOffset)}
+      <span ref={this.SpanRef}>
+        {content.substr(startOffset, endOffset - startOffset)}
+      </span>
+      {content.substr(endOffset)}
+    </>
+  }
+
   render (): React.Element<'div'> {
     const t: DocumentComponentComponent = this
     const props: DocumentComponentComponentProps = t.props
-    const state: DocumentComponentComponentState = t.state
-
-    const content: string = props.content
-    const {startOffset, endOffset} = state
 
     return <div className="document-component-component">
       <textarea
@@ -140,15 +185,9 @@ export default class DocumentComponentComponent extends React.Component<Document
         onKeyDown={t.HandleKeyDown}
         onKeyUp={t.HandleKeyUp}
         ref={t.TextAreaRef}
-        value={content}
+        value={props.content}
       />
-      <div className="document-component-component__content" onClick={t.HandleContentClick}>
-        {content.substr(0, startOffset)}
-        <span ref={t.SpanRef}>
-          {content.substr(startOffset, endOffset - startOffset)}
-        </span>
-        {content.substr(endOffset)}
-      </div>
+      {this.RenderComponentType()}
     </div>
   }
 

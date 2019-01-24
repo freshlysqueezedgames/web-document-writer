@@ -11,13 +11,16 @@ import type {
   EditorStateRecord
 } from '../store/reducers/EditorReducer'
 
-export type CursorContainerProps = {
+interface CursorContainerMappedStateProps {
   top: number,
-  left: number,
+  left: number
+}
+
+export interface CursorContainerProps extends CursorContainerMappedStateProps {
   presentation?: (props: CursorContainerProps) => React.Node
 }
 
-function MapStateToProps (state: EditorStateRecord): CursorContainerProps {
+function MapStateToProps (state: EditorStateRecord): CursorContainerMappedStateProps {
   const cursor: CursorState = state.toJS().cursor
   
   return {

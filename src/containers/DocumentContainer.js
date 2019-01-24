@@ -12,12 +12,14 @@ import type {
 import {
   AppendComponent,
   UpdateComponent,
+  UpdateComponentType,
   FocusComponent,
   CursorPosition,
   type Action
 } from '../store/actions'
 
 import {
+  type DocumentComponentType,
   type DocumentComponentState
 } from '../store/types'
 
@@ -30,17 +32,24 @@ export type Document = {
   components: Array<DocumentComponentState>
 }
 
-export type DocumentContainerProps = {
+interface DocumentContainerMappedStateProps {
   slug: string,
-  components: Array<DocumentComponentState>,
-  presentation?: (props: DocumentContainerProps) => React.Node,
-  OnAppendContent?: () => void,
-  OnContentChange?: (id: string, content: string) => void,
-  OnFocusChange?: (id: string) => void,
-  OnCursorChange?: (x?: number, y?: number) => void
+  components: Array<DocumentComponentState>
 }
 
-const MapStateToProps = (state: EditorStateRecord): DocumentContainerProps => {
+interface DocumentContainerMappedDispatchProps {
+  OnAppendContent: (id: string, value: string) => void,
+  OnContentChange: (id: string, content: string) => void,
+  OnFocusChange: (id: string) => void,
+  OnCursorChange: (x: number, y: number) => void,
+  OnComponentTypeChange: (componentType: DocumentComponentType) => void
+}
+
+export interface DocumentContainerProps extends DocumentContainerMappedStateProps, DocumentContainerMappedDispatchProps {
+  presentation?: (props: DocumentContainerProps) => React.Node
+}
+
+const MapStateToProps = (state: EditorStateRecord): DocumentContainerMappedStateProps => {
   const document: Document = state.toJS().document
 
   return {
@@ -49,14 +58,15 @@ const MapStateToProps = (state: EditorStateRecord): DocumentContainerProps => {
   }
 }
 
-const MapDispatchToProps = (dispatch: (action: Action) => void): Object => ({
+const MapDispatchToProps = (dispatch: (action: Action) => void): DocumentContainerMappedDispatchProps => ({
   OnAppendContent: (id: string, value: string): void => dispatch(AppendComponent(id, shortid.generate(), value)),
   OnContentChange: (id: string, content: string): void => dispatch(UpdateComponent(id, content)),
   OnFocusChange: (id: string): void => dispatch(FocusComponent(id)),
-  OnCursorChange: (x: number, y: number) => dispatch(CursorPosition(x, y))
+  OnCursorChange: (x: number, y: number) => dispatch(CursorPosition(x, y)),
+  OnComponentTypeChange: (componentType: DocumentComponentType) => dispatch(UpdateComponentType(componentType))
 })
 
-const DocumentContainer = (props: DocumentContainerProps): React.Element<typeof React.Fragment> => 
+const DocumentContainer = (props: DocumentContainerProps): React.Element<typeof React.Fragment> =>
   <React.Fragment>
       {props.presentation && props.presentation(props)}
   </React.Fragment>
