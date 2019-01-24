@@ -126,4 +126,33 @@ describe('<DocumentEditorComponent/>', (): void => {
     
     window.getSelection = getSelection
   })
+
+  test('Should update a components type when the component type has been modified', (): void => {
+    store.dispatch(SetDocument('test-document', [{
+      id: 'test1',
+      content: '',
+      focused: true,
+      componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
+    }]))
+
+    const wrapper: ReactWrapper = mount(
+      <Provider store={store}>
+        <DocumentEditorComponent/>
+      </Provider>
+    )
+
+    const buttons: ReactWrapper = wrapper.find('.document-component-type-selection .button')
+
+    expect(buttons).toHaveLength(5)
+
+    const h1Button: ReactWrapper = buttons.first()
+
+    h1Button.simulate('click')
+
+    const component: ReactWrapper = wrapper.find('DocumentComponentComponent')
+
+    expect(component).toHaveLength(1)
+
+    expect(component.prop('componentType')).toEqual(DOCUMENT_COMPONENT_TYPE.HEADER_1)
+  })
 })

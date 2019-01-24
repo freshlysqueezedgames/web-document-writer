@@ -138,4 +138,22 @@ describe('<DocumentComponentComponent/>', (): void => {
 
     expect(additionMock).toHaveBeenCalledTimes(1)
   })
+
+  test('Should return different DOM elements depending on the type of component it is', (): void => {
+    let wrapper: ShallowWrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.HEADER_1} content="this is content" focused={true} OnContentAddition={() => {}}/>)
+
+    expect(wrapper.find('h1')).toHaveLength(1)
+
+    wrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.HEADER_2} content="this is content" focused={true} OnContentAddition={() => {}}/>)
+
+    expect(wrapper.find('h2')).toHaveLength(1)
+
+    wrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.HEADER_3} content="this is content" focused={true} OnContentAddition={() => {}}/>)
+
+    expect(wrapper.find('h3')).toHaveLength(1)
+
+    wrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.CODE} content="this is content" focused={true} OnContentAddition={() => {}}/>)
+
+    expect(wrapper.find('div.code')).toHaveLength(1)
+  })
 })
