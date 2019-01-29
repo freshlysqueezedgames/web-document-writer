@@ -24,10 +24,12 @@ export type DocumentState = {
   components: List<DocumentComponentState>
 }
 
-export type CursorState = {
-  x: number,
-  y: number
-}
+export type CursorState = $ReadOnly<{
+  top: number,
+  right: number,
+  bottom: number,
+  left: number
+}>
 
 export type EditorState = {
   cursor: CursorState,

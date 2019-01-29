@@ -14,7 +14,7 @@ import {
   UpdateComponent,
   UpdateComponentType,
   FocusComponent,
-  CursorPosition,
+  UpdateCursor,
   type Action
 } from '../store/actions'
 
@@ -41,7 +41,7 @@ interface DocumentContainerMappedDispatchProps {
   OnAppendContent: (id: string, value: string) => void,
   OnContentChange: (id: string, content: string) => void,
   OnFocusChange: (id: string) => void,
-  OnCursorChange: (x: number, y: number) => void,
+  OnCursorChange: (top: number, right: number, bottom: number, left: number) => void,
   OnComponentTypeChange: (componentType: DocumentComponentType) => void
 }
 
@@ -62,7 +62,7 @@ const MapDispatchToProps = (dispatch: (action: Action) => void): DocumentContain
   OnAppendContent: (id: string, value: string): void => dispatch(AppendComponent(id, shortid.generate(), value)),
   OnContentChange: (id: string, content: string): void => dispatch(UpdateComponent(id, content)),
   OnFocusChange: (id: string): void => dispatch(FocusComponent(id)),
-  OnCursorChange: (x: number, y: number) => dispatch(CursorPosition(x, y)),
+  OnCursorChange: (top: number, right: number, bottom: number, left: number) => dispatch(UpdateCursor(top, right, bottom, left)),
   OnComponentTypeChange: (componentType: DocumentComponentType) => dispatch(UpdateComponentType(componentType))
 })
 

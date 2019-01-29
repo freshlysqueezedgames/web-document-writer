@@ -5,7 +5,7 @@ import {
   UpdateComponent,
   UpdateComponentType,
   FocusComponent,
-  CursorPosition
+  UpdateCursor
 } from './actions'
 
 import {
@@ -161,11 +161,13 @@ describe('#Store', (): void => {
   })
 
   test('Should be able to set the cursor position', (): void => {
-    store.dispatch(CursorPosition(10, 10))
+    store.dispatch(UpdateCursor(10, 11, 20, 10))
 
     expect(store.getState().toJS().cursor).toMatchObject({
-      x: 10,
-      y: 10
+      top: 10,
+      right: 11,
+      bottom: 20,
+      left: 10
     })
   })
 

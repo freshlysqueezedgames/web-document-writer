@@ -34,7 +34,7 @@ function RenderDocument (props: DocumentContainerProps): React.Element<typeof Re
 }
 
 function RenderCursor (props: CursorContainerProps) {
-  return <DocumentCursorComponent left={props.left} top={props.top}/>
+  return <DocumentCursorComponent top={props.top} right={props.right} bottom={props.bottom} left={props.left}/>
 }
 
 export default DocumentEditorComponent

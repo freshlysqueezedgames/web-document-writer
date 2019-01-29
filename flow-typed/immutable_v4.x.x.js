@@ -11,8 +11,8 @@ declare module 'immutable' {
 
     get <K, V>(key: K): V, 
     set (key: any, value: any): RecordInstance<T>,
+    merge (...collections: Array<{[index: any]: any}>): RecordInstance<T>,
     toJS (): {[$Keys<T>]: any}
-
   }
   declare export class List<T> extends Collection<T[]> {
     static (): List<any>,

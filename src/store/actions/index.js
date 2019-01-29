@@ -36,10 +36,12 @@ export type FocusComponentAction = {
   id: string
 }
 
-export type CursorPositionAction = {
-  type: 'CURSOR_POSITION',
-  x: number,
-  y: number
+export type UpdateCursorAction = {
+  type: 'UPDATE_CURSOR',
+  top: number,
+  right: number,
+  bottom: number,
+  left: number
 }
 
 export type Action = 
@@ -48,7 +50,7 @@ export type Action =
   UpdateComponentAction |
   UpdateComponentTypeAction | 
   FocusComponentAction | 
-  CursorPositionAction | 
+  UpdateCursorAction | 
   $Exact<{type: 'EMPTY'}>
 
 export const SetDocument = (slug: string, content: DocumentComponentState[]): DocumentAction => ({
@@ -82,8 +84,10 @@ export const FocusComponent = (id: string): FocusComponentAction => ({
   id
 })
 
-export const CursorPosition = (x: number, y: number): CursorPositionAction => ({
-  type: 'CURSOR_POSITION',
-  x,
-  y
+export const UpdateCursor = (top: number, right: number, bottom: number, left: number): UpdateCursorAction => ({
+  type: 'UPDATE_CURSOR',
+  top,
+  right,
+  bottom,
+  left
 })

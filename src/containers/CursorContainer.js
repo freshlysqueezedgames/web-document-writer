@@ -13,6 +13,8 @@ import type {
 
 interface CursorContainerMappedStateProps {
   top: number,
+  right: number,
+  bottom: number,
   left: number
 }
 
@@ -23,10 +25,7 @@ export interface CursorContainerProps extends CursorContainerMappedStateProps {
 function MapStateToProps (state: EditorStateRecord): CursorContainerMappedStateProps {
   const cursor: CursorState = state.toJS().cursor
   
-  return {
-    left: cursor.x,
-    top: cursor.y
-  }
+  return {...cursor}
 }
 
 const CursorContainer = (props: CursorContainerProps): React.Element<typeof React.Fragment> =>

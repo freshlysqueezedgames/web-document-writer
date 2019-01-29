@@ -11,8 +11,9 @@ div.document-component-component {
   }
 
   span {
-    height: 100%;
-    display: inline-block;
+    min-height: 100%;
+    display: inline-flex;
+    background-color: transparentize($color: darkred, $amount: 0.5)
   }
 
   .code {

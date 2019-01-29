@@ -18,7 +18,7 @@ export type DocumentComponentComponentProps = $ReadOnly<{
   OnContentChange?: (id: string, content: string) => void,
   OnContentAddition?: (id: string, content: string) => void,
   OnFocus?: (id: string) => void,
-  OnCursorChange?: (x: number, y: number) => void
+  OnCursorChange?: (top: number, right: number, bottom: number, left: number) => void
 }>
 
 export type DocumentComponentComponentState = $ReadOnly<{
@@ -38,6 +38,7 @@ const OFFSET_ZERO: Range = {
 
 export default class DocumentComponentComponent extends React.Component<DocumentComponentComponentProps, DocumentComponentComponentState> {
   textAreaRef: HTMLTextAreaElement | null = null
+  componentRef: HTMLElement | null = null
   spanRef: HTMLSpanElement | null = null
 
   ctrlPressed: boolean = false
@@ -54,6 +55,10 @@ export default class DocumentComponentComponent extends React.Component<Document
     if (this.props.focused && ref) {
       ref.focus()
     }
+  }
+
+  ComponentRef = (ref: HTMLElement | null): void => {
+    this.componentRef = ref
   }
 
   SpanRef = (ref: HTMLSpanElement | null): void => {
@@ -135,27 +140,27 @@ export default class DocumentComponentComponent extends React.Component<Document
   RenderComponentType (): React.Element<'h1' | 'h2' | 'h3' | 'div'> {
     switch (this.props.componentType) {
       case DOCUMENT_COMPONENT_TYPE.HEADER_1 : {
-        return <h1 className="document-component-component__content" onClick={this.HandleContentClick}>
+        return <h1 className="document-component-component__content" ref={this.ComponentRef} onClick={this.HandleContentClick}>
           {this.RenderContentSpan()}
         </h1>
       }
       case DOCUMENT_COMPONENT_TYPE.HEADER_2 : {
-        return <h2 className="document-component-component__content" onClick={this.HandleContentClick}>
+        return <h2 className="document-component-component__content" ref={this.ComponentRef} onClick={this.HandleContentClick}>
           {this.RenderContentSpan()}
         </h2>
       }
       case DOCUMENT_COMPONENT_TYPE.HEADER_3 : {
-        return <h3 className="document-component-component__content" onClick={this.HandleContentClick}>
+        return <h3 className="document-component-component__content" ref={this.ComponentRef} onClick={this.HandleContentClick}>
           {this.RenderContentSpan()}
         </h3>
       }
       case DOCUMENT_COMPONENT_TYPE.CODE : {
-        return <div className="document-component-component__content code" onClick={this.HandleContentClick}>
+        return <div className="document-component-component__content code" ref={this.ComponentRef} onClick={this.HandleContentClick}>
           {this.RenderContentSpan()}
         </div>
       }
       default: {
-        return <div className="document-component-component__content" onClick={this.HandleContentClick}>
+        return <div className="document-component-component__content" ref={this.ComponentRef} onClick={this.HandleContentClick}>
           {this.RenderContentSpan()}
         </div>
       }
@@ -194,11 +199,35 @@ export default class DocumentComponentComponent extends React.Component<Document
   componentDidUpdate (): void {
     const t: DocumentComponentComponent = this
     const spanRef: HTMLSpanElement | null = t.spanRef
+    const componentRef: HTMLElement | null = t.componentRef
+    const body: HTMLBodyElement | null = document.body
 
-    if (t.offsetUpdate && spanRef) {
-      const {left, top} = spanRef.getBoundingClientRect()
+    if (t.offsetUpdate && spanRef && componentRef && body) {
+      let {top, right, bottom, left} = spanRef.getBoundingClientRect()
 
-      t.props.OnCursorChange && t.props.OnCursorChange(left, top)
+      if (bottom === top) {
+        const element: HTMLElement = componentRef.cloneNode()
+
+        element.innerHTML = '<br/>'
+
+        body.appendChild(element)
+
+        const singleHeight: number = element.clientHeight
+
+        element.innerHTML = '<br/><br/>'
+
+        const doubleHeight: number = element.clientHeight
+
+        body.removeChild(element)
+
+        const lineHeight: number = doubleHeight - singleHeight
+        const boundingTop: number = componentRef.getBoundingClientRect().top
+
+        top = Math.floor((top - boundingTop) / lineHeight) * lineHeight + boundingTop || 0
+        bottom = top + lineHeight // We need to make the bottom the true line height, so css lineHeight of the parent element
+      }
+
+      t.props.OnCursorChange && t.props.OnCursorChange(top, right, bottom, left)
 
       t.offsetUpdate = false
     }

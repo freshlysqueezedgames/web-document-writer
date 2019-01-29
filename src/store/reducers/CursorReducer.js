@@ -9,18 +9,20 @@ import type {
 export type CursorStateRecord = RecordInstance<CursorState> 
 
 const CursorStateFactory: (state?: CursorState) => CursorStateRecord = Record({
-  x: 0,
-  y: 0
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0
 })
 
 export const defaultCursorStateRecord: CursorStateRecord = CursorStateFactory()
 
 const CursorReducer = (state: CursorStateRecord = defaultCursorStateRecord, action: Action): CursorStateRecord => {
   switch (action.type) {
-    case 'CURSOR_POSITION': {
-      const {x, y} = action
+    case 'UPDATE_CURSOR': {
+      const {top, right, bottom, left} = action
 
-      return state.set('x', x).set('y', y)
+      return state.merge({top, right, bottom, left})
     }
     default: {
       return state
