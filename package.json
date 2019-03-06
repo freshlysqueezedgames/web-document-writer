@@ -1,12 +1,12 @@
 {
-  "name": "web-document-writer",
-  "version": "0.0.1",
+  "name": "@freshlysqueezedgames/web-document-writer",
+  "version": "0.5.0",
   "description": "Tool for embedding a document writer as part of your webview.",
   "main": "dist/index.js",
   "scripts": {
-    "build-server": "babel ./src-server --out-dir ./dist-server --copy-files",
-    "build": "npm run build-server && node dist-server/index.js --build",
-    "serve": "npm run build-server && node dist-server/index.js --serve",
+    "build": "webpack",
+    "export": "tsc",
+    "serve": "npm run build && http-server ./www -p 3002 -g",
     "test": "jest ./src --verbose --coverage",
     "lint": "eslint ./src/**/*.js",
     "flow": "flow check"
@@ -44,6 +44,12 @@
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@types/react": "^16.8.6",
+    "@types/react-dom": "^16.8.2",
+    "@types/react-redux": "^7.0.1",
+    "@types/shortid": "0.0.29",
+    "awesome-typescript-loader": "^5.2.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
@@ -55,8 +61,13 @@
     "eslint-plugin-react": "^7.11.1",
     "flow-bin": "^0.87.0",
     "flow-cli": "0.0.0-pre",
+    "http-server": "^0.11.1",
     "jest": "^21.3.0-beta.15",
-    "node-sass": "^4.10.0"
+    "node-sass": "^4.10.0",
+    "source-map-loader": "^0.2.4",
+    "tsc": "^1.20150623.0",
+    "typescript": "^3.3.3333",
+    "webpack-cli": "^3.2.3"
   },
   "jest": {
     "testRegex": "src/.*\\.test\\.js$",

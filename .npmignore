@@ -6,6 +6,9 @@
 **/flow
 **/flow-typed
 **/.circleci
+dist/*.html
+dist/*.test.js
+**/www
 
 # Files
 **/errors.json
@@ -15,3 +18,5 @@
 **/.eslintrc
 **/.flowconfig
 **/.gitignore
+**/webpack.config.js
+**/tsconfig.json
