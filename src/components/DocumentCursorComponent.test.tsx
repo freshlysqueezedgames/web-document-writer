@@ -4,17 +4,19 @@ import * as React from 'react'
 import {shallow, ShallowWrapper} from 'enzyme'
 import DocumentCursorComponent from './DocumentCursorComponent'
 
+import * as styles from './DocumentCursorComponent.scss'
+
 describe('<DocumentCursorComponent/>', (): void => {
   test('Should render a div representing the cursor element', (): void => {
     const wrapper: ShallowWrapper = shallow(<DocumentCursorComponent left={0} top={0} bottom={0} right={0}/>)
 
-    expect(wrapper.find('.document-cursor-component')).toHaveLength(1)
+    expect(wrapper.find(`.${styles.documentCursorComponent}`)).toHaveLength(1)
   })
 
   test('Should move the cursor position over time to the new location in props after 62 milleseconds', (done: Function): void => {
     const wrapper: ShallowWrapper = shallow(<DocumentCursorComponent left={0} top={0} bottom={0} right={0}/>)
 
-    expect(wrapper.find('.document-cursor-component')).toHaveLength(1)
+    expect(wrapper.find(`.${styles.documentCursorComponent}`)).toHaveLength(1)
 
     wrapper.setProps({left: 10, top: 10})
 
@@ -32,7 +34,7 @@ describe('<DocumentCursorComponent/>', (): void => {
   test('Should not animate again if the current position matches the next one', (): void => {
     const wrapper: ShallowWrapper = shallow(<DocumentCursorComponent left={0} top={0} bottom={0} right={0}/>)
 
-    expect(wrapper.find('.document-cursor-component')).toHaveLength(1)
+    expect(wrapper.find(`.${styles.documentCursorComponent}`)).toHaveLength(1)
 
     const requestAnimationFrame: (callback: (timestamp: number) => any) => number = window.requestAnimationFrame
     const mock: jest.Mock = window.requestAnimationFrame = jest.fn()
@@ -47,7 +49,7 @@ describe('<DocumentCursorComponent/>', (): void => {
   test('Should stop old animations when superseded by another one', (done: Function): void => {
     const wrapper: ShallowWrapper = shallow(<DocumentCursorComponent left={0} top={0} bottom={0} right={0}/>)
 
-    expect(wrapper.find('.document-cursor-component')).toHaveLength(1)
+    expect(wrapper.find(`.${styles.documentCursorComponent}`)).toHaveLength(1)
     
     wrapper.setProps({left: 10, top: 10})
     wrapper.setProps({left: 20, top: 20})

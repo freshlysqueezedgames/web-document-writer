@@ -11,6 +11,8 @@ import {DOCUMENT_COMPONENT_TYPE} from './store/types'
 import DocumentEditorComponent from './components'
 import {DocumentComponentState} from './store/types'
 
+import './index.scss'
+
 export function LoadDocument (name: string, document: Array<DocumentComponentState>) {
   store.dispatch(SetDocument(name, document))
 }
@@ -19,6 +21,10 @@ export function RenderDocument () {
   return <ReactRedux.Provider store={store}>
     <DocumentEditorComponent/>
   </ReactRedux.Provider>
+}
+
+export {
+  DOCUMENT_COMPONENT_TYPE
 }
 
 LoadDocument('test-document', [{

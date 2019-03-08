@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "./test",
+    "declarationMap": false,
+    "declaration": false
+  },
+  "include": [
+    "./src/**/*.*",
+    "./src/**/*.test.*",
+  ],
+  "exclude": [] // ensure that there is no default exclusion of test
+}

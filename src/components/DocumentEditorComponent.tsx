@@ -9,10 +9,10 @@ import DocumentComponentTypeSelection from './DocumentComponentTypeSelection'
 import {DocumentComponentState} from '../store/types'
 import {DocumentContainerProps, DocumentContainer, CursorContainer, CursorContainerProps} from '../containers'
 
-import './DocumentEditorComponent.scss'
+import styles from './DocumentEditorComponent.scss'
 
 const DocumentEditorComponent = (): React.ReactElement<HTMLDivElement> =>
-  <div className="document-editor-component">
+  <div className={styles.documentEditorComponent}>
     <DocumentContainer presentation={RenderDocument} />
     <CursorContainer presentation={RenderCursor}/>
   </div>

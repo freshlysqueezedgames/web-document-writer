@@ -4,7 +4,7 @@ import {
   DOCUMENT_COMPONENT_TYPE
 } from '../store/types'
 
-import './DocumentComponentTypeSelection.scss'
+import styles from './DocumentComponentTypeSelection.scss'
 
 interface DocumentComponentTypeSelectionProps {
   OnSelection: (componentType: number) => void
@@ -19,14 +19,14 @@ class DocumentComponentTypeSelectionButton extends React.Component<DocumentCompo
   OnClick = () => this.props.OnSelection(this.props.componentType)
 
   render () {
-    return <div className="button" onClick={this.OnClick}>
+    return <div className={styles.button} onClick={this.OnClick}>
       {this.props.label}
     </div>
   }
 }
 
 const DocumentComponentTypeSelection = (props: DocumentComponentTypeSelectionProps): React.ReactElement<HTMLElement> => 
-  <div className="document-component-type-selection">
+  <div className={styles.documentComponentTypeSelection}>
     <DocumentComponentTypeSelectionButton label="H1" componentType={DOCUMENT_COMPONENT_TYPE.HEADER_1} OnSelection={props.OnSelection}/>
     <DocumentComponentTypeSelectionButton label="H2" componentType={DOCUMENT_COMPONENT_TYPE.HEADER_2} OnSelection={props.OnSelection}/>
     <DocumentComponentTypeSelectionButton label="H3" componentType={DOCUMENT_COMPONENT_TYPE.HEADER_3} OnSelection={props.OnSelection}/>

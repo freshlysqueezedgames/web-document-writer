@@ -4,7 +4,7 @@ import * as React from 'react'
 
 import {CursorContainerProps} from '../containers'
 
-import './DocumentCursorComponent.scss'
+import styles from './DocumentCursorComponent.scss'
 
 type CursorComponentState = Readonly<{
   top: number,
@@ -104,6 +104,6 @@ export default class DocumentCursorComponent extends React.Component<CursorConta
       height: Math.floor(state.bottom - state.top)
     }
 
-    return <div className="document-cursor-component" style={style}/>
+    return <div className={styles.documentCursorComponent} style={style}/>
   }
 }

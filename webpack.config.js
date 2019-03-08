@@ -1,15 +1,26 @@
 const path = require('path')
 
 module.exports = {
-  entry: ['babel-polyfill', './src'],
+  entry: './src',
 
   target: 'web',
   devtool: 'source-map',
   mode : 'development',
 
   output: {
-    path: path.resolve(__dirname, './www'),
-    filename: 'bundle.js'
+    path: path.resolve(__dirname, './dist'),
+    filename: 'web-document-writer.js',
+    library: 'webDocumentWriter',
+    libraryTarget: 'umd'
+  },
+
+  externals: {
+    React: 'react',
+    ReactDOM: 'react-dom',
+    Immutable: 'immutable',
+    ReactRedux: 'react-redux',
+    Redux: 'redux',
+    shortid: 'shortid'
   },
 
   module: {
@@ -25,12 +36,16 @@ module.exports = {
       use: [
         'style-loader',
         {
-          loader : 'css-loader',
+          loader : 'typings-for-css-modules-loader',
           options : {
-            modules : false
+            modules : true,
+            localIndentName: '[local]_[hash:base64:5]',
+            importLoaders: 3,
+            namedExport: true,
+            sourceMap: true,
+            camelCase: true
           }
         },
-        'resolve-url-loader',
         {
           loader : 'sass-loader',
           options: {

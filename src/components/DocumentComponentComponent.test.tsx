@@ -8,11 +8,12 @@ import {DOCUMENT_COMPONENT_TYPE} from '../store/types'
 import DocumentComponentComponent, {Range} from './DocumentComponentComponent'
 import KEY_CODE from '../utils'
 
+import * as styles from './DocumentComponentComponent.scss'
+
 describe('<DocumentComponentComponent/>', (): void => {
   test('Should render the content of document component state', (): void => {
     const wrapper: ShallowWrapper = shallow(<DocumentComponentComponent id="test id" content="This is the content" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} focused={true}/>)
-
-    const element: ShallowWrapper = wrapper.find('.document-component-component')
+    const element: ShallowWrapper = wrapper.find(`.${styles.documentComponentComponent}`)
 
     expect(element).toHaveLength(1)
     expect(element.find('textarea').props().value).toEqual('This is the content')
@@ -34,7 +35,7 @@ describe('<DocumentComponentComponent/>', (): void => {
 
   test('Should have an area that reflects the content in textarea', (): void => {
     const wrapper: ShallowWrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="This is the content" focused={true}/>)
-    const content: ShallowWrapper = wrapper.find('.document-component-component__content')
+    const content: ShallowWrapper = wrapper.find(`.${styles.componentType}`)
     const textArea: ShallowWrapper = wrapper.find('textarea')
     
     expect(content.text()).toEqual(textArea.prop('value'))
@@ -52,7 +53,7 @@ describe('<DocumentComponentComponent/>', (): void => {
     }))
 
     const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test"  componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="This is the content" focused={true}/>)
-    const content: ReactWrapper = wrapper.find('.document-component-component__content')
+    const content: ReactWrapper = wrapper.find(`.${styles.componentType}`)
 
     content.simulate('click')
 
@@ -80,7 +81,7 @@ describe('<DocumentComponentComponent/>', (): void => {
     }))
 
     const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test"  componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="This is the content" focused={true}/>)
-    const content: ReactWrapper = wrapper.find('.document-component-component__content')
+    const content: ReactWrapper = wrapper.find(`.${styles.componentType}`)
 
     content.simulate('click')
 
@@ -154,6 +155,6 @@ describe('<DocumentComponentComponent/>', (): void => {
 
     wrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.CODE} content="this is content" focused={true} OnContentAddition={() => {}}/>)
 
-    expect(wrapper.find('div.code')).toHaveLength(1)
+    expect(wrapper.find(`div.${styles.componentType}`)).toHaveLength(1)
   })
 })

@@ -12,8 +12,11 @@ import {DOCUMENT_COMPONENT_TYPE} from '../store/types'
 import DocumentEditorComponent from './DocumentEditorComponent'
 import KEY_CODE from '../utils'
 
+import * as styles from './DocumentEditorComponent.scss'
 
 describe('<DocumentEditorComponent/>', (): void => {
+  let keyMapStyles = styles as {[key: string]: string}
+
   test('Should render the title and slug of the project', (): void => {
     store.dispatch(SetDocument('test-document', []))
 
@@ -21,7 +24,7 @@ describe('<DocumentEditorComponent/>', (): void => {
       <DocumentEditorComponent/>
     </Provider>)
 
-    expect(wrapper.find('.document-editor-component')).toHaveLength(1)
+    expect(wrapper.find(`.${styles.documentEditorComponent}`)).toHaveLength(1)
   })
 
   test('Should be able to render a list of document component components for its content', () => {
@@ -41,7 +44,7 @@ describe('<DocumentEditorComponent/>', (): void => {
       <DocumentEditorComponent/>
     </Provider>)
 
-    expect(wrapper.find('.document-component-component')).toHaveLength(2)
+    expect(wrapper.find(`.${keyMapStyles.documentComponentComponent}`)).toHaveLength(2)
   })
 
   test('Should append new DocumentComponentComponent\'s when ctrl+return is used within a DocumentComponentComponent', (): void => {
@@ -58,14 +61,14 @@ describe('<DocumentEditorComponent/>', (): void => {
       </Provider>
     )
 
-    const textarea: ReactWrapper = wrapper.find('.document-component-component textarea')
+    const textarea: ReactWrapper = wrapper.find(`.${keyMapStyles.documentComponentComponent} textarea`)
 
     expect(textarea).toHaveLength(1)
 
     textarea.simulate('keydown', {keyCode: KEY_CODE.CTRL})
     textarea.simulate('keydown', {keyCode: KEY_CODE.RETURN})
 
-    expect(wrapper.find('.document-component-component')).toHaveLength(2)
+    expect(wrapper.find(`.${keyMapStyles.documentComponentComponent}`)).toHaveLength(2)
   })
 
   test('Should update the content within a component when the user makes a change to the text', (): void => {
@@ -82,14 +85,16 @@ describe('<DocumentEditorComponent/>', (): void => {
       </Provider>
     )
 
-    const textarea: ReactWrapper = wrapper.find('.document-component-component textarea')
+    const textarea: ReactWrapper = wrapper.find(`.${keyMapStyles.documentComponentComponent} textarea`)
 
     expect(textarea).toHaveLength(1) 
 
-    textarea.instance().value = 'test'
+    const instance = textarea.instance() as {[key: string]: any}
+
+    instance.value = 'test'
     textarea.simulate('change')
 
-    expect(wrapper.find('.document-component-component__content').text()).toEqual('test')
+    expect(wrapper.find(`.${keyMapStyles.componentType}`).text()).toEqual('test')
   })
 
   test('Should be able to focus into a particular DocumentComponentComponent', (): void => {
@@ -106,7 +111,7 @@ describe('<DocumentEditorComponent/>', (): void => {
       </Provider>
     )
 
-    const content: ReactWrapper = wrapper.find('.document-component-component .document-component-component__content')
+    const content: ReactWrapper = wrapper.find(`.${keyMapStyles.componentType}`)
 
     expect(content).toHaveLength(1)
 
@@ -118,7 +123,7 @@ describe('<DocumentEditorComponent/>', (): void => {
 
     content.simulate('click')
 
-    const textarea: ReactWrapper = wrapper.find('.document-component-component textarea')
+    const textarea: ReactWrapper = wrapper.find(`.${keyMapStyles.documentComponentComponent} textarea`)
 
     expect(textarea).toHaveLength(1)
 

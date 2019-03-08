@@ -1,13 +1,13 @@
 // @flow
 
-import * as React from 'react'
+import React from 'react'
 import KEY_CODE from '../utils'
 
 import {
   DOCUMENT_COMPONENT_TYPE
 } from '../store/types'
 
-import './DocumentComponentComponent.scss'
+import * as styles from './DocumentComponentComponent.scss'
 
 export type DocumentComponentComponentProps = Readonly<{
   id: string,
@@ -139,27 +139,27 @@ export default class DocumentComponentComponent extends React.Component<Document
   RenderComponentType (): React.ReactElement {
     switch (this.props.componentType) {
       case DOCUMENT_COMPONENT_TYPE.HEADER_1 : {
-        return <h1 className="document-component-component__content" ref={this.ComponentRef} onClick={this.HandleContentClick}>
+        return <h1 ref={this.ComponentRef} className={styles.componentType} onClick={this.HandleContentClick}>
           {this.RenderContentSpan()}
         </h1>
       }
       case DOCUMENT_COMPONENT_TYPE.HEADER_2 : {
-        return <h2 className="document-component-component__content" ref={this.ComponentRef} onClick={this.HandleContentClick}>
+        return <h2 ref={this.ComponentRef} className={styles.componentType} onClick={this.HandleContentClick}>
           {this.RenderContentSpan()}
         </h2>
       }
       case DOCUMENT_COMPONENT_TYPE.HEADER_3 : {
-        return <h3 className="document-component-component__content" ref={this.ComponentRef} onClick={this.HandleContentClick}>
+        return <h3 ref={this.ComponentRef} className={styles.componentType} onClick={this.HandleContentClick}>
           {this.RenderContentSpan()}
         </h3>
       }
       case DOCUMENT_COMPONENT_TYPE.CODE : {
-        return <div className="document-component-component__content code" ref={this.ComponentRef} onClick={this.HandleContentClick}>
+        return <div ref={this.ComponentRef} className={styles.componentType} onClick={this.HandleContentClick}>
           {this.RenderContentSpan()}
         </div>
       }
       default: {
-        return <div className="document-component-component__content" ref={this.ComponentRef} onClick={this.HandleContentClick}>
+        return <div ref={this.ComponentRef} className={styles.componentType} onClick={this.HandleContentClick}>
           {this.RenderContentSpan()}
         </div>
       }
@@ -183,7 +183,7 @@ export default class DocumentComponentComponent extends React.Component<Document
     const t: DocumentComponentComponent = this
     const props: DocumentComponentComponentProps = t.props
 
-    return <div className="document-component-component">
+    return <div className={styles.documentComponentComponent}>
       <textarea
         onChange={t.HandleTextAreaChange}
         onKeyDown={t.HandleKeyDown}
