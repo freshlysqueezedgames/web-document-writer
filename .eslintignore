@@ -2,3 +2,4 @@
 **/test
 **/mocks
 **/*.d.ts
+webpack.config.js

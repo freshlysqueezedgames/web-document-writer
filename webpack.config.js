@@ -1,4 +1,5 @@
 const path = require('path')
+const HTMLWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: './src',
@@ -19,8 +20,7 @@ module.exports = {
     ReactDOM: 'react-dom',
     Immutable: 'immutable',
     ReactRedux: 'react-redux',
-    Redux: 'redux',
-    shortid: 'shortid'
+    Redux: 'redux'
   },
 
   module: {
@@ -62,9 +62,6 @@ module.exports = {
     }, {
       test: /\.(svg|woff|ttf|otf|eot|xml)$/,
       use: 'file-loader'
-    }, {
-      test : /\.html$/,
-      use: 'file-loader?name=[name].[ext]'
     }]
   },
 
@@ -73,5 +70,12 @@ module.exports = {
     alias: {
       '#': path.resolve(__dirname, './src')
     }
-  }
+  },
+
+  plugins: [
+    new HTMLWebpackPlugin({
+      filename: 'index.html',
+      template: './src/index.html'
+    })
+  ]
 }

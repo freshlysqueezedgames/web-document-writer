@@ -1,1 +1,1 @@
-export const documentEditorComponent: string
+export const documentEditorComponent: string;

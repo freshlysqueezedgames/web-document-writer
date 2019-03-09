@@ -1,6 +1,7 @@
 // @flow
 
 import * as React from 'react'
+import {render} from 'react-dom'
 import * as ReactRedux from 'react-redux'
 import shortid from 'shortid'
 
@@ -38,3 +39,9 @@ LoadDocument('test-document', [{
   focused: false,
   componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
 }])
+
+const app: HTMLElement | null = document.getElementById('web-document-writer-6nsy621t8hkjxsu8')
+
+if (app) {
+  render(RenderDocument(), app)
+}
