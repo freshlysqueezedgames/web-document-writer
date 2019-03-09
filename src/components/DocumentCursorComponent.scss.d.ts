@@ -1,2 +1,2 @@
-export const documentCursorComponent: string;
-export const pulse: string;
+export const documentCursorComponent: string
+export const pulse: string

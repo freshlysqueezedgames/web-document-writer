@@ -1,7 +1,7 @@
-import { RecordOf } from 'immutable';
-import { Action } from '../actions';
-import { CursorStateRecord } from '../types';
-export declare const defaultCursorStateRecord: CursorStateRecord;
+import { RecordOf } from 'immutable'
+import { Action } from '../actions'
+import { CursorStateRecord } from '../types'
+export declare const defaultCursorStateRecord: CursorStateRecord
 declare const CursorReducer: (state: RecordOf<Readonly<{
     top: number;
     right: number;
@@ -12,6 +12,6 @@ declare const CursorReducer: (state: RecordOf<Readonly<{
     right: number;
     bottom: number;
     left: number;
-}>>;
-export default CursorReducer;
+}>>
+export default CursorReducer
 //# sourceMappingURL=CursorReducer.d.ts.map

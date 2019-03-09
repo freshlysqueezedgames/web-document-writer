@@ -1,4 +1,4 @@
-import { DocumentComponentState } from '../types';
+import { DocumentComponentState } from '../types'
 export interface DocumentAction {
     type: 'SET_DOCUMENT';
     slug: string;
@@ -35,13 +35,13 @@ export interface UpdateCursorAction {
 export declare type Action = DocumentAction | AppendComponentAction | UpdateComponentAction | UpdateComponentTypeAction | FocusComponentAction | UpdateCursorAction | {
     type: 'EMPTY';
 };
-export declare const SetDocument: (slug: string, content: DocumentComponentState[]) => DocumentAction;
-export declare const AppendComponent: (after: string, id: string, content: string, focused?: boolean, componentType?: number) => AppendComponentAction;
-export declare const UpdateComponent: (id: string, content: string) => UpdateComponentAction;
+export declare const SetDocument: (slug: string, content: DocumentComponentState[]) => DocumentAction
+export declare const AppendComponent: (after: string, id: string, content: string, focused?: boolean, componentType?: number) => AppendComponentAction
+export declare const UpdateComponent: (id: string, content: string) => UpdateComponentAction
 export declare const UpdateComponentType: (componentType: number) => {
     type: string;
     componentType: number;
-};
-export declare const FocusComponent: (id: string) => FocusComponentAction;
-export declare const UpdateCursor: (top: number, right: number, bottom: number, left: number) => UpdateCursorAction;
+}
+export declare const FocusComponent: (id: string) => FocusComponentAction
+export declare const UpdateCursor: (top: number, right: number, bottom: number, left: number) => UpdateCursorAction
 //# sourceMappingURL=index.d.ts.map

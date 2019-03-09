@@ -23,6 +23,10 @@ const DocumentStateFactory: (state?: DocumentState) => DocumentStateRecord = Rec
   components: List()
 })
 
+function SetFocusedByID (id: string, list: List<DocumentComponentStateRecord>): List<DocumentComponentStateRecord> {
+  return list.map((record: DocumentComponentStateRecord): DocumentComponentStateRecord => record.set('focused', id === record.get('id')))
+}
+
 export const defaultDocumentStateRecord: DocumentStateRecord = DocumentStateFactory()
 
 const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord, action: Action): DocumentStateRecord => {
@@ -84,10 +88,6 @@ const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord
       return state
     }
   }
-}
-
-function SetFocusedByID (id: string, list: List<DocumentComponentStateRecord>): List<DocumentComponentStateRecord> {
-  return list.map((record: DocumentComponentStateRecord): DocumentComponentStateRecord => record.set('focused', id === record.get('id')))
 }
 
 export default DocumentReducer

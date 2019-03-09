@@ -5,42 +5,42 @@ import {
 } from '../types'
 
 export interface DocumentAction {
-  type: 'SET_DOCUMENT',
-  slug: string,
-  content: DocumentComponentState[]
+  type: 'SET_DOCUMENT';
+  slug: string;
+  content: DocumentComponentState[];
 }
 
 export interface AppendComponentAction {
-  type: 'APPEND_COMPONENT',
-  after: string,
-  id: string,
-  content: string,
-  focused: boolean,
-  componentType: number
+  type: 'APPEND_COMPONENT';
+  after: string;
+  id: string;
+  content: string;
+  focused: boolean;
+  componentType: number;
 }
 
 export interface UpdateComponentAction {
-  type: 'UPDATE_COMPONENT',
-  id: string,
-  content: string
+  type: 'UPDATE_COMPONENT';
+  id: string;
+  content: string;
 }
 
 export interface UpdateComponentTypeAction {
-  type: 'UPDATE_COMPONENT_TYPE',
-  componentType: number
+  type: 'UPDATE_COMPONENT_TYPE';
+  componentType: number;
 }
 
 export interface FocusComponentAction {
-  type: 'FOCUS_COMPONENT',
-  id: string
+  type: 'FOCUS_COMPONENT';
+  id: string;
 }
 
 export interface UpdateCursorAction {
-  type: 'UPDATE_CURSOR',
-  top: number,
-  right: number,
-  bottom: number,
-  left: number
+  type: 'UPDATE_CURSOR';
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
 }
 
 export type Action = 
@@ -73,7 +73,7 @@ export const UpdateComponent = (id: string, content: string): UpdateComponentAct
   content
 })
 
-export const UpdateComponentType = (componentType: number) => ({
+export const UpdateComponentType = (componentType: number): UpdateComponentTypeAction => ({
   type: 'UPDATE_COMPONENT_TYPE',
   componentType
 })

@@ -10,32 +10,32 @@ export const DOCUMENT_COMPONENT_TYPE: {[index: string]: number} = {
   CODE: 4
 }
 
-export type DocumentComponentState = {
-  id: string,
-  content: string,
-  focused: boolean,
-  componentType: number
+export interface DocumentComponentState {
+  id: string;
+  content: string;
+  focused: boolean;
+  componentType: number;
 }
 
 export type DocumentComponentStateRecord = RecordOf<DocumentComponentState>
 
-export type DocumentState = {
-  slug: string,
-  components: List<DocumentComponentStateRecord>
+export interface DocumentState {
+  slug: string;
+  components: List<DocumentComponentStateRecord>;
 }
 
 export type DocumentStateRecord = RecordOf<DocumentState>
 
 export type CursorState = Readonly<{
-  top: number,
-  right: number,
-  bottom: number,
-  left: number
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
 }>
 
 export type CursorStateRecord = RecordOf<CursorState> 
 
-export type EditorState = {
-  cursor: CursorStateRecord,
-  document: DocumentStateRecord
+export interface EditorState {
+  cursor: CursorStateRecord;
+  document: DocumentStateRecord;
 }

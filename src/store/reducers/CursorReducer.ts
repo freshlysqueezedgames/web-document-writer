@@ -1,5 +1,5 @@
 // @flow
-import {Record, RecordOf} from 'immutable'
+import {Record} from 'immutable'
 import {Action} from '../actions'
 
 import {

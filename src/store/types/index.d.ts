@@ -1,18 +1,18 @@
-import { List, RecordOf } from 'immutable';
+import { List, RecordOf } from 'immutable'
 export declare const DOCUMENT_COMPONENT_TYPE: {
     [index: string]: number;
-};
-export declare type DocumentComponentState = {
+}
+export interface type DocumentComponentState {
     id: string;
     content: string;
     focused: boolean;
     componentType: number;
-};
+}
 export declare type DocumentComponentStateRecord = RecordOf<DocumentComponentState>;
-export declare type DocumentState = {
+export interface type DocumentState {
     slug: string;
     components: List<DocumentComponentStateRecord>;
-};
+}
 export declare type DocumentStateRecord = RecordOf<DocumentState>;
 export declare type CursorState = Readonly<{
     top: number;
@@ -21,8 +21,8 @@ export declare type CursorState = Readonly<{
     left: number;
 }>;
 export declare type CursorStateRecord = RecordOf<CursorState>;
-export declare type EditorState = {
+export interface type EditorState {
     cursor: CursorStateRecord;
     document: DocumentStateRecord;
-};
+}
 //# sourceMappingURL=index.d.ts.map

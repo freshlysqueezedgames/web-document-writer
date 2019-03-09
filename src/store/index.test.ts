@@ -45,8 +45,8 @@ describe('#Store', (): void => {
     })
   })
 
-  const id: string = 'test'
-  const content: string = 'testing the component'
+  const id = 'test'
+  const content = 'testing the component'
 
   test('Should be able to add a component to the list of components', (): void => {
     store.dispatch(SetDocument('test', []))
@@ -91,7 +91,7 @@ describe('#Store', (): void => {
       components: [{content, id}]
     })
 
-    const newValue: string = 'this is the next value'
+    const newValue = 'this is the next value'
 
     store.dispatch(UpdateComponent(id, newValue))
 
@@ -104,7 +104,7 @@ describe('#Store', (): void => {
   test('Should fail silently, with no updates if the targeted updated component does not exist', (): void => {
     store.dispatch(SetDocument('test', [{id, content, focused: false, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}]))
 
-    const result: {slug: string, components: Array<{id: string, content: string}>} = {
+    const result: {slug: string; components: {id: string; content: string}[]} = {
       slug: 'test',
       components: [{content, id}]
     }

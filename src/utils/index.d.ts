@@ -4,6 +4,6 @@ declare const _default: {
     E_LOWER: number;
     S_LOWER: number;
     T_LOWER: number;
-};
-export default _default;
+}
+export default _default
 //# sourceMappingURL=index.d.ts.map
