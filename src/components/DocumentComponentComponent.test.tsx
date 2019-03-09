@@ -1,6 +1,6 @@
 // @flow
 
-import * as React from 'react'
+import React, {Component} from 'react'
 import {shallow, mount, ShallowWrapper, ReactWrapper} from 'enzyme'
 
 import {DOCUMENT_COMPONENT_TYPE} from '../store/types'
