@@ -4,7 +4,7 @@ import {
   DOCUMENT_COMPONENT_TYPE
 } from '../store/types'
 
-import styles from './DocumentComponentTypeSelection.scss'
+import * as styles from './DocumentComponentTypeSelection.scss'
 
 interface DocumentComponentTypeSelectionProps {
   OnSelection: (componentType: number) => void

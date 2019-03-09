@@ -146,7 +146,7 @@ describe('<DocumentEditorComponent/>', (): void => {
       </Provider>
     )
 
-    const buttons: ReactWrapper = wrapper.find('.document-component-type-selection .button')
+    const buttons: ReactWrapper = wrapper.find(`.${keyMapStyles.documentComponentTypeSelection} .${keyMapStyles.button}`)
 
     expect(buttons).toHaveLength(5)
 

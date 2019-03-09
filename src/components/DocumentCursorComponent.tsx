@@ -4,7 +4,7 @@ import * as React from 'react'
 
 import {CursorContainerProps} from '../containers'
 
-import styles from './DocumentCursorComponent.scss'
+import * as styles from './DocumentCursorComponent.scss'
 
 type CursorComponentState = Readonly<{
   top: number,

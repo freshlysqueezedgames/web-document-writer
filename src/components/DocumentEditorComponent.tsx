@@ -9,7 +9,7 @@ import DocumentComponentTypeSelection from './DocumentComponentTypeSelection'
 import {DocumentComponentState} from '../store/types'
 import {DocumentContainerProps, DocumentContainer, CursorContainer, CursorContainerProps} from '../containers'
 
-import styles from './DocumentEditorComponent.scss'
+import * as styles from './DocumentEditorComponent.scss'
 
 const DocumentEditorComponent = (): React.ReactElement<HTMLDivElement> =>
   <div className={styles.documentEditorComponent}>
