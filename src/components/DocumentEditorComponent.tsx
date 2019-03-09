@@ -22,7 +22,7 @@ function RenderDocument (props: DocumentContainerProps): React.ReactElement<type
     {props.components && props.components.map((component: DocumentComponentState) => 
       <DocumentComponentComponent
         key={component.id}
-        {...component} 
+        {...component}
         OnContentChange={props.OnContentChange}
         OnContentAddition={props.OnAppendContent}
         OnFocus={props.OnFocusChange}

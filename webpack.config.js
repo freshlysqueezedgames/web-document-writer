@@ -39,7 +39,7 @@ module.exports = {
           loader : 'typings-for-css-modules-loader',
           options : {
             modules : true,
-            localIndentName: '[local]_[hash:base64:5]',
+            localIndentName: '[local]_[name]_[hash:base64:5]',
             importLoaders: 3,
             namedExport: true,
             sourceMap: true,

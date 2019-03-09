@@ -12,7 +12,7 @@ import {DOCUMENT_COMPONENT_TYPE} from './store/types'
 import DocumentEditorComponent from './components'
 import {DocumentComponentState} from './store/types'
 
-import './index.scss'
+import * as styles from './index.scss'
 
 export function LoadDocument (name: string, document: Array<DocumentComponentState>) {
   store.dispatch(SetDocument(name, document))
@@ -20,7 +20,7 @@ export function LoadDocument (name: string, document: Array<DocumentComponentSta
 
 export function RenderDocument () {
   return <ReactRedux.Provider store={store}>
-    <DocumentEditorComponent/>
+      <DocumentEditorComponent/>
   </ReactRedux.Provider>
 }
 
@@ -43,5 +43,9 @@ LoadDocument('test-document', [{
 const app: HTMLElement | null = document.getElementById('web-document-writer-6nsy621t8hkjxsu8')
 
 if (app) {
-  render(RenderDocument(), app)
+  render(
+    <div className={styles.wrapper}>
+      {RenderDocument()}
+    </div>, app
+  )
 }
