@@ -66,6 +66,7 @@
     "jest": "^21.3.0-beta.15",
     "node-sass": "^4.11.0",
     "source-map-loader": "^0.2.4",
+    "ts-jest": "^24.0.0",
     "tsc": "^1.20150623.0",
     "typescript": "^3.3.3333",
     "typings-for-css-modules-loader": "^1.7.0",
@@ -81,9 +82,9 @@
     },
     "testURL": "http://localhost",
     "coveragePathIgnorePatterns": [
-      "<rootDir>/src/.*\\.test\\.js",
-      "<rootDir>/setup-tests.js",
-      "<rootDir>/mocks/*.js"
+      "<rootDir>/test/[^\\.]*\\.test\\.js",
+      "<rootDir>/setup-tests\\.js",
+      "<rootDir>/mocks/css.js"
     ],
     "coverageThreshold": {
       "global": {
