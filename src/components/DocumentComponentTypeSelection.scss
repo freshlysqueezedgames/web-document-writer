@@ -6,21 +6,35 @@ div.document-component-type-selection {
   flex-wrap: wrap;
   flex-direction: row;
 
-  $border: 1px solid #777;
+  $border: 1px solid #BBB;
   $border-radius: 10px;
 
-  border-left: $border;
-  border-right: $border;
-  border-bottom: $border;
+  background-color: #FFF;
 
-  border-bottom-left-radius: $border-radius;
-  border-bottom-right-radius: $border-radius;
+  border: $border;
+  border-radius: $border-radius;
+
+  overflow: hidden;
 
   div.button {
     padding: 10px;
+    cursor: pointer;
+
+    &:hover {
+      animation: hover 0.25s forwards running;
+    }
   }
 
   div.button:not(:last-child) {
     border-right: $border;
+  }
+}
+
+@keyframes hover {
+  0% {
+    background-color: #FFF;
+  }
+  100% {
+    background-color: #DDD;
   }
 }
