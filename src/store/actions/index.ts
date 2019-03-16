@@ -43,6 +43,12 @@ export interface UpdateCursorAction {
   left: number;
 }
 
+export interface UpdateCursorOffsetsAction {
+  type: 'UPDATE_CURSOR_OFFSETS';
+  offsetX: number;
+  offsetY: number;
+}
+
 export type Action = 
   DocumentAction | 
   AppendComponentAction | 
@@ -50,6 +56,7 @@ export type Action =
   UpdateComponentTypeAction | 
   FocusComponentAction | 
   UpdateCursorAction | 
+  UpdateCursorOffsetsAction |
   {type: 'EMPTY'}
 
 export const SetDocument = (slug: string, content: DocumentComponentState[]): DocumentAction => ({
@@ -89,4 +96,10 @@ export const UpdateCursor = (top: number, right: number, bottom: number, left: n
   right,
   bottom,
   left
+})
+
+export const UpdateCursorOffsets = (offsetX: number, offsetY: number): UpdateCursorOffsetsAction => ({
+  type: 'UPDATE_CURSOR_OFFSETS',
+  offsetX,
+  offsetY
 })

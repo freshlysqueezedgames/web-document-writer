@@ -5,7 +5,8 @@ import {
   UpdateComponent,
   UpdateComponentType,
   FocusComponent,
-  UpdateCursor
+  UpdateCursor,
+  UpdateCursorOffsets
 } from './actions'
 
 import {
@@ -160,15 +161,26 @@ describe('#Store', (): void => {
     }])
   })
 
-  test('Should be able to set the cursor position', (): void => {
-    store.dispatch(UpdateCursor(10, 11, 20, 10))
-
-    expect(store.getState().toJS().cursor).toMatchObject({
-      top: 10,
-      right: 11,
-      bottom: 20,
-      left: 10
+  describe('CursorReducer', (): void => {
+    test('Should be able to set the cursor position', (): void => {
+      store.dispatch(UpdateCursor(10, 11, 20, 10))
+  
+      expect(store.getState().toJS().cursor).toMatchObject({
+        top: 10,
+        right: 11,
+        bottom: 20,
+        left: 10
+      })
     })
+
+    test('Should be able to set the cursor offsets', (): void => {
+      store.dispatch(UpdateCursorOffsets(10, 11))
+  
+      expect(store.getState().toJS().cursor).toMatchObject({
+        offsetX: 10,
+        offsetY: 11
+      })
+    })  
   })
 
   test('Should return default state if action provided requires no reduction', (): void => {

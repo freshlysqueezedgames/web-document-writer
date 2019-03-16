@@ -64,4 +64,16 @@ describe('<DocumentCursorComponent/>', (): void => {
       done()
     }, 150)
   })
+
+  test('Should move the cursor position based on the offsets', (): void => {
+    const wrapper: ShallowWrapper = shallow(<DocumentCursorComponent left={20} top={20} bottom={20} right={20} offsetX={20} offsetY={20}/>)
+    const element: ShallowWrapper = wrapper.find(`.${styles.documentCursorComponent}`)
+
+    expect(element).toHaveLength(1)
+
+    const style: {top: number, left: number} = element.prop('style')
+
+    expect(style.top).toEqual(0)
+    expect(style.left).toEqual(0)
+  })
 })

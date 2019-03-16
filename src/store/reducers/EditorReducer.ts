@@ -15,7 +15,8 @@ const defaultEditorStateRecord: EditorStateRecord = Record({
 
 const EditorReducer = (state: EditorStateRecord = defaultEditorStateRecord, action: Action): EditorStateRecord => {
   switch (action.type) {
-    case 'UPDATE_CURSOR': {
+    case 'UPDATE_CURSOR':
+    case 'UPDATE_CURSOR_OFFSETS': {
       return state.update<"cursor">('cursor', (record: CursorStateRecord): CursorStateRecord => CursorReducer(record, action))
     }
     case 'SET_DOCUMENT':

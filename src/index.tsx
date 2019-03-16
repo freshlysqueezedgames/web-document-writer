@@ -13,6 +13,7 @@ import DocumentEditorComponent from './components'
 import {DocumentComponentState} from './store/types'
 
 import * as styles from './index.scss'
+import { DocumentContainer } from './containers'
 
 export function LoadDocument (name: string, document: Array<DocumentComponentState>) {
   store.dispatch(SetDocument(name, document))
@@ -20,7 +21,7 @@ export function LoadDocument (name: string, document: Array<DocumentComponentSta
 
 export function RenderDocument () {
   return <ReactRedux.Provider store={store}>
-      <DocumentEditorComponent/>
+    <DocumentContainer presentation={() => <DocumentEditorComponent/>}/>
   </ReactRedux.Provider>
 }
 

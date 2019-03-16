@@ -15,7 +15,9 @@ interface CursorContainerMappedStateProps {
   top: number,
   right: number,
   bottom: number,
-  left: number
+  left: number,
+  offsetX?: number,
+  offsetY?: number
 }
 
 export interface CursorContainerProps extends CursorContainerMappedStateProps {

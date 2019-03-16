@@ -15,12 +15,15 @@ import {
   UpdateComponentType,
   FocusComponent,
   UpdateCursor,
+  UpdateCursorOffsets,
   Action
 } from '../store/actions'
 
 import {
   DocumentComponentState
 } from '../store/types'
+
+import * as styles from './DocumentContainer.scss'
 
 export type DocumentComponent = {
 
@@ -42,6 +45,7 @@ interface DocumentContainerMappedDispatchProps {
   OnFocusChange: (id: string) => void,
   OnCursorChange: (top: number, right: number, bottom: number, left: number) => void,
   OnComponentTypeChange: (componentType: number) => void
+  OnCursorOffsetChange: (offsetX: number, offsetY: number) => void
 }
 
 export interface DocumentContainerProps extends DocumentContainerMappedStateProps, DocumentContainerMappedDispatchProps {
@@ -62,12 +66,37 @@ const MapDispatchToProps = (dispatch: (action: Action) => void): DocumentContain
   OnContentChange: (id: string, content: string): void => dispatch(UpdateComponent(id, content)),
   OnFocusChange: (id: string): void => dispatch(FocusComponent(id)),
   OnCursorChange: (top: number, right: number, bottom: number, left: number) => dispatch(UpdateCursor(top, right, bottom, left)),
-  OnComponentTypeChange: (componentType: number) => dispatch(UpdateComponentType(componentType) as Action)
+  OnComponentTypeChange: (componentType: number) => dispatch(UpdateComponentType(componentType) as Action),
+  OnCursorOffsetChange: (offsetX: number, offsetY: number) => dispatch(UpdateCursorOffsets(offsetX, offsetY))
 })
 
-const DocumentContainer = (props: DocumentContainerProps): React.ReactElement<typeof React.Fragment> =>
-  <>
-    {props.presentation && props.presentation(props)}
-  </>
+class DocumentContainer extends React.Component<DocumentContainerProps> {
+  private element: HTMLDivElement | null = null
+
+  ElementRef = (ref: HTMLDivElement | null) => this.element = ref 
+
+  componentDidMount () {
+    this.UpdateOffsets()
+    window.addEventListener('resize', this.UpdateOffsets)
+  }
+  
+  UpdateOffsets = () => {
+    if (!this.element) {
+      return
+    }
+
+    const {top = 0, left = 0} = this.element.getBoundingClientRect()
+
+    this.props.OnCursorOffsetChange(left, top)
+  }
+
+  render (): React.ReactElement<typeof React.Fragment> {
+    const props: DocumentContainerProps = this.props
+
+    return <div ref={this.ElementRef} className={styles.documentContainerComponent}>
+      {props.presentation && props.presentation(props)}
+    </div>
+  }
+}
 
 export default ReactRedux.connect(MapStateToProps, MapDispatchToProps)(DocumentContainer)

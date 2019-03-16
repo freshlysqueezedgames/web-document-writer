@@ -31,6 +31,8 @@ export type CursorState = Readonly<{
   right: number;
   bottom: number;
   left: number;
+  offsetX: number;
+  offsetY: number;
 }>
 
 export type CursorStateRecord = RecordOf<CursorState> 

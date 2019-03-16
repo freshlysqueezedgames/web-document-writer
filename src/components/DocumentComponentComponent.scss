@@ -3,6 +3,7 @@ div.document-component-component {
   white-space: pre-wrap;
   margin-bottom: 10px;
   height: auto;
+  display: inline-grid;
 
   textarea {
     width: 1px;
@@ -15,7 +16,8 @@ div.document-component-component {
   span {
     min-height: 100%;
     display: inline-flex;
-    background-color: transparentize($color: darkred, $amount: 0.5)
+    background-color: transparentize($color: darkred, $amount: 0.5);
+    text-transform: none;
   }
 
   .code {
