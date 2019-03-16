@@ -79,6 +79,10 @@ class DocumentContainer extends React.Component<DocumentContainerProps> {
     this.UpdateOffsets()
     window.addEventListener('resize', this.UpdateOffsets)
   }
+
+  componentWillUnmount () {
+    window.removeEventListener('resize', this.UpdateOffsets)
+  }
   
   UpdateOffsets = () => {
     if (!this.element) {

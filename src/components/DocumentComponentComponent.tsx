@@ -195,13 +195,27 @@ export default class DocumentComponentComponent extends React.Component<Document
     </div>
   }
 
+  componentDidMount (): void {
+    window.addEventListener('resize', this.ImmediatelyUpdateCursor)
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('resize', this.ImmediatelyUpdateCursor)
+  }
+
   componentDidUpdate (): void {
+    this.UpdateCursor()
+  }
+
+  ImmediatelyUpdateCursor = () => this.props.focused && this.UpdateCursor(true)
+
+  UpdateCursor (overrule: boolean = false) {
     const t: DocumentComponentComponent = this
     const spanRef: HTMLSpanElement | null = t.spanRef
     const componentRef: HTMLElement | null = t.componentRef
     const body: HTMLElement | null = document.body
 
-    if (t.offsetUpdate && spanRef && componentRef && body) {
+    if ((t.offsetUpdate || overrule) && spanRef && componentRef && body) {
       let {top, right, bottom, left} = spanRef.getBoundingClientRect()
 
       if (bottom === top) {
