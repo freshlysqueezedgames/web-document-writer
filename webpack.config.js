@@ -1,5 +1,8 @@
 const path = require('path')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+
+const extractCSS = new ExtractTextPlugin('styles.css')
 
 module.exports = {
   entry: './src',
@@ -33,9 +36,9 @@ module.exports = {
       loader: "source-map-loader"
     }, {
       test: /\.s?css$/,
-      use: [
-        'style-loader',
-        {
+      use: extractCSS.extract({
+        fallback: "style-loader",
+        use: [{
           loader : 'typings-for-css-modules-loader',
           options : {
             modules : true,
@@ -52,8 +55,8 @@ module.exports = {
             sourceMap: true,
             sourceMapContents: false
           }
-        }
-      ]
+        }]
+      })
     }, {
       test: /\.(graph|g)ql$/,
       use: [
@@ -76,6 +79,7 @@ module.exports = {
     new HTMLWebpackPlugin({
       filename: 'index.html',
       template: './src/index.html'
-    })
+    }),
+    extractCSS
   ]
 }
