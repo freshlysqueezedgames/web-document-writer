@@ -4,10 +4,12 @@ import * as React from 'react'
 
 import DocumentComponentComponent from './DocumentComponentComponent'
 import DocumentCursorComponent from './DocumentCursorComponent'
-import DocumentComponentTypeSelection from './DocumentComponentTypeSelection'
+import DocumentComponentTypeSelection, {DocumentComponentTypeSelectionProps} from './DocumentComponentTypeSelection'
 
 import {DocumentComponentState} from '../store/types'
 import {DocumentContainerProps, DocumentContainer, CursorContainer, CursorContainerProps} from '../containers'
+
+import {WithDrag} from './DragAndDrop'
 
 import * as styles from './DocumentEditorComponent.scss'
 
@@ -16,6 +18,8 @@ const DocumentEditorComponent = (): React.ReactElement<HTMLDivElement> =>
     <DocumentContainer presentation={RenderDocument} />
     <CursorContainer presentation={RenderCursor}/>
   </div>
+
+const WithDragDocumentComponentTypeSelection = WithDrag<DocumentComponentTypeSelectionProps>(DocumentComponentTypeSelection, true)
 
 function RenderDocument (props: DocumentContainerProps): React.ReactElement<typeof React.Fragment> {
   return <>
@@ -29,7 +33,7 @@ function RenderDocument (props: DocumentContainerProps): React.ReactElement<type
         OnCursorChange={props.OnCursorChange}
       />
     )}
-    <DocumentComponentTypeSelection OnSelection={props.OnComponentTypeChange}/>
+    <WithDragDocumentComponentTypeSelection OnSelection={props.OnComponentTypeChange}/>
   </>
 }
 

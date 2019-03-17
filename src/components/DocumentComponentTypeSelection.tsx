@@ -6,7 +6,7 @@ import {
 
 import * as styles from './DocumentComponentTypeSelection.scss'
 
-interface DocumentComponentTypeSelectionProps {
+export interface DocumentComponentTypeSelectionProps {
   OnSelection: (componentType: number) => void
 }
 
