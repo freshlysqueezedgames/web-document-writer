@@ -10,6 +10,9 @@ export interface DragState {
 
 export interface DropProps {}
 
+const dragImage: HTMLImageElement = new Image()
+dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs='
+
 export function WithDrag<P extends Object> (WrappedComponent: ReactComponentLike, fixed: boolean = false) {
   return class extends React.Component<DragProps & P, DragState> {
     state: DragState = {
@@ -30,13 +33,20 @@ export function WithDrag<P extends Object> (WrappedComponent: ReactComponentLike
     OnDragStart = (event: React.DragEvent) => {
       this.startX = event.clientX
       this.startY = event.clientY
+
+      event.dataTransfer.setDragImage(dragImage, 0, 0)
     }
 
     OnDrag = (event: React.DragEvent) => {
+      event.preventDefault()
+      event.stopPropagation()
+
       this.setState({top: event.clientY - this.startY + this.offsetY, left: event.clientX - this.startX + this.offsetX})
     }
 
     OnDragEnd = (event: React.DragEvent) => {
+      event.preventDefault()
+
       if (fixed) {
         this.offsetY += event.clientY - this.startY
         this.offsetX += event.clientX - this.startX
@@ -57,7 +67,7 @@ export function WithDrag<P extends Object> (WrappedComponent: ReactComponentLike
         onDragEnd={this.OnDragEnd}
         draggable={true}
       >
-        <WrappedComponent/>
+        <WrappedComponent {...this.props}/>
       </div>
     }
   }

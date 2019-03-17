@@ -30,6 +30,21 @@ div.document-component-type-selection {
   div.button:not(:last-child) {
     border-right: $border;
   }
+
+  div.drag-indicator {
+    float: left;
+    height: 100%;
+    width: 15px;
+    background-color: #BBB;
+    color: black;
+  }
+
+  svg {
+    width: 4px;
+    padding: 7px 6px;
+  }
+
+  .cls-1{fill:#fff;}
 }
 
 @keyframes hover {
