@@ -1,6 +1,6 @@
 {
   "name": "@freshlysqueezedgames/web-document-writer",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Tool for embedding a document writer as part of your webview.",
   "main": "dist/web-document-writer.js",
   "types": "dist/index.d.ts",
@@ -89,9 +89,9 @@
     "coverageThreshold": {
       "global": {
         "branches": 80,
-        "functions": 90,
-        "lines": 90,
-        "statements": 90
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
       }
     }
   }
