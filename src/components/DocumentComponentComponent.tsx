@@ -81,12 +81,29 @@ export default class DocumentComponentComponent extends React.Component<Document
     const selection: Selection = window.getSelection()
     let {startOffset, endOffset} = selection.rangeCount ? selection.getRangeAt(0) : OFFSET_ZERO
 
-    let offset: number = selection.anchorNode ? t.props.content.indexOf(selection.anchorNode.textContent || '') : 0
+    console.log('offsets are first', startOffset, endOffset, selection.anchorNode.textContent)
+  
+    const value: string = selection.toString()
+    let offset: number = selection.anchorNode ? t.props.content.indexOf(value || '') : 0
 
-    offset = offset === -1 ? 0 : offset
+    if (offset) {
+      const matches: Array<string> | null = t.props.content.match(new RegExp(value, 'g'))
 
-    startOffset += offset
-    endOffset += offset
+      if (matches && matches.length > 1) {
+        offset = t.props.content.indexOf(value, startOffset)
+      }
+
+      startOffset = offset
+      endOffset = offset + value.length
+    } else {
+      offset = selection.anchorNode ? t.props.content.indexOf(selection.anchorNode.textContent || '') : 0
+
+      if (startOffset <= endOffset) {
+        startOffset += offset
+      }
+
+      endOffset += offset
+    }
 
     textAreaRef.focus()
     textAreaRef.selectionStart = startOffset
@@ -96,7 +113,29 @@ export default class DocumentComponentComponent extends React.Component<Document
 
     t.offsetUpdate = true
     t.setState({startOffset, endOffset})
+
+    console.log('offsets are', startOffset, endOffset)
   }
+
+  // GetNodeTextOffset (anchorNode: Node): number {
+  //   let i: number = 0
+
+  //   while (anchorNode) {
+  //     if (anchorNode.previousSibling) {
+  //       anchorNode = anchorNode.previousSibling
+  //       i += (anchorNode.textContent || "").length
+  //       continue
+  //     }
+
+  //     if (!anchorNode.parentNode || anchorNode.parentNode === this.componentRef) {
+  //       break
+  //     }
+
+  //     anchorNode = anchorNode.parentNode
+  //   }
+
+  //   return i
+  // }
 
   HandleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>): void => {
     const props: DocumentComponentComponentProps = this.props
