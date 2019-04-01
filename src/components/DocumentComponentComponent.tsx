@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react'
+import React, { SyntheticEvent } from 'react'
 import KEY_CODE from '../utils'
 
 import {
@@ -81,28 +81,17 @@ export default class DocumentComponentComponent extends React.Component<Document
     const selection: Selection = window.getSelection()
     let {startOffset, endOffset} = selection.rangeCount ? selection.getRangeAt(0) : OFFSET_ZERO
 
-    console.log('offsets are first', startOffset, endOffset, selection.anchorNode.textContent)
-  
-    const value: string = selection.toString()
-    let offset: number = selection.anchorNode ? t.props.content.indexOf(value || '') : 0
+    let anchorOffset = this.GetNodeTextOffset(selection.anchorNode)
+    let focusOffset = this.GetNodeTextOffset(selection.focusNode)
 
-    if (offset) {
-      const matches: Array<string> | null = t.props.content.match(new RegExp(value, 'g'))
+    console.log('BLIMEY', anchorOffset, selection.anchorNode, t.spanRef)
 
-      if (matches && matches.length > 1) {
-        offset = t.props.content.indexOf(value, startOffset)
-      }
-
-      startOffset = offset
-      endOffset = offset + value.length
+    if (this.GetFurthestNode(selection.anchorNode, selection.focusNode)) {
+      startOffset += focusOffset
+      endOffset += anchorOffset
     } else {
-      offset = selection.anchorNode ? t.props.content.indexOf(selection.anchorNode.textContent || '') : 0
-
-      if (startOffset <= endOffset) {
-        startOffset += offset
-      }
-
-      endOffset += offset
+      startOffset += anchorOffset
+      endOffset += focusOffset
     }
 
     textAreaRef.focus()
@@ -113,29 +102,55 @@ export default class DocumentComponentComponent extends React.Component<Document
 
     t.offsetUpdate = true
     t.setState({startOffset, endOffset})
-
-    console.log('offsets are', startOffset, endOffset)
   }
 
-  // GetNodeTextOffset (anchorNode: Node): number {
-  //   let i: number = 0
+  IterateBackwardsThroughNodes (node: Node, callback: (node: Node, parent: boolean) => boolean | void): void {
+    while (node) {
+      if (node.previousSibling) {
+        node = node.previousSibling
+        
+        if (callback(node, false) === true) {
+          return
+        }
 
-  //   while (anchorNode) {
-  //     if (anchorNode.previousSibling) {
-  //       anchorNode = anchorNode.previousSibling
-  //       i += (anchorNode.textContent || "").length
-  //       continue
-  //     }
+        continue
+      }
 
-  //     if (!anchorNode.parentNode || anchorNode.parentNode === this.componentRef) {
-  //       break
-  //     }
+      if (!node.parentNode || node.parentNode === this.componentRef) {
+        break
+      }
 
-  //     anchorNode = anchorNode.parentNode
-  //   }
+      node = node.parentNode
 
-  //   return i
-  // }
+      if (callback(node, true) === true) {
+        return
+      }
+    }
+  }
+
+  GetNodeTextOffset (node: Node): number {
+    let i: number = 0
+
+    this.IterateBackwardsThroughNodes(node, (node: Node, parent: boolean): void => {
+      if (!parent) {
+        i += (node.textContent || "").length
+      }
+    })
+
+    return i
+  }
+
+  GetFurthestNode (node1: Node, node2: Node): boolean {
+    let isFurthest = false
+
+    this.IterateBackwardsThroughNodes(node1, (node: Node): boolean | void => {
+      if (node === node2) {
+        return (isFurthest = true)
+      }
+    })
+
+    return isFurthest
+  }
 
   HandleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>): void => {
     const props: DocumentComponentComponentProps = this.props
