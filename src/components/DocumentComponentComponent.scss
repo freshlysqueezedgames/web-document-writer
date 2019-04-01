@@ -1,9 +1,12 @@
 div.document-component-component {
   width: 100%;
   white-space: pre-wrap;
-  margin-bottom: 10px;
+  padding-bottom: 10px;
+  padding-top: 10px;
   height: auto;
   display: inline-grid;
+  position: relative;
+  float: left;
 
   textarea {
     width: 1px;
@@ -11,6 +14,7 @@ div.document-component-component {
     position: absolute;
     top: 0px;
     opacity: 0.01;
+    overflow: hidden;
   }
 
   span {
@@ -27,5 +31,43 @@ div.document-component-component {
 
   div.component-type {
     float: left;
+  }
+
+  div.prepend {
+    position: absolute;
+    top: 0px;
+    display: none;
+    border-bottom: 1px solid lightseagreen;
+    width: 100%;
+    height: 1px;
+  }
+
+  div.append {
+    position: absolute;
+    bottom: 0px;
+    height: 0px;
+    display: none;
+    border-top: 1px solid lightseagreen;
+    width: 100%;
+  }
+
+  &.entered {
+    div.prepend {
+      display: block;
+    }
+
+    div.append {
+      display: block;
+    }
+  }
+
+  &.exited {
+    div.prepend {
+      display: none;
+    }
+
+    div.append {
+      display: none;
+    }
   }
 }

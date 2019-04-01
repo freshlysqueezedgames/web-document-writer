@@ -22,7 +22,8 @@ export type DocumentComponentComponentProps = Readonly<{
 
 export type DocumentComponentComponentState = Readonly<{
   startOffset: number,
-  endOffset: number
+  endOffset: number,
+  mouseMode: string 
 }>
 
 export type Range = Readonly<{
@@ -45,7 +46,8 @@ export default class DocumentComponentComponent extends React.Component<Document
 
   state: DocumentComponentComponentState = {
     startOffset: 0,
-    endOffset: 0
+    endOffset: 0,
+    mouseMode: ''
   }
 
   TextAreaRef = (ref: HTMLTextAreaElement | null): void => {
@@ -84,8 +86,6 @@ export default class DocumentComponentComponent extends React.Component<Document
     let anchorOffset = this.GetNodeTextOffset(selection.anchorNode)
     let focusOffset = this.GetNodeTextOffset(selection.focusNode)
 
-    console.log('BLIMEY', anchorOffset, selection.anchorNode, t.spanRef)
-
     if (this.GetFurthestNode(selection.anchorNode, selection.focusNode)) {
       startOffset += focusOffset
       endOffset += anchorOffset
@@ -103,6 +103,9 @@ export default class DocumentComponentComponent extends React.Component<Document
     t.offsetUpdate = true
     t.setState({startOffset, endOffset})
   }
+
+  HandleMouseEnter = (): void => this.setState({mouseMode: styles.entered})
+  HandleMouseExit = (): void => this.setState({mouseMode: styles.exited})
 
   IterateBackwardsThroughNodes (node: Node, callback: (node: Node, parent: boolean) => boolean | void): void {
     while (node) {
@@ -237,7 +240,7 @@ export default class DocumentComponentComponent extends React.Component<Document
     const t: DocumentComponentComponent = this
     const props: DocumentComponentComponentProps = t.props
 
-    return <div className={styles.documentComponentComponent}>
+    return <div className={`${styles.documentComponentComponent} ${t.state.mouseMode}`} onMouseEnter={t.HandleMouseEnter} onMouseLeave={t.HandleMouseExit}>
       <textarea
         onChange={t.HandleTextAreaChange}
         onKeyDown={t.HandleKeyDown}
@@ -246,6 +249,8 @@ export default class DocumentComponentComponent extends React.Component<Document
         value={props.content}
       />
       {this.RenderComponentType()}
+      <div className={styles.prepend}/>
+      <div className={styles.append}/>
     </div>
   }
 
