@@ -34,7 +34,4 @@ jobs:
       # run linting!
       - run: npm run lint
 
-      # run flow to check for any possible type errors
-      - run: npm run flow
-
 

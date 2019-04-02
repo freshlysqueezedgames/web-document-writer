@@ -1,0 +1,10 @@
+div.with-draggable {
+  display: inline-block;
+}
+
+div.with-draggable-fixed {
+  display: inline-block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}

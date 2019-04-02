@@ -1,14 +1,14 @@
 {
-  "name": "web-document-writer",
-  "version": "0.0.1",
+  "name": "@freshlysqueezedgames/web-document-writer",
+  "version": "0.8.0",
   "description": "Tool for embedding a document writer as part of your webview.",
-  "main": "dist/index.js",
+  "main": "dist/web-document-writer.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build-server": "babel ./src-server --out-dir ./dist-server --copy-files",
-    "build": "npm run build-server && node dist-server/index.js --build",
-    "serve": "npm run build-server && node dist-server/index.js --serve",
-    "test": "jest ./src --verbose --coverage",
-    "lint": "eslint ./src/**/*.js",
+    "build": "webpack",
+    "serve": "npm run build && http-server ./dist -p 3002 -g",
+    "test": "tsc -p tsconfig.tests.json && jest ./test --verbose --coverage",
+    "lint": "eslint ./src/**/*.ts --fix",
     "flow": "flow check"
   },
   "keywords": [
@@ -20,7 +20,6 @@
   "author": "Carl Pryke (FSG)",
   "license": "MIT",
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
     "css-loader": "^1.0.1",
     "express": "^4.16.4",
     "express-history-api-fallback": "^2.2.1",
@@ -30,7 +29,6 @@
     "react-dom": "^16.6.3",
     "react-redux": "^5.1.1",
     "redux": "^4.0.1",
-    "resolve-url-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
     "shortid": "^2.2.14",
     "style-loader": "^0.23.1",
@@ -44,36 +42,56 @@
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@types/jest": "^24.0.9",
+    "@types/react": "^16.8.6",
+    "@types/react-dom": "^16.8.2",
+    "@types/react-redux": "^7.0.1",
+    "@types/shortid": "0.0.29",
+    "@typescript-eslint/eslint-plugin": "^1.4.2",
+    "awesome-typescript-loader": "^5.2.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
     "eslint": "^5.9.0",
-    "eslint-plugin-flowtype": "^3.2.0",
     "eslint-plugin-jest": "^22.1.0",
     "eslint-plugin-react": "^7.11.1",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "flow-bin": "^0.87.0",
     "flow-cli": "0.0.0-pre",
+    "html-webpack-plugin": "^3.2.0",
+    "http-server": "^0.11.1",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^21.3.0-beta.15",
-    "node-sass": "^4.10.0"
+    "node-sass": "^4.11.0",
+    "source-map-loader": "^0.2.4",
+    "tsc": "^1.20150623.0",
+    "typescript": "^3.3.3333",
+    "typings-for-css-modules-loader": "^1.7.0",
+    "webpack-cli": "^3.2.3"
   },
   "jest": {
-    "testRegex": "src/.*\\.test\\.js$",
-    "setupTestFrameworkScriptFile": "<rootDir>/src/setup-tests.js",
+    "testRegex": "test/.*\\.test\\.js$",
+    "setupFiles": [
+      "<rootDir>/setup-tests.js"
+    ],
     "moduleNameMapper": {
       "\\.s?css$": "<rootDir>/mocks/css.js"
     },
     "testURL": "http://localhost",
     "coveragePathIgnorePatterns": [
-      "<rootDir>/src/.*\\.test\\.js"
+      "<rootDir>/test/[^\\.]*\\.test\\.js",
+      "<rootDir>/setup-tests\\.js",
+      "<rootDir>/mocks/css.js"
     ],
     "coverageThreshold": {
       "global": {
         "branches": 80,
-        "functions": 90,
-        "lines": 90,
-        "statements": 90
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
       }
     }
   }

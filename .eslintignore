@@ -1,2 +1,5 @@
-**/flow
-**/flow-typed
+**/dist
+**/test
+**/mocks
+**/*.d.ts
+webpack.config.js

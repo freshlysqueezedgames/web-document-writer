@@ -1,0 +1,55 @@
+div.document-component-type-selection {
+  position: relative;
+  display: inline-flex;
+  top: 0px;
+
+  flex-wrap: wrap;
+  flex-direction: row;
+
+  $border: 1px solid #BBB;
+  $border-radius: 10px;
+
+  background-color: #FFF;
+
+  border: $border;
+  border-radius: $border-radius;
+
+  overflow: hidden;
+
+  height: 38px;
+
+  div.button {
+    padding: 10px;
+    cursor: pointer;
+
+    &:hover {
+      animation: hover 0.25s forwards running;
+    }
+  }
+
+  div.button:not(:last-child) {
+    border-right: $border;
+  }
+
+  div.drag-indicator {
+    float: left;
+    height: 100%;
+    width: 15px;
+    background-color: #BBB;
+    color: black;
+  }
+
+  svg {
+    width: 4px;
+    padding: 7px 6px;
+  }
+}
+
+@keyframes hover {
+  0% {
+    background-color: #FFF;
+  }
+  100% {
+    background-color: #DDD;
+  }
+}

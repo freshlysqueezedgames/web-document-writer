@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "./test",
+    "declarationMap": false,
+    "declaration": false,
+    "importHelpers": false
+  },
+  "include": [
+    "./src/**/*.*",
+    "./src/**/*.test.*",
+  ],
+  "exclude": ["node_modules"] // ensure that there is no default exclusion of test
+}
