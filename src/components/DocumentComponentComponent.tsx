@@ -44,6 +44,8 @@ export default class DocumentComponentComponent extends React.Component<Document
   spanRef: HTMLSpanElement | null = null
 
   ctrlPressed: boolean = false
+  shiftPressed: boolean = false
+
   offsetUpdate: boolean = false
 
   state: DocumentComponentComponentState = {
@@ -165,8 +167,17 @@ export default class DocumentComponentComponent extends React.Component<Document
       return
     }
 
+    if (event.keyCode === KEY_CODE.SHIFT) {
+      this.shiftPressed = true
+      return
+    }
+
     if (this.ctrlPressed && event.keyCode === KEY_CODE.RETURN) {
-      props.OnAppendContent && props.OnAppendContent(props.id, '')
+      if (this.shiftPressed) {
+        props.OnPrependContent && props.OnPrependContent(props.id, '')
+      } else {
+        props.OnAppendContent && props.OnAppendContent(props.id, '')
+      }
     }
 
     this.SetStateOffset()
@@ -175,6 +186,12 @@ export default class DocumentComponentComponent extends React.Component<Document
   HandleKeyUp = (event: React.KeyboardEvent<HTMLTextAreaElement>): void => {
     if (event.keyCode === KEY_CODE.CTRL) {
       this.ctrlPressed = false
+      return
+    }
+
+    if (event.keyCode === KEY_CODE.SHIFT) {
+      this.shiftPressed = false
+      return
     }
 
     this.SetStateOffset()
