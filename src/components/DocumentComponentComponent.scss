@@ -20,7 +20,7 @@ div.document-component-component {
   span {
     min-height: 100%;
     display: inline;
-    background-color: transparentize($color: darkred, $amount: 0.5);
+    background-color: transparentize($color: #fd5720, $amount: 0.5);
     text-transform: inherit;
   }
 
@@ -34,7 +34,7 @@ div.document-component-component {
     min-height: 12px;
   }
 
-  $line : 1px dotted lightseagreen;
+  $line : 1px dotted #fd5720;
 
   div.prepend,
   div.append {
@@ -94,7 +94,7 @@ div.document-component-component {
   div.button {
     width : 30px;
     height: 30px;
-    background-color: lightseagreen;
+    background-color: #fd5720;
     border: 0px solid #000;
     border-radius: 15px;
     position: relative;
