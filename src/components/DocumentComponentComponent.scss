@@ -33,22 +33,24 @@ div.document-component-component {
     float: left;
   }
 
-  div.prepend {
+  $line : 1px solid lightseagreen;
+
+  div.prepend,
+  div.append {
     position: absolute;
-    top: 0px;
     display: none;
-    border-bottom: 1px solid lightseagreen;
     width: 100%;
     height: 1px;
   }
 
+  div.prepend {
+    border-bottom: $line;
+    top: 0px;
+  }
+
   div.append {
-    position: absolute;
+    border-top: $line;
     bottom: 0px;
-    height: 0px;
-    display: none;
-    border-top: 1px solid lightseagreen;
-    width: 100%;
   }
 
   &.entered {
@@ -69,5 +71,21 @@ div.document-component-component {
     div.append {
       display: none;
     }
+  }
+
+  h1  {
+    text-align: center;
+    font-size: 2em;
+    float: left;
+  }
+
+  h2 {
+    font-size: 1.5em;
+    float: left;
+  }
+
+  h3 {
+    font-size: 1.3em;
+    float: left;
   }
 }

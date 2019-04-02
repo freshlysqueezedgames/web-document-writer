@@ -39,6 +39,21 @@ LoadDocument('test-document', [{
   content: 'This is where you start',
   focused: false,
   componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
+}, {
+  id: shortid.generate(),
+  content: 'This is a header 2',
+  focused: false,
+  componentType: DOCUMENT_COMPONENT_TYPE.HEADER_2
+}, {
+  id: shortid.generate(),
+  content: 'This is a header 3',
+  focused: false,
+  componentType: DOCUMENT_COMPONENT_TYPE.HEADER_3
+}, {
+  id: shortid.generate(),
+  content: 'This is a code',
+  focused: false,
+  componentType: DOCUMENT_COMPONENT_TYPE.CODE
 }])
 
 const app: HTMLElement | null = document.getElementById('web-document-writer-6nsy621t8hkjxsu8')
