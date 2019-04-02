@@ -71,6 +71,31 @@ describe('<DocumentEditorComponent/>', (): void => {
     expect(wrapper.find(`.${keyMapStyles.documentComponentComponent}`)).toHaveLength(2)
   })
 
+  test('Should prepend new DocumentComponentComponent\'s when ctrl+shift+return is used within a DocumentComponentComponent', (): void => {
+    store.dispatch(SetDocument('test-document', [{
+      id: 'test1',
+      content: 'test1',
+      focused: false,
+      componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
+    }]))
+
+    const wrapper: ReactWrapper = mount(
+      <Provider store={store}>
+        <DocumentEditorComponent/>
+      </Provider>
+    )
+
+    const textarea: ReactWrapper = wrapper.find(`.${keyMapStyles.documentComponentComponent} textarea`)
+
+    expect(textarea).toHaveLength(1)
+
+    textarea.simulate('keydown', {keyCode: KEY_CODE.CTRL})
+    textarea.simulate('keydown', {keyCode: KEY_CODE.SHIFT})
+    textarea.simulate('keydown', {keyCode: KEY_CODE.RETURN})
+
+    expect(wrapper.find(`.${keyMapStyles.documentComponentComponent}`)).toHaveLength(2)
+  })
+
   test('Should update the content within a component when the user makes a change to the text', (): void => {
     store.dispatch(SetDocument('test-document', [{
       id: 'test1',

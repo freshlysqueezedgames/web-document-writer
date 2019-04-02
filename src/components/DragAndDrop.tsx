@@ -73,29 +73,29 @@ export function WithDrag<P extends Object> (WrappedComponent: ReactComponentLike
   }
 }
 
-export function WithDrop<P extends Object> (WrappedComponent: ReactComponentLike) {
-  return class extends React.Component<DropProps & P> {
-    div: HTMLDivElement | null = null
+// export function WithDrop<P extends Object> (WrappedComponent: ReactComponentLike) {
+//   return class extends React.Component<DropProps & P> {
+//     div: HTMLDivElement | null = null
 
-    BindDiv = (ref: HTMLDivElement | null): void => {this.div = ref}
+//     BindDiv = (ref: HTMLDivElement | null): void => {this.div = ref}
 
-    OnDrop = (event: React.DragEvent): void => {
-      event.preventDefault()
-    }
+//     OnDrop = (event: React.DragEvent): void => {
+//       event.preventDefault()
+//     }
 
-    OnDragOver = (event: React.DragEvent): void => {
-      event.preventDefault()
-    }
+//     OnDragOver = (event: React.DragEvent): void => {
+//       event.preventDefault()
+//     }
 
-    render () {
-      return <div 
-        className={styles.withDraggable} 
-        ref={this.BindDiv}
-        onDrop={this.OnDrop}
-        onDragOver={this.OnDragOver}
-      >
-        <WrappedComponent/>
-      </div>
-    }
-  }
-}
+//     render () {
+//       return <div 
+//         className={styles.withDraggable} 
+//         ref={this.BindDiv}
+//         onDrop={this.OnDrop}
+//         onDragOver={this.OnDragOver}
+//       >
+//         <WrappedComponent/>
+//       </div>
+//     }
+//   }
+// }

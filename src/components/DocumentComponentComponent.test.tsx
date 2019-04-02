@@ -73,6 +73,73 @@ describe('<DocumentComponentComponent/>', (): void => {
     window.getSelection = getSelection
   })
 
+  test('Should be able to highlight the correct range of content across multiple nodes', (): void => {
+    const getSelection: () => Selection = window.getSelection
+    
+    window.getSelection = jest.fn().mockImplementation((): {getRangeAt: () => Range, rangeCount: number} => ({
+      getRangeAt: (): Range => ({
+        startOffset: 5,
+        endOffset: 5
+      }),
+      rangeCount: 1
+    }))
+
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test"  componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="This is the content" focused={true}/>)
+    const content: ReactWrapper = wrapper.find(`.${styles.componentType}`)
+
+    content.simulate('click')
+
+    let textarea: ReactWrapper = wrapper.find('textarea')
+
+    expect(textarea).toHaveLength(1)
+
+    let node: HTMLElement | HTMLInputElement = textarea.getDOMNode() as HTMLInputElement
+
+    if (!(node instanceof HTMLTextAreaElement)) {
+      throw new Error('input type not returned')
+    }
+
+    expect(node.selectionStart).toEqual(5)
+    expect(node.selectionEnd).toEqual(5)
+
+    const previousSibling = {}
+
+    window.getSelection = jest.fn().mockImplementation((): {getRangeAt: () => Range, rangeCount: number, focusNode: any, anchorNode: any} => ({
+      getRangeAt: (): Range => ({
+        startOffset: 2,
+        endOffset: 10
+      }),
+      rangeCount: 1,
+      focusNode: previousSibling,
+      anchorNode: {
+        previousSibling
+      }
+    }))
+
+    content.simulate('click')
+
+    textarea = wrapper.find('textarea')
+
+    expect(textarea).toHaveLength(1)
+
+    node = textarea.getDOMNode() as HTMLInputElement
+
+    if (!(node instanceof HTMLTextAreaElement)) {
+      throw new Error('input type not returned')
+    }
+
+    expect(node.selectionStart).toEqual(2)
+    expect(node.selectionEnd).toEqual(10)
+    
+    const span = wrapper.find('span')
+
+    expect(span).toHaveLength(1)
+
+    expect(span.text()).toEqual('is is th')
+
+    window.getSelection = getSelection
+  })
+
   test('Should have a default range of 0, 0 if the selection range is not available', () => {
     const getSelection: () => Selection = window.getSelection
     
@@ -101,7 +168,7 @@ describe('<DocumentComponentComponent/>', (): void => {
     window.getSelection = getSelection    
   })
 
-  test('Should trigger the creation of a new component whenever ctrl+return is pressed', (): void => {
+  test('Should trigger the appending of a new component whenever ctrl+return is pressed', (): void => {
     const additionMock: jest.Mock = jest.fn() 
     const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} OnAppendContent={additionMock}/>)
 
@@ -114,6 +181,53 @@ describe('<DocumentComponentComponent/>', (): void => {
 
     expect(additionMock).toHaveBeenCalledTimes(1)
     expect(additionMock).toHaveBeenCalledWith('test', '')
+  })
+
+  test('Should trigger the appending of a new component whenever the append button is pressed', (): void => {
+    const additionMock: jest.Mock = jest.fn() 
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} OnAppendContent={additionMock}/>)
+
+    const appendButton: ReactWrapper = wrapper.find(`.${styles.append} .${styles.button}`)
+    const component: ReactWrapper = wrapper.find(`.${styles.documentComponentComponent}`)
+
+    expect(component).toHaveLength(1)
+    expect(appendButton).toHaveLength(1)
+    
+    component.simulate('mouseenter')
+    appendButton.simulate('click')
+
+    expect(additionMock).toHaveBeenCalledTimes(1)
+    expect(additionMock).toHaveBeenCalledWith('test', '')
+  })
+
+  test('Should trigger the prepending of a new coponent whenever ctrl+shift+return is pressed', (): void => {
+    const additionMock: jest.Mock = jest.fn() 
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} OnPrependContent={additionMock}/>)
+
+    const textarea: ReactWrapper = wrapper.find('textarea')
+
+    expect(textarea).toHaveLength(1)
+
+    textarea.simulate('keydown', {keyCode: KEY_CODE.CTRL})
+    textarea.simulate('keydown', {keyCode: KEY_CODE.SHIFT})
+    textarea.simulate('keydown', {keyCode: KEY_CODE.RETURN})
+
+    expect(additionMock).toHaveBeenCalledTimes(1)
+    expect(additionMock).toHaveBeenCalledWith('test', '')
+  })
+
+  test('Should trigger the prepending of a new component whenever the append button is pressed', (): void => {
+    const additionMock: jest.Mock = jest.fn() 
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} OnPrependContent={additionMock}/>)
+
+    const prependButton: ReactWrapper = wrapper.find(`.${styles.prepend} .${styles.button}`)
+
+    expect(prependButton).toHaveLength(1)
+    
+    prependButton.simulate('click')
+
+    expect(additionMock).toHaveBeenCalledTimes(1)
+    expect(additionMock).toHaveBeenCalledWith('test', '')    
   })
 
   test('Should not trigger a change using return if ctrl is not pressed', (): void => {
