@@ -194,6 +194,14 @@ export default class DocumentComponentComponent extends React.Component<Document
     })
   }
 
+  AppendContent = () => {
+    const props: DocumentComponentComponentProps = this.props
+    
+    props.OnContentAddition && props.OnContentAddition(props.id, '')
+
+    this.SetStateOffset()
+  }
+
   RenderComponentType (): React.ReactElement {
     switch (this.props.componentType) {
       case DOCUMENT_COMPONENT_TYPE.HEADER_1 : {
@@ -256,7 +264,7 @@ export default class DocumentComponentComponent extends React.Component<Document
         </div>
       </div>
       <div className={styles.append}>
-        <div className={styles.button}>
+        <div className={styles.button} onClick={t.AppendContent}>
           <Add/>
         </div>
       </div>
