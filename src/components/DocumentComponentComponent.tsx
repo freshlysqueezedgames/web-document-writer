@@ -1,6 +1,7 @@
 // @flow
 
 import React, { SyntheticEvent } from 'react'
+import {Add} from './Symbols'
 import KEY_CODE from '../utils'
 
 import {
@@ -249,8 +250,16 @@ export default class DocumentComponentComponent extends React.Component<Document
         value={props.content}
       />
       {this.RenderComponentType()}
-      <div className={styles.prepend}/>
-      <div className={styles.append}/>
+      <div className={styles.prepend}>
+        <div className={styles.button}>
+          <Add/>
+        </div>
+      </div>
+      <div className={styles.append}>
+        <div className={styles.button}>
+          <Add/>
+        </div>
+      </div>
     </div>
   }
 
