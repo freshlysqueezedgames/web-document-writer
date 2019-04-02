@@ -51,6 +51,23 @@ const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord
         return list.splice(index + 1, 0, DocumentComponentStateFactory({id, content, focused, componentType}))
       })
     }
+    case 'PREPEND_COMPONENT': {
+      const {before, id, content, focused, componentType} = action 
+
+      return state.update<"components">("components", (list: List<DocumentComponentStateRecord>): List<DocumentComponentStateRecord> => {
+        const index: number = list.findIndex((record: DocumentComponentStateRecord): boolean => record.get<"id">("id") === before)
+
+        if (focused) {
+          list = SetFocusedByID(id, list)
+        }
+
+        if (index === -1) {
+          return list.unshift(DocumentComponentStateFactory({id, content, focused, componentType}))
+        }
+
+        return list.splice(index, 0, DocumentComponentStateFactory({id, content, focused, componentType}))
+      })
+    }
     case 'UPDATE_COMPONENT': {
       const {id, content} = action
 

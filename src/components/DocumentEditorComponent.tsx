@@ -28,7 +28,8 @@ function RenderDocument (props: DocumentContainerProps): React.ReactElement<type
         key={component.id}
         {...component}
         OnContentChange={props.OnContentChange}
-        OnContentAddition={props.OnAppendContent}
+        OnAppendContent={props.OnAppendContent}
+        OnPrependContent={props.OnPrependContent}
         OnFocus={props.OnFocusChange}
         OnCursorChange={props.OnCursorChange}
       />

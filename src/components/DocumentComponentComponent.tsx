@@ -16,7 +16,8 @@ export type DocumentComponentComponentProps = Readonly<{
   focused: boolean,
   componentType: number,
   OnContentChange?: (id: string, content: string) => void,
-  OnContentAddition?: (id: string, content: string) => void,
+  OnAppendContent?: (id: string, content: string) => void,
+  OnPrependContent?: (id: string, content: string) => void,
   OnFocus?: (id: string) => void,
   OnCursorChange?: (top: number, right: number, bottom: number, left: number) => void
 }>
@@ -165,7 +166,7 @@ export default class DocumentComponentComponent extends React.Component<Document
     }
 
     if (this.ctrlPressed && event.keyCode === KEY_CODE.RETURN) {
-      props.OnContentAddition && props.OnContentAddition(props.id, '')
+      props.OnAppendContent && props.OnAppendContent(props.id, '')
     }
 
     this.SetStateOffset()
@@ -197,7 +198,15 @@ export default class DocumentComponentComponent extends React.Component<Document
   AppendContent = () => {
     const props: DocumentComponentComponentProps = this.props
     
-    props.OnContentAddition && props.OnContentAddition(props.id, '')
+    props.OnAppendContent && props.OnAppendContent(props.id, '')
+
+    this.SetStateOffset()
+  }
+
+  PrependContent = () => {
+    const props: DocumentComponentComponentProps = this.props
+
+    props.OnPrependContent && props.OnPrependContent(props.id, '')
 
     this.SetStateOffset()
   }
@@ -259,7 +268,7 @@ export default class DocumentComponentComponent extends React.Component<Document
       />
       {this.RenderComponentType()}
       <div className={styles.prepend}>
-        <div className={styles.button}>
+        <div className={styles.button} onClick={t.PrependContent}>
           <Add/>
         </div>
       </div>

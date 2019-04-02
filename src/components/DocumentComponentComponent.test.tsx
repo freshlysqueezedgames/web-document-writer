@@ -103,7 +103,7 @@ describe('<DocumentComponentComponent/>', (): void => {
 
   test('Should trigger the creation of a new component whenever ctrl+return is pressed', (): void => {
     const additionMock: jest.Mock = jest.fn() 
-    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} OnContentAddition={additionMock}/>)
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} OnAppendContent={additionMock}/>)
 
     const textarea: ReactWrapper = wrapper.find('textarea')
 
@@ -118,7 +118,7 @@ describe('<DocumentComponentComponent/>', (): void => {
 
   test('Should not trigger a change using return if ctrl is not pressed', (): void => {
     const additionMock: jest.Mock = jest.fn() 
-    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} OnContentAddition={additionMock}/>)
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} OnAppendContent={additionMock}/>)
 
     const textarea: ReactWrapper = wrapper.find('textarea')
 
@@ -141,19 +141,19 @@ describe('<DocumentComponentComponent/>', (): void => {
   })
 
   test('Should return different DOM elements depending on the type of component it is', (): void => {
-    let wrapper: ShallowWrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.HEADER_1} content="this is content" focused={true} OnContentAddition={() => {}}/>)
+    let wrapper: ShallowWrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.HEADER_1} content="this is content" focused={true} OnAppendContent={() => {}}/>)
 
     expect(wrapper.find('h1')).toHaveLength(1)
 
-    wrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.HEADER_2} content="this is content" focused={true} OnContentAddition={() => {}}/>)
+    wrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.HEADER_2} content="this is content" focused={true} OnAppendContent={() => {}}/>)
 
     expect(wrapper.find('h2')).toHaveLength(1)
 
-    wrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.HEADER_3} content="this is content" focused={true} OnContentAddition={() => {}}/>)
+    wrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.HEADER_3} content="this is content" focused={true} OnAppendContent={() => {}}/>)
 
     expect(wrapper.find('h3')).toHaveLength(1)
 
-    wrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.CODE} content="this is content" focused={true} OnContentAddition={() => {}}/>)
+    wrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.CODE} content="this is content" focused={true} OnAppendContent={() => {}}/>)
 
     expect(wrapper.find(`div.${styles.componentType}`)).toHaveLength(1)
   })

@@ -10,13 +10,21 @@ export interface DocumentAction {
   content: DocumentComponentState[];
 }
 
-export interface AppendComponentAction {
-  type: 'APPEND_COMPONENT';
-  after: string;
+export interface AddComponentAction {
   id: string;
   content: string;
   focused: boolean;
   componentType: number;
+}
+
+export interface PrependComponentAction extends AddComponentAction {
+  type: 'PREPEND_COMPONENT';
+  before: string;
+}
+
+export interface AppendComponentAction extends AddComponentAction {
+  type: 'APPEND_COMPONENT';
+  after: string;
 }
 
 export interface UpdateComponentAction {
@@ -51,6 +59,7 @@ export interface UpdateCursorOffsetsAction {
 
 export type Action = 
   DocumentAction | 
+  PrependComponentAction |
   AppendComponentAction | 
   UpdateComponentAction |
   UpdateComponentTypeAction | 
@@ -63,6 +72,15 @@ export const SetDocument = (slug: string, content: DocumentComponentState[]): Do
   type: 'SET_DOCUMENT',
   slug,
   content
+})
+
+export const PrependComponent = (before: string, id: string, content: string, focused: boolean = true, componentType: number = DOCUMENT_COMPONENT_TYPE.PARAGRAPH): PrependComponentAction => ({
+  type: 'PREPEND_COMPONENT',
+  before,
+  id,
+  content,
+  focused,
+  componentType
 })
 
 export const AppendComponent = (after: string, id: string, content: string, focused: boolean = true, componentType: number = DOCUMENT_COMPONENT_TYPE.PARAGRAPH): AppendComponentAction => ({

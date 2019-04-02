@@ -16,7 +16,8 @@ import {
   FocusComponent,
   UpdateCursor,
   UpdateCursorOffsets,
-  Action
+  Action,
+  PrependComponent
 } from '../store/actions'
 
 import {
@@ -41,6 +42,7 @@ interface DocumentContainerMappedStateProps {
 
 interface DocumentContainerMappedDispatchProps {
   OnAppendContent: (id: string, value: string) => void,
+  OnPrependContent: (id: string, value: string) => void,
   OnContentChange: (id: string, content: string) => void,
   OnFocusChange: (id: string) => void,
   OnCursorChange: (top: number, right: number, bottom: number, left: number) => void,
@@ -63,6 +65,7 @@ const MapStateToProps = (state: EditorStateRecord): DocumentContainerMappedState
 
 const MapDispatchToProps = (dispatch: (action: Action) => void): DocumentContainerMappedDispatchProps => ({
   OnAppendContent: (id: string, value: string): void => dispatch(AppendComponent(id, shortid.generate(), value)),
+  OnPrependContent: (id: string, value: string): void => dispatch(PrependComponent(id, shortid.generate(), value)),
   OnContentChange: (id: string, content: string): void => dispatch(UpdateComponent(id, content)),
   OnFocusChange: (id: string): void => dispatch(FocusComponent(id)),
   OnCursorChange: (top: number, right: number, bottom: number, left: number) => dispatch(UpdateCursor(top, right, bottom, left)),

@@ -20,6 +20,7 @@ const EditorReducer = (state: EditorStateRecord = defaultEditorStateRecord, acti
       return state.update<"cursor">('cursor', (record: CursorStateRecord): CursorStateRecord => CursorReducer(record, action))
     }
     case 'SET_DOCUMENT':
+    case 'PREPEND_COMPONENT':
     case 'APPEND_COMPONENT':
     case 'UPDATE_COMPONENT':
     case 'UPDATE_COMPONENT_TYPE':
