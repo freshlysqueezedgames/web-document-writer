@@ -32,6 +32,7 @@ function RenderDocument (props: DocumentContainerProps): React.ReactElement<type
         OnPrependContent={props.OnPrependContent}
         OnFocus={props.OnFocusChange}
         OnCursorChange={props.OnCursorChange}
+        OnRemoveContent={props.OnRemoveContent}
       />
     )}
     <WithDragDocumentComponentTypeSelection OnSelection={props.OnComponentTypeChange}/>

@@ -20,6 +20,7 @@ export type DocumentComponentComponentProps = Readonly<{
   OnPrependContent?: (id: string, content: string) => void,
   OnFocus?: (id: string) => void,
   OnCursorChange?: (top: number, right: number, bottom: number, left: number) => void
+  OnRemoveContent?: (id: string) => void
 }>
 
 export type DocumentComponentComponentState = Readonly<{
@@ -228,6 +229,12 @@ export default class DocumentComponentComponent extends React.Component<Document
     this.SetStateOffset()
   }
 
+  RemoveContent = () => {
+    const props: DocumentComponentComponentProps = this.props
+
+    props.OnRemoveContent && props.OnRemoveContent(props.id)
+  }
+
   RenderComponentType (): React.ReactElement {
     switch (this.props.componentType) {
       case DOCUMENT_COMPONENT_TYPE.HEADER_1 : {
@@ -294,13 +301,15 @@ export default class DocumentComponentComponent extends React.Component<Document
           <Add/>
         </div>
       </div>
-      <div className={styles.remove}>
+      <div className={styles.remove} onClick={t.RemoveContent}>
         <table>
-          <tr>
-            <td>
-              <Remove/>
-            </td>
-          </tr>
+          <tbody>
+            <tr>
+              <td>
+                <Remove/>
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>

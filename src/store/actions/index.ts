@@ -33,6 +33,11 @@ export interface UpdateComponentAction {
   content: string;
 }
 
+export interface RemoveComponentAction {
+  type: 'REMOVE_COMPONENT';
+  id: string;
+}
+
 export interface UpdateComponentTypeAction {
   type: 'UPDATE_COMPONENT_TYPE';
   componentType: number;
@@ -66,6 +71,7 @@ export type Action =
   FocusComponentAction | 
   UpdateCursorAction | 
   UpdateCursorOffsetsAction |
+  RemoveComponentAction |
   {type: 'EMPTY'}
 
 export const SetDocument = (slug: string, content: DocumentComponentState[]): DocumentAction => ({
@@ -120,4 +126,9 @@ export const UpdateCursorOffsets = (offsetX: number, offsetY: number): UpdateCur
   type: 'UPDATE_CURSOR_OFFSETS',
   offsetX,
   offsetY
+})
+
+export const RemoveComponent = (id: string): RemoveComponentAction => ({
+  type: 'REMOVE_COMPONENT',
+  id
 })

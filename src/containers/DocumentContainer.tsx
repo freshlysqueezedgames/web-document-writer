@@ -17,7 +17,8 @@ import {
   UpdateCursor,
   UpdateCursorOffsets,
   Action,
-  PrependComponent
+  PrependComponent,
+  RemoveComponent
 } from '../store/actions'
 
 import {
@@ -47,7 +48,8 @@ interface DocumentContainerMappedDispatchProps {
   OnFocusChange: (id: string) => void,
   OnCursorChange: (top: number, right: number, bottom: number, left: number) => void,
   OnComponentTypeChange: (componentType: number) => void
-  OnCursorOffsetChange: (offsetX: number, offsetY: number) => void
+  OnCursorOffsetChange: (offsetX: number, offsetY: number) => void,
+  OnRemoveContent: (id: string) => void
 }
 
 export interface DocumentContainerProps extends DocumentContainerMappedStateProps, DocumentContainerMappedDispatchProps {
@@ -70,7 +72,8 @@ const MapDispatchToProps = (dispatch: (action: Action) => void): DocumentContain
   OnFocusChange: (id: string): void => dispatch(FocusComponent(id)),
   OnCursorChange: (top: number, right: number, bottom: number, left: number) => dispatch(UpdateCursor(top, right, bottom, left)),
   OnComponentTypeChange: (componentType: number) => dispatch(UpdateComponentType(componentType) as Action),
-  OnCursorOffsetChange: (offsetX: number, offsetY: number) => dispatch(UpdateCursorOffsets(offsetX, offsetY))
+  OnCursorOffsetChange: (offsetX: number, offsetY: number) => dispatch(UpdateCursorOffsets(offsetX, offsetY)),
+  OnRemoveContent: (id: string): void => dispatch(RemoveComponent(id))
 })
 
 class DocumentContainer extends React.Component<DocumentContainerProps> {

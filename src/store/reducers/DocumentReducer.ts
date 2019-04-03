@@ -101,6 +101,19 @@ const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord
         return SetFocusedByID(id, list)
       })
     }
+    case 'REMOVE_COMPONENT': {
+      const {id} = action 
+
+      return state.update<"components">('components', (list: List<DocumentComponentStateRecord>): List<DocumentComponentStateRecord> => {
+        const key: number | typeof undefined = list.findKey((record: DocumentComponentStateRecord): boolean => record.get<"id">('id') === id)
+
+        if (key === undefined) {
+          return list
+        }
+
+        return list.remove(key)
+      })
+    }
     default: {
       return state
     }

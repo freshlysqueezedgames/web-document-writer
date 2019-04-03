@@ -13,6 +13,7 @@ import DocumentEditorComponent from './DocumentEditorComponent'
 import KEY_CODE from '../utils'
 
 import * as styles from './DocumentEditorComponent.scss'
+import * as componentStyles from './DocumentComponentComponent.scss'
 
 describe('<DocumentEditorComponent/>', (): void => {
   let keyMapStyles = styles as {[key: string]: string}
@@ -184,5 +185,33 @@ describe('<DocumentEditorComponent/>', (): void => {
     expect(component).toHaveLength(1)
 
     expect(component.prop('componentType')).toEqual(DOCUMENT_COMPONENT_TYPE.HEADER_1)
+  })
+
+  test('Should be able to remove a component', (): void => {
+    store.dispatch(SetDocument('test-document', [{
+      id: 'test1',
+      content: '',
+      focused: true,
+      componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
+    }]))
+
+    const wrapper: ReactWrapper = mount(
+      <Provider store={store}>
+        <DocumentEditorComponent/>
+      </Provider>
+    )
+
+    let component: ReactWrapper = wrapper.find('DocumentComponentComponent')
+
+    expect(component).toHaveLength(1)
+
+    const removeButton: ReactWrapper = component.find(`div.${componentStyles.remove}`)
+
+    expect(removeButton).toHaveLength(1)
+    removeButton.simulate('click')
+
+    component = wrapper.find('DocumentComponentComponent')
+
+    expect(component).toHaveLength(0)
   })
 })
