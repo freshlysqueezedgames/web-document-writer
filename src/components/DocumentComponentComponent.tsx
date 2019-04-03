@@ -9,6 +9,7 @@ import {
 } from '../store/types'
 
 import * as styles from './DocumentComponentComponent.scss'
+import { RemoveButton, AddButton } from './Buttons';
 
 export type DocumentComponentComponentProps = Readonly<{
   id: string,
@@ -292,25 +293,13 @@ export default class DocumentComponentComponent extends React.Component<Document
       />
       {this.RenderComponentType()}
       <div className={styles.prepend}>
-        <div className={styles.button} onClick={t.PrependContent}>
-          <Add/>
-        </div>
+        <AddButton OnClick={t.PrependContent}/>
       </div>
       <div className={styles.append}>
-        <div className={styles.button} onClick={t.AppendContent}>
-          <Add/>
-        </div>
+        <AddButton OnClick={t.AppendContent}/>
       </div>
-      <div className={styles.remove} onClick={t.RemoveContent}>
-        <table>
-          <tbody>
-            <tr>
-              <td>
-                <Remove/>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div className={styles.remove}>
+        <RemoveButton OnClick={t.RemoveContent}/>
       </div>
     </div>
   }

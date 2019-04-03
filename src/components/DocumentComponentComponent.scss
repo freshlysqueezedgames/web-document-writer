@@ -99,45 +99,11 @@ div.document-component-component {
     float: left;
   }
 
-  div.button {
-    width : 30px;
-    height: 30px;
-    background-color: #fd5720;
-    border: 0px solid #000;
-    border-radius: 15px;
-    position: relative;
-    float: none;
-    margin: -15px auto 0px auto;
-    cursor: pointer;
-    overflow: hidden;
-    z-index: 1;
-
-    svg {
-      width: 21px;
-      height: 21px;
-      margin: 5px;
-    }
-  }
-
   div.remove {
     width: 25px;
     height: 100%;
     position: absolute;
     right: 0px;
     display: none;
-    background-color: transparentize($color: #fd5720, $amount: 0.3);
-
-    svg {
-      width: 15px;
-      height: 15px;
-      margin: 2.5px 2.5px 0px 2.5px;
-    }
-
-    table {
-      height: 100%;
-      width: 100%;
-    }
-
-    cursor: pointer;
   }
 }

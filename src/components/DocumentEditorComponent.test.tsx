@@ -14,6 +14,7 @@ import KEY_CODE from '../utils'
 
 import * as styles from './DocumentEditorComponent.scss'
 import * as componentStyles from './DocumentComponentComponent.scss'
+import * as buttonStyles from './Buttons.scss'
 
 describe('<DocumentEditorComponent/>', (): void => {
   let keyMapStyles = styles as {[key: string]: string}
@@ -205,7 +206,7 @@ describe('<DocumentEditorComponent/>', (): void => {
 
     expect(component).toHaveLength(1)
 
-    const removeButton: ReactWrapper = component.find(`div.${componentStyles.remove}`)
+    const removeButton: ReactWrapper = component.find(`div.${componentStyles.remove} div.${buttonStyles.remove}`)
 
     expect(removeButton).toHaveLength(1)
     removeButton.simulate('click')

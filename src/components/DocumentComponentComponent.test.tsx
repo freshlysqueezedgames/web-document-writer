@@ -9,6 +9,7 @@ import DocumentComponentComponent, {Range} from './DocumentComponentComponent'
 import KEY_CODE from '../utils'
 
 import * as styles from './DocumentComponentComponent.scss'
+import * as buttonStyles from './Buttons.scss'
 
 describe('<DocumentComponentComponent/>', (): void => {
   test('Should render the content of document component state', (): void => {
@@ -187,7 +188,7 @@ describe('<DocumentComponentComponent/>', (): void => {
     const additionMock: jest.Mock = jest.fn() 
     const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} OnAppendContent={additionMock}/>)
 
-    const appendButton: ReactWrapper = wrapper.find(`.${styles.append} .${styles.button}`)
+    const appendButton: ReactWrapper = wrapper.find(`.${styles.append} div.${buttonStyles.add}`)
     const component: ReactWrapper = wrapper.find(`.${styles.documentComponentComponent}`)
 
     expect(component).toHaveLength(1)
@@ -220,7 +221,7 @@ describe('<DocumentComponentComponent/>', (): void => {
     const additionMock: jest.Mock = jest.fn() 
     const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} OnPrependContent={additionMock}/>)
 
-    const prependButton: ReactWrapper = wrapper.find(`.${styles.prepend} .${styles.button}`)
+    const prependButton: ReactWrapper = wrapper.find(`.${styles.prepend} div.${buttonStyles.add}`)
 
     expect(prependButton).toHaveLength(1)
     
