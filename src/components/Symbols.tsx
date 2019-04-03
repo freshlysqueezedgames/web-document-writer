@@ -18,4 +18,15 @@ export const Add = () =>
       <rect x="8.4" y="0.8" transform="matrix(6.123234e-17 -1 1 6.123234e-17 0.176 19.0115)" className={styles.st0} width="2.4" height="17.2"/>
     </g>
   </svg>
+
+export const Remove = () =>
+  <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 18.1 18.1" className={styles.remove} xmlSpace="preserve">
+    <g>
+      <path className={styles.st0} d="M17,3L2.8,17.2c-0.5,0.5-1.2,0.5-1.7,0h0c-0.5-0.5-0.5-1.2,0-1.7L15.3,1.3c0.5-0.5,1.2-0.5,1.7,0l0,0
+      C17.4,1.8,17.4,2.6,17,3z"/>
+      <path className={styles.st0} d="M15.3,17.2L1.2,3c-0.5-0.5-0.5-1.2,0-1.7l0,0c0.5-0.5,1.2-0.5,1.7,0L17,15.5c0.5,0.5,0.5,1.2,0,1.7l0,0
+      C16.5,17.6,15.8,17.6,15.3,17.2z"/>
+    </g>
+  </svg>
+  
   

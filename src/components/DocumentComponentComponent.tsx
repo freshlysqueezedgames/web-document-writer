@@ -1,7 +1,7 @@
 // @flow
 
 import React, { SyntheticEvent } from 'react'
-import {Add} from './Symbols'
+import {Add, Remove} from './Symbols'
 import KEY_CODE from '../utils'
 
 import {
@@ -293,6 +293,15 @@ export default class DocumentComponentComponent extends React.Component<Document
         <div className={styles.button} onClick={t.AppendContent}>
           <Add/>
         </div>
+      </div>
+      <div className={styles.remove}>
+        <table>
+          <tr>
+            <td>
+              <Remove/>
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
   }
