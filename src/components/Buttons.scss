@@ -12,9 +12,32 @@ div.remove {
   table {
     height: 100%;
     width: 100%;
+    position: absolute;
+    top: 0px;
   }
 
   cursor: pointer;
+
+  div.thermometer {
+    position: absolute;
+    height: 0%;
+    width: 100%;
+    bottom: 0px;
+    background-color: #fd5720;
+  
+    &.increase {
+      animation: increase 2s forwards running linear;
+    }
+  }
+
+  @keyframes increase {
+    0% {
+      height: 0%
+    }
+    100% {
+      height: 100%;
+    }
+  }
 }
 
 div.add {
