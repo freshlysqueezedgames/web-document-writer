@@ -232,7 +232,7 @@ export default class DocumentComponentComponent extends React.Component<Document
 
   RemoveContent = () => {
     const props: DocumentComponentComponentProps = this.props
-
+    
     props.OnRemoveContent && props.OnRemoveContent(props.id)
   }
 

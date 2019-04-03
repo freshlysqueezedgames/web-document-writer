@@ -16,6 +16,8 @@ import * as styles from './DocumentEditorComponent.scss'
 import * as componentStyles from './DocumentComponentComponent.scss'
 import * as buttonStyles from './Buttons.scss'
 
+jest.useFakeTimers()
+
 describe('<DocumentEditorComponent/>', (): void => {
   let keyMapStyles = styles as {[key: string]: string}
 
@@ -209,10 +211,48 @@ describe('<DocumentEditorComponent/>', (): void => {
     const removeButton: ReactWrapper = component.find(`div.${componentStyles.remove} div.${buttonStyles.remove}`)
 
     expect(removeButton).toHaveLength(1)
-    removeButton.simulate('click')
+    removeButton.simulate('mousedown')
 
-    component = wrapper.find('DocumentComponentComponent')
+    expect(setTimeout).toHaveBeenCalledTimes(1)
+    expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 2000)
 
-    expect(component).toHaveLength(0)
+    jest.runAllTimers()
+
+    expect(store.getState().toJS().document.components).toHaveLength(0)
+  })
+
+  test('Should be able to cancel removal of component', (): void => {
+    store.dispatch(SetDocument('test-document', [{
+      id: 'test1',
+      content: '',
+      focused: true,
+      componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
+    }]))
+
+    const wrapper: ReactWrapper = mount(
+      <Provider store={store}>
+        <DocumentEditorComponent/>
+      </Provider>
+    )
+
+    let component: ReactWrapper = wrapper.find('DocumentComponentComponent')
+
+    expect(component).toHaveLength(1)
+
+    const removeButton: ReactWrapper = component.find(`div.${componentStyles.remove} div.${buttonStyles.remove}`)
+
+    expect(removeButton).toHaveLength(1)
+    removeButton.simulate('mousedown')
+
+    expect(setTimeout).toHaveBeenCalledTimes(2)
+    expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 2000)
+
+    jest.runTimersToTime(1000)
+
+    removeButton.simulate('mouseup')
+
+    jest.runTimersToTime(2000)
+    
+    expect(store.getState().toJS().document.components).toHaveLength(1)
   })
 })

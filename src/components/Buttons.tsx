@@ -17,18 +17,24 @@ export class RemoveButton extends React.Component<ButtonProps, RemoveButtonState
   }
 
   cancelled: boolean = false
+  triggered: boolean = false
 
   HandleCancel = () => {
-    this.cancelled = true
-    this.setState({animation: ''})
+    if (this.triggered) {
+      this.cancelled = true
+      this.setState({animation: ''})
+    }
   }
   
   HandleMouseDown = () => {
+    this.triggered = true
     this.setState({animation: styles.increase})
-  
+
     const timeout = setTimeout((): void => {
       clearTimeout(timeout)
       
+      this.triggered = false
+
       if (this.cancelled) {
         this.cancelled = false
         return
