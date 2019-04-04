@@ -1,7 +1,8 @@
 // @flow
 import {
   DOCUMENT_COMPONENT_TYPE,
-  DocumentComponentState
+  DocumentComponentState,
+  DROP_MODE
 } from '../types'
 
 export interface DocumentAction {
@@ -62,6 +63,17 @@ export interface UpdateCursorOffsetsAction {
   offsetY: number;
 }
 
+export interface MoveTargetComponentAction {
+  type: 'MOVE_TARGET_COMPONENT_ACTION'
+  id: string
+  mode: DROP_MODE
+}
+
+export interface MoveComponentAction {
+  type: 'MOVE_COMPONENT_ACTION'
+  id: string
+}
+
 export type Action = 
   DocumentAction | 
   PrependComponentAction |
@@ -72,6 +84,8 @@ export type Action =
   UpdateCursorAction | 
   UpdateCursorOffsetsAction |
   RemoveComponentAction |
+  MoveTargetComponentAction |
+  MoveComponentAction | 
   {type: 'EMPTY'}
 
 export const SetDocument = (slug: string, content: DocumentComponentState[]): DocumentAction => ({
@@ -132,3 +146,15 @@ export const RemoveComponent = (id: string): RemoveComponentAction => ({
   type: 'REMOVE_COMPONENT',
   id
 })
+
+export const MoveTargetComponent = (id: string, mode: DROP_MODE = DROP_MODE.APPEND): MoveTargetComponentAction => ({
+  type: 'MOVE_TARGET_COMPONENT_ACTION',
+  id,
+  mode
+})
+
+export const MoveComponent = (id: string): MoveComponentAction => ({
+  type: 'MOVE_COMPONENT_ACTION',
+  id
+})
+

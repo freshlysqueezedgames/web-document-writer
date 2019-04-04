@@ -3,7 +3,7 @@
 import React, {Component} from 'react'
 import {shallow, mount, ShallowWrapper, ReactWrapper} from 'enzyme'
 
-import {DOCUMENT_COMPONENT_TYPE} from '../store/types'
+import {DOCUMENT_COMPONENT_TYPE, DROP_MODE} from '../store/types'
 
 import DocumentComponentComponent, {Range} from './DocumentComponentComponent'
 import KEY_CODE from '../utils'
@@ -13,7 +13,7 @@ import * as buttonStyles from './Buttons.scss'
 
 describe('<DocumentComponentComponent/>', (): void => {
   test('Should render the content of document component state', (): void => {
-    const wrapper: ShallowWrapper = shallow(<DocumentComponentComponent id="test id" content="This is the content" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} focused={true}/>)
+    const wrapper: ShallowWrapper = shallow(<DocumentComponentComponent id="test id" content="This is the content" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} focused={true} drop={DROP_MODE.NONE}/>)
     const element: ShallowWrapper = wrapper.find(`.${styles.documentComponentComponent}`)
 
     expect(element).toHaveLength(1)
@@ -22,7 +22,7 @@ describe('<DocumentComponentComponent/>', (): void => {
 
   test('Should trigger a change whenever the value is updated', (): void => {
     const contentChangeMock: jest.Mock = jest.fn()
-    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" content="This is the content"  componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} focused={true} OnContentChange={contentChangeMock} />)
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" content="This is the content"  componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} focused={true} drop={DROP_MODE.NONE} OnContentChange={contentChangeMock} />)
 
     const textArea: ReactWrapper = wrapper.find('textarea')
 
@@ -35,7 +35,7 @@ describe('<DocumentComponentComponent/>', (): void => {
   })
 
   test('Should have an area that reflects the content in textarea', (): void => {
-    const wrapper: ShallowWrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="This is the content" focused={true}/>)
+    const wrapper: ShallowWrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="This is the content" focused={true} drop={DROP_MODE.NONE}/>)
     const content: ShallowWrapper = wrapper.find(`.${styles.componentType}`)
     const textArea: ShallowWrapper = wrapper.find('textarea')
     
@@ -53,7 +53,7 @@ describe('<DocumentComponentComponent/>', (): void => {
       rangeCount: 1
     }))
 
-    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test"  componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="This is the content" focused={true}/>)
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test"  componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="This is the content" focused={true} drop={DROP_MODE.NONE}/>)
     const content: ReactWrapper = wrapper.find(`.${styles.componentType}`)
 
     content.simulate('click')
@@ -85,7 +85,7 @@ describe('<DocumentComponentComponent/>', (): void => {
       rangeCount: 1
     }))
 
-    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test"  componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="This is the content" focused={true}/>)
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test"  componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="This is the content" focused={true} drop={DROP_MODE.NONE}/>)
     const content: ReactWrapper = wrapper.find(`.${styles.componentType}`)
 
     content.simulate('click')
@@ -148,7 +148,7 @@ describe('<DocumentComponentComponent/>', (): void => {
       rangeCount: 0
     }))
 
-    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test"  componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="This is the content" focused={true}/>)
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test"  componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="This is the content" focused={true} drop={DROP_MODE.NONE}/>)
     const content: ReactWrapper = wrapper.find(`.${styles.componentType}`)
 
     content.simulate('click')
@@ -171,7 +171,7 @@ describe('<DocumentComponentComponent/>', (): void => {
 
   test('Should trigger the appending of a new component whenever ctrl+return is pressed', (): void => {
     const additionMock: jest.Mock = jest.fn() 
-    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} OnAppendContent={additionMock}/>)
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} drop={DROP_MODE.NONE} OnAppendContent={additionMock}/>)
 
     const textarea: ReactWrapper = wrapper.find('textarea')
 
@@ -186,7 +186,7 @@ describe('<DocumentComponentComponent/>', (): void => {
 
   test('Should trigger the appending of a new component whenever the append button is pressed', (): void => {
     const additionMock: jest.Mock = jest.fn() 
-    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} OnAppendContent={additionMock}/>)
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} drop={DROP_MODE.NONE} OnAppendContent={additionMock}/>)
 
     const appendButton: ReactWrapper = wrapper.find(`.${styles.append} div.${buttonStyles.add}`)
     const component: ReactWrapper = wrapper.find(`.${styles.documentComponentComponent}`)
@@ -203,7 +203,7 @@ describe('<DocumentComponentComponent/>', (): void => {
 
   test('Should trigger the prepending of a new coponent whenever ctrl+shift+return is pressed', (): void => {
     const additionMock: jest.Mock = jest.fn() 
-    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} OnPrependContent={additionMock}/>)
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} drop={DROP_MODE.NONE} OnPrependContent={additionMock}/>)
 
     const textarea: ReactWrapper = wrapper.find('textarea')
 
@@ -219,7 +219,7 @@ describe('<DocumentComponentComponent/>', (): void => {
 
   test('Should trigger the prepending of a new component whenever the append button is pressed', (): void => {
     const additionMock: jest.Mock = jest.fn() 
-    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} OnPrependContent={additionMock}/>)
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} drop={DROP_MODE.NONE} OnPrependContent={additionMock}/>)
 
     const prependButton: ReactWrapper = wrapper.find(`.${styles.prepend} div.${buttonStyles.add}`)
 
@@ -233,7 +233,7 @@ describe('<DocumentComponentComponent/>', (): void => {
 
   test('Should not trigger a change using return if ctrl is not pressed', (): void => {
     const additionMock: jest.Mock = jest.fn() 
-    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} OnAppendContent={additionMock}/>)
+    const wrapper: ReactWrapper = mount(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} content="this is the content" focused={true} drop={DROP_MODE.NONE} OnAppendContent={additionMock}/>)
 
     const textarea: ReactWrapper = wrapper.find('textarea')
 
@@ -256,19 +256,19 @@ describe('<DocumentComponentComponent/>', (): void => {
   })
 
   test('Should return different DOM elements depending on the type of component it is', (): void => {
-    let wrapper: ShallowWrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.HEADER_1} content="this is content" focused={true} OnAppendContent={() => {}}/>)
+    let wrapper: ShallowWrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.HEADER_1} content="this is content" focused={true} drop={DROP_MODE.NONE} OnAppendContent={() => {}}/>)
 
     expect(wrapper.find('h1')).toHaveLength(1)
 
-    wrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.HEADER_2} content="this is content" focused={true} OnAppendContent={() => {}}/>)
+    wrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.HEADER_2} content="this is content" focused={true} drop={DROP_MODE.NONE} OnAppendContent={() => {}}/>)
 
     expect(wrapper.find('h2')).toHaveLength(1)
 
-    wrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.HEADER_3} content="this is content" focused={true} OnAppendContent={() => {}}/>)
+    wrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.HEADER_3} content="this is content" focused={true} drop={DROP_MODE.NONE} OnAppendContent={() => {}}/>)
 
     expect(wrapper.find('h3')).toHaveLength(1)
 
-    wrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.CODE} content="this is content" focused={true} OnAppendContent={() => {}}/>)
+    wrapper = shallow(<DocumentComponentComponent id="test" componentType={DOCUMENT_COMPONENT_TYPE.CODE} content="this is content" focused={true} drop={DROP_MODE.NONE} OnAppendContent={() => {}}/>)
 
     expect(wrapper.find(`div.${styles.componentType}`)).toHaveLength(1)
   })

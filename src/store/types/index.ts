@@ -10,10 +10,17 @@ export const DOCUMENT_COMPONENT_TYPE: {[index: string]: number} = {
   CODE: 4
 }
 
+export enum DROP_MODE {
+  NONE = 0,
+  APPEND,
+  PREPEND 
+}
+
 export interface DocumentComponentState {
   id: string;
   content: string;
   focused: boolean;
+  drop: DROP_MODE;
   componentType: number;
 }
 

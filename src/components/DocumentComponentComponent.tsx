@@ -4,7 +4,8 @@ import React from 'react'
 import KEY_CODE from '../utils'
 
 import {
-  DOCUMENT_COMPONENT_TYPE
+  DOCUMENT_COMPONENT_TYPE,
+  DROP_MODE
 } from '../store/types'
 
 import * as styles from './DocumentComponentComponent.scss'
@@ -14,6 +15,7 @@ export type DocumentComponentComponentProps = Readonly<{
   id: string,
   content: string,
   focused: boolean,
+  drop: DROP_MODE,
   componentType: number,
 
   OnContentChange?: (id: string, content: string) => void,
@@ -22,13 +24,14 @@ export type DocumentComponentComponentProps = Readonly<{
   OnFocus?: (id: string) => void,
   OnCursorChange?: (top: number, right: number, bottom: number, left: number) => void
   OnRemoveContent?: (id: string) => void
+  OnMoveTarget?: (id: string, mode: DROP_MODE) => void
+  OnMove?: (id: string) => void
 }>
 
 export type DocumentComponentComponentState = Readonly<{
   startOffset: number,
   endOffset: number,
   mouseMode: string,
-  dragMode: string,
   draggable: boolean
 }>
 
@@ -52,12 +55,10 @@ export default class DocumentComponentComponent extends React.Component<Document
   shiftPressed: boolean = false
 
   offsetUpdate: boolean = false
-  dragEnterCounter: number = 0
 
   state: DocumentComponentComponentState = {
     startOffset: 0,
     endOffset: 0,
-    dragMode: '',
     mouseMode: '',
     draggable: false
   }
@@ -210,28 +211,17 @@ export default class DocumentComponentComponent extends React.Component<Document
   }
 
   MakeDraggable = () => this.setState({draggable: true})
-  MakeUndraggable = () => this.setState({draggable: false})
-
-  HandleDrag = (event: React.DragEvent<HTMLDivElement>) => {
-    console.log('I am dragging!', event)
+  HandleDragEnd = () => {
+    this.setState({draggable: false})
+  
+    this.props.OnMove && this.props.OnMove(this.props.id)
   }
 
-  HandleDragEnd = () => this.setState({draggable: false})
   HandleDragEnter = (event: React.DragEvent<HTMLElement>) => {
     event.stopPropagation()
 
-    if (event.target === this.containerRef && this.dragEnterCounter === 0) {
-      this.setState({dragMode: styles.dragover})
-    }
-
-    this.dragEnterCounter++
-  }
-
-  HandleDragLeave = (event: React.DragEvent<HTMLElement>) => {
-    this.dragEnterCounter--
-    
-    if (event.target === this.containerRef && this.dragEnterCounter === 0) {
-      this.setState({dragMode: ''})
+    if (event.target === this.containerRef) {
+      this.props.OnMoveTarget && this.props.OnMoveTarget(this.props.id, DROP_MODE.APPEND)
     }
   }
 
@@ -321,14 +311,14 @@ export default class DocumentComponentComponent extends React.Component<Document
 
     return <div 
       ref={t.ContainerRef}
-      className={`${styles.documentComponentComponent} ${t.state.mouseMode} ${t.state.dragMode}`} 
+      className={`${styles.documentComponentComponent} ${t.state.mouseMode} ${t.props.drop === DROP_MODE.APPEND ? styles.dragover : ''}`}
+      draggable={t.state.draggable}
+
       onMouseEnter={t.HandleMouseEnter} 
       onMouseLeave={t.HandleMouseExit}
-      onDrag={this.HandleDrag}
-      onDragEnd={this.HandleDragEnd}
-      draggable={this.state.draggable}
+
+      onDragEnd={t.HandleDragEnd}
       onDragEnter={t.HandleDragEnter}
-      onDragLeave={t.HandleDragLeave}
     >
       <textarea
         onChange={t.HandleTextAreaChange}
@@ -357,6 +347,7 @@ export default class DocumentComponentComponent extends React.Component<Document
   }
 
   componentDidMount (): void {
+    console.log('plops', this.props)
     window.addEventListener('resize', this.ImmediatelyUpdateCursor)
   }
 

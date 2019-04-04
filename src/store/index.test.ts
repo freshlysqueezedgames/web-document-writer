@@ -11,7 +11,8 @@ import {
 
 import {
   DOCUMENT_COMPONENT_TYPE,
-  EditorState
+  EditorState,
+  DROP_MODE
 } from './types'
 
 import {store} from './index'
@@ -33,6 +34,7 @@ describe('#Store', (): void => {
       id: 'test',
       content: 'this is a test',
       focused: false,
+      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
     }]))
 
@@ -85,7 +87,7 @@ describe('#Store', (): void => {
   })
 
   test('Should be able to modify the value of an item to a playlist', (): void => {
-    store.dispatch(SetDocument('test', [{id, content, focused: false, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}]))
+    store.dispatch(SetDocument('test', [{id, content, focused: false, drop: DROP_MODE.NONE, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}]))
 
     expect(store.getState().toJS().document).toMatchObject({
       slug: 'test',
@@ -103,7 +105,7 @@ describe('#Store', (): void => {
   })
 
   test('Should fail silently, with no updates if the targeted updated component does not exist', (): void => {
-    store.dispatch(SetDocument('test', [{id, content, focused: false, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}]))
+    store.dispatch(SetDocument('test', [{id, content, focused: false, drop: DROP_MODE.NONE, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}]))
 
     const result: {slug: string; components: {id: string; content: string}[]} = {
       slug: 'test',
@@ -118,7 +120,7 @@ describe('#Store', (): void => {
   })
 
   test('Should allow focus to be set on a component, making the other components lose their component flag', (): void => {
-    store.dispatch(SetDocument('test', [{id, content, focused: true, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}, {id: 'test 2', content, focused: false, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}]))
+    store.dispatch(SetDocument('test', [{id, content, focused: true, drop: DROP_MODE.NONE, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}, {id: 'test 2', content, focused: false, drop: DROP_MODE.NONE, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}]))
 
     expect(store.getState().toJS().document.components).toMatchObject([{
       id,
@@ -192,7 +194,7 @@ describe('#Store', (): void => {
   })
 
   test('Should be able to modify the component type', (): void => {
-    store.dispatch(SetDocument('test', [{id, content, focused: true, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}]))
+    store.dispatch(SetDocument('test', [{id, content, focused: true, drop: DROP_MODE.NONE, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}]))
 
     expect(store.getState().toJS().document.components).toMatchObject([{
       id,
@@ -212,7 +214,7 @@ describe('#Store', (): void => {
   })
 
   test('Should fail silently if no matching component is found', (): void => {
-    store.dispatch(SetDocument('test', [{id, content, focused: false, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}]))
+    store.dispatch(SetDocument('test', [{id, content, focused: false, drop: DROP_MODE.NONE, componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH}]))
 
     expect(store.getState().toJS().document.components).toMatchObject([{
       id,

@@ -7,7 +7,7 @@ import {Provider} from 'react-redux'
 import {store} from '../store'
 
 import {SetDocument} from '../store/actions'
-import {DOCUMENT_COMPONENT_TYPE} from '../store/types'
+import {DOCUMENT_COMPONENT_TYPE, DROP_MODE} from '../store/types'
 
 import DocumentEditorComponent from './DocumentEditorComponent'
 import KEY_CODE from '../utils'
@@ -36,11 +36,13 @@ describe('<DocumentEditorComponent/>', (): void => {
       id: 'test1',
       content: 'test1',
       focused: false,
+      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
     }, {
       id: 'test2',
       content: 'test2',
       focused: false,
+      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
     }]))
 
@@ -56,6 +58,7 @@ describe('<DocumentEditorComponent/>', (): void => {
       id: 'test1',
       content: 'test1',
       focused: false,
+      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
     }]))
 
@@ -80,6 +83,7 @@ describe('<DocumentEditorComponent/>', (): void => {
       id: 'test1',
       content: 'test1',
       focused: false,
+      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
     }]))
 
@@ -105,6 +109,7 @@ describe('<DocumentEditorComponent/>', (): void => {
       id: 'test1',
       content: '',
       focused: false,
+      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
     }]))
 
@@ -131,6 +136,7 @@ describe('<DocumentEditorComponent/>', (): void => {
       id: 'test1',
       content: '',
       focused: false,
+      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
     }]))
 
@@ -166,6 +172,7 @@ describe('<DocumentEditorComponent/>', (): void => {
       id: 'test1',
       content: '',
       focused: true,
+      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
     }]))
 
@@ -195,6 +202,7 @@ describe('<DocumentEditorComponent/>', (): void => {
       id: 'test1',
       content: '',
       focused: true,
+      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
     }]))
 
@@ -226,6 +234,7 @@ describe('<DocumentEditorComponent/>', (): void => {
       id: 'test1',
       content: '',
       focused: true,
+      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
     }]))
 
