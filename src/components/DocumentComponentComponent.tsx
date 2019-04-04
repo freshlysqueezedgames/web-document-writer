@@ -55,6 +55,7 @@ export default class DocumentComponentComponent extends React.Component<Document
   shiftPressed: boolean = false
 
   offsetUpdate: boolean = false
+  dropMode: DROP_MODE = DROP_MODE.NONE
 
   state: DocumentComponentComponentState = {
     startOffset: 0,
@@ -217,11 +218,21 @@ export default class DocumentComponentComponent extends React.Component<Document
     this.props.OnMove && this.props.OnMove(this.props.id)
   }
 
-  HandleDragEnter = (event: React.DragEvent<HTMLElement>) => {
+  HandleDragOver = (event: React.DragEvent<HTMLElement>) => {
     event.stopPropagation()
 
-    if (event.target === this.containerRef) {
-      this.props.OnMoveTarget && this.props.OnMoveTarget(this.props.id, DROP_MODE.APPEND)
+    if (!this.componentRef) {
+      return
+    }
+
+    const {top} = this.componentRef.getBoundingClientRect()
+    const height: number = this.componentRef.clientHeight
+    let dropMode: DROP_MODE = this.dropMode
+
+    this.dropMode = event.clientY - top < height / 2 ? DROP_MODE.APPEND : DROP_MODE.PREPEND
+
+    if (dropMode !== this.dropMode) {
+      this.props.OnMoveTarget && this.props.OnMoveTarget(this.props.id, this.dropMode)
     }
   }
 
@@ -318,7 +329,7 @@ export default class DocumentComponentComponent extends React.Component<Document
       onMouseLeave={t.HandleMouseExit}
 
       onDragEnd={t.HandleDragEnd}
-      onDragEnter={t.HandleDragEnter}
+      onDragOver={t.HandleDragOver}
     >
       <textarea
         onChange={t.HandleTextAreaChange}
