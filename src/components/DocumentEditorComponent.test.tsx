@@ -214,7 +214,7 @@ describe('<DocumentEditorComponent/>', (): void => {
     removeButton.simulate('mousedown')
 
     expect(setTimeout).toHaveBeenCalledTimes(1)
-    expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 2000)
+    expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 1200)
 
     jest.runAllTimers()
 
@@ -245,13 +245,13 @@ describe('<DocumentEditorComponent/>', (): void => {
     removeButton.simulate('mousedown')
 
     expect(setTimeout).toHaveBeenCalledTimes(2)
-    expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 2000)
+    expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 1200)
 
-    jest.runTimersToTime(1000)
+    jest.runTimersToTime(600)
 
     removeButton.simulate('mouseup')
 
-    jest.runTimersToTime(2000)
+    jest.runTimersToTime(600)
     
     expect(store.getState().toJS().document.components).toHaveLength(1)
   })

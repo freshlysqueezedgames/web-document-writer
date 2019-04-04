@@ -41,7 +41,7 @@ export class RemoveButton extends React.Component<ButtonProps, RemoveButtonState
       }
 
       this.props.OnClick()
-    }, 2000)
+    }, 1200)
   }
 
   render () {
