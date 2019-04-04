@@ -59,3 +59,19 @@ div.add {
     margin: 5px;
   }
 }
+
+div.drag-indicator-button {
+  width: 100%;
+  height: 100%;
+  background-color: transparentize($color: #fd5720, $amount: 0.3);
+
+  table {
+    width: 100%;
+    height: 100%;
+  }
+
+  svg {
+    height: 30px;
+    margin: 5px;
+  }
+}

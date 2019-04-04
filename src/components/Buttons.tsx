@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Remove, Add} from './Symbols'
+import {Remove, Add, DragIndicator} from './Symbols'
 
 import * as styles from './Buttons.scss'
 
@@ -31,9 +31,8 @@ export class RemoveButton extends React.Component<ButtonProps, RemoveButtonState
     this.setState({animation: styles.increase})
 
     const timeout = setTimeout((): void => {
-      clearTimeout(timeout)
-      
       this.triggered = false
+      clearTimeout(timeout)
 
       if (this.cancelled) {
         this.cancelled = false
@@ -66,3 +65,18 @@ export const AddButton = (props: ButtonProps) =>
   <div className={styles.add} onClick={props.OnClick}>
     <Add/>
   </div>
+
+export const DragIndicatorButton = () => 
+  <div className={styles.dragIndicatorButton}>
+    <table>
+      <tbody>
+        <tr>
+          <td>
+            <DragIndicator/>
+          </td>
+        </tr>
+      </tbody>
+    </table>    
+  </div>
+
+  

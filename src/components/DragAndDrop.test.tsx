@@ -1,14 +1,14 @@
 import * as React from 'react'
 import {ReactWrapper, mount} from 'enzyme'
-import { WithDrag } from './DragAndDrop';
+import { WithPositionalDrag } from './DragAndDrop';
 
 import * as styles from './DragAndDrop.scss'
 
-describe('<WithDrag/>', (): void => {
+describe('<WithPositionalDrag/>', (): void => {
   test('Should be able to create drag events that fix the position of elements', (): void => {
-    const WithDraggable = WithDrag(() => <div/>, true)
+    const WithPositionalDraggable = WithPositionalDrag(() => <div/>, true)
 
-    const wrapper: ReactWrapper = mount(<WithDraggable/>)
+    const wrapper: ReactWrapper = mount(<WithPositionalDraggable/>)
 
     const div: ReactWrapper = wrapper.find(`.${styles.withDraggableFixed}`)
 
@@ -27,9 +27,9 @@ describe('<WithDrag/>', (): void => {
   })
 
   test('Should pick up drag events, that do not fix the position of elements', (): void => {
-    const WithDraggable = WithDrag(() => <div/>)
+    const WithPositionalDraggable = WithPositionalDrag(() => <div/>)
 
-    const wrapper: ReactWrapper = mount(<WithDraggable/>)
+    const wrapper: ReactWrapper = mount(<WithPositionalDraggable/>)
 
     const div: ReactWrapper = wrapper.find(`.${styles.withDraggable}`)
 

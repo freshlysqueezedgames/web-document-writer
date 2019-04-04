@@ -1,7 +1,6 @@
 // @flow
 
-import React, { SyntheticEvent } from 'react'
-import {Add, Remove} from './Symbols'
+import React from 'react'
 import KEY_CODE from '../utils'
 
 import {
@@ -9,13 +8,14 @@ import {
 } from '../store/types'
 
 import * as styles from './DocumentComponentComponent.scss'
-import { RemoveButton, AddButton } from './Buttons';
+import { RemoveButton, AddButton, DragIndicatorButton } from './Buttons';
 
 export type DocumentComponentComponentProps = Readonly<{
   id: string,
   content: string,
   focused: boolean,
   componentType: number,
+
   OnContentChange?: (id: string, content: string) => void,
   OnAppendContent?: (id: string, content: string) => void,
   OnPrependContent?: (id: string, content: string) => void,
@@ -27,7 +27,9 @@ export type DocumentComponentComponentProps = Readonly<{
 export type DocumentComponentComponentState = Readonly<{
   startOffset: number,
   endOffset: number,
-  mouseMode: string 
+  mouseMode: string,
+  dragMode: string,
+  draggable: boolean
 }>
 
 export type Range = Readonly<{
@@ -42,6 +44,7 @@ const OFFSET_ZERO: Range = {
 
 export default class DocumentComponentComponent extends React.Component<DocumentComponentComponentProps, DocumentComponentComponentState> {
   textAreaRef: HTMLTextAreaElement | null = null
+  containerRef: HTMLDivElement | null = null
   componentRef: HTMLElement | null = null
   spanRef: HTMLSpanElement | null = null
 
@@ -49,11 +52,14 @@ export default class DocumentComponentComponent extends React.Component<Document
   shiftPressed: boolean = false
 
   offsetUpdate: boolean = false
+  dragEnterCounter: number = 0
 
   state: DocumentComponentComponentState = {
     startOffset: 0,
     endOffset: 0,
-    mouseMode: ''
+    dragMode: '',
+    mouseMode: '',
+    draggable: false
   }
 
   TextAreaRef = (ref: HTMLTextAreaElement | null): void => {
@@ -62,6 +68,10 @@ export default class DocumentComponentComponent extends React.Component<Document
     if (this.props.focused && ref) {
       ref.focus()
     }
+  }
+
+  ContainerRef = (ref: HTMLDivElement | null): void => {
+    this.containerRef = ref
   }
 
   ComponentRef = (ref: HTMLElement | null): void => {
@@ -199,6 +209,32 @@ export default class DocumentComponentComponent extends React.Component<Document
     this.SetStateOffset()
   }
 
+  MakeDraggable = () => this.setState({draggable: true})
+  MakeUndraggable = () => this.setState({draggable: false})
+
+  HandleDrag = (event: React.DragEvent<HTMLDivElement>) => {
+    console.log('I am dragging!', event)
+  }
+
+  HandleDragEnd = () => this.setState({draggable: false})
+  HandleDragEnter = (event: React.DragEvent<HTMLElement>) => {
+    event.stopPropagation()
+
+    if (event.target === this.containerRef && this.dragEnterCounter === 0) {
+      this.setState({dragMode: styles.dragover})
+    }
+
+    this.dragEnterCounter++
+  }
+
+  HandleDragLeave = (event: React.DragEvent<HTMLElement>) => {
+    this.dragEnterCounter--
+    
+    if (event.target === this.containerRef && this.dragEnterCounter === 0) {
+      this.setState({dragMode: ''})
+    }
+  }
+
   SetStateOffset () {
     const textAreaRef: HTMLTextAreaElement | null = this.textAreaRef
 
@@ -283,7 +319,17 @@ export default class DocumentComponentComponent extends React.Component<Document
     const t: DocumentComponentComponent = this
     const props: DocumentComponentComponentProps = t.props
 
-    return <div className={`${styles.documentComponentComponent} ${t.state.mouseMode}`} onMouseEnter={t.HandleMouseEnter} onMouseLeave={t.HandleMouseExit}>
+    return <div 
+      ref={t.ContainerRef}
+      className={`${styles.documentComponentComponent} ${t.state.mouseMode} ${t.state.dragMode}`} 
+      onMouseEnter={t.HandleMouseEnter} 
+      onMouseLeave={t.HandleMouseExit}
+      onDrag={this.HandleDrag}
+      onDragEnd={this.HandleDragEnd}
+      draggable={this.state.draggable}
+      onDragEnter={t.HandleDragEnter}
+      onDragLeave={t.HandleDragLeave}
+    >
       <textarea
         onChange={t.HandleTextAreaChange}
         onKeyDown={t.HandleKeyDown}
@@ -292,14 +338,20 @@ export default class DocumentComponentComponent extends React.Component<Document
         value={props.content}
       />
       {this.RenderComponentType()}
-      <div className={styles.prepend}>
+      <div className={`${styles.prepend} ${styles.hidden}`}>
         <AddButton OnClick={t.PrependContent}/>
       </div>
-      <div className={styles.append}>
+      <div className={`${styles.append} ${styles.hidden}`}>
         <AddButton OnClick={t.AppendContent}/>
       </div>
-      <div className={styles.remove}>
+      <div className={`${styles.remove} ${styles.hidden}`}>
         <RemoveButton OnClick={t.RemoveContent}/>
+      </div>
+      <div 
+        className={`${styles.drag} ${styles.hidden}`}
+        onMouseDown={t.MakeDraggable}
+      >
+        <DragIndicatorButton/>
       </div>
     </div>
   }

@@ -13,7 +13,7 @@ export interface DropProps {}
 const dragImage: HTMLImageElement = new Image()
 dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs='
 
-export function WithDrag<P extends Object> (WrappedComponent: ReactComponentLike, fixed: boolean = false) {
+export function WithPositionalDrag<P extends Object> (WrappedComponent: ReactComponentLike, fixed: boolean = false) {
   return class extends React.Component<DragProps & P, DragState> {
     state: DragState = {
       top: 0,
