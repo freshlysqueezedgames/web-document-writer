@@ -130,7 +130,7 @@ const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord
         let targetKey: number | typeof undefined = list.findKey((record: DocumentComponentStateRecord): boolean => record.get('drop') !== DROP_MODE.NONE)
         const key: number | typeof undefined = list.findKey((record: DocumentComponentStateRecord): boolean => record.get('id') === id)
 
-        if (key === undefined || key === targetKey) {
+        if (targetKey === undefined || key === undefined || key === targetKey) {
           return list
         }
 
@@ -138,11 +138,7 @@ const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord
 
         list = list.splice(key, 1)
 
-        targetKey = list.findKey((record: DocumentComponentStateRecord): boolean => record.get('drop') !== DROP_MODE.NONE)
-
-        if (targetKey === undefined) { // we do nothing if the key is equal to the target key
-          return list
-        }
+        targetKey = <number>list.findKey((record: DocumentComponentStateRecord): boolean => record.get('drop') !== DROP_MODE.NONE)
 
         list = list.splice((<RecordOf<DocumentComponentState>>list.get(targetKey)).drop === DROP_MODE.APPEND ? targetKey : targetKey + 1, 0, value)
 

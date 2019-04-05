@@ -377,7 +377,6 @@ export default class DocumentComponentComponent extends React.Component<Document
   }
 
   componentDidMount (): void {
-    console.log('plops', this.props)
     window.addEventListener('resize', this.ImmediatelyUpdateCursor)
   }
 

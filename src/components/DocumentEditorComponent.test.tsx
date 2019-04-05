@@ -264,4 +264,72 @@ describe('<DocumentEditorComponent/>', (): void => {
     
     expect(store.getState().toJS().document.components).toHaveLength(1)
   })
+
+  test('Should be able to drag append and prepend components based on the position of the mouse', (): void => {
+    store.dispatch(SetDocument('test-document', [{
+      id: 'test1',
+      content: 'some more content',
+      focused: false,
+      drop: DROP_MODE.NONE,
+      componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
+    }, {
+      id: 'test2',
+      content: 'some more content',
+      focused: false,
+      drop: DROP_MODE.NONE,
+      componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
+    }]))
+
+    const wrapper: ReactWrapper = mount(
+      <Provider store={store}>
+        <DocumentEditorComponent/>
+      </Provider>
+    )
+
+    let component: ReactWrapper = wrapper.find(`.${componentStyles.documentComponentComponent}`)
+
+    expect(component).toHaveLength(2)
+
+    component.at(1).simulate('dragover')
+    component.at(0).simulate('dragend')
+
+    let state = store.getState().toJS()
+    
+    expect(state.document.components).toHaveLength(2)
+
+    expect(state.document.components).toMatchObject([{
+      id: 'test2',
+      content: 'some more content',
+      focused: false,
+      drop: DROP_MODE.NONE,
+      componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
+    }, {
+      id: 'test1',
+      content: 'some more content',
+      focused: false,
+      drop: DROP_MODE.NONE,
+      componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
+    }])
+
+    component = wrapper.find(`.${componentStyles.documentComponentComponent}`)
+
+    component.at(0).simulate('dragover', {clientY: -10})
+    component.at(1).simulate('dragend')
+
+    state = store.getState().toJS()
+
+    expect(state.document.components).toMatchObject([{
+      id: 'test1',
+      content: 'some more content',
+      focused: false,
+      drop: DROP_MODE.NONE,
+      componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
+    }, {
+      id: 'test2',
+      content: 'some more content',
+      focused: false,
+      drop: DROP_MODE.NONE,
+      componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
+    }])
+  })
 })
