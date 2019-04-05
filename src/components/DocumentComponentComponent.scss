@@ -32,6 +32,16 @@ div.document-component-component {
   div.component-type {
     float: left;
     min-height: 12px;
+
+    transform-origin: 0% 0%;
+    
+    &.up {
+      animation: up 0.10s linear running forwards;
+    }
+
+    &.down {
+      animation: down 0.10s linear running forwards;
+    }
   }
 
   $line : 1px dotted #fd5720;
@@ -99,7 +109,24 @@ div.document-component-component {
     left: 0px;
   }
 
-  &.dragover {
-    background-color: transparentize($color: #000, $amount: 0.8)
+  transform-origin: 0% 0%;
+  $distance: 20px;
+
+  @keyframes up {
+    0% {
+      transform: translateY(0px)
+    }
+    100% {
+      transform: translateY(-$distance)
+    }
+  }
+
+  @keyframes down {
+    0% {
+      transform: translateY(0px)
+    }
+    100% {
+      transform: translateY($distance)
+    }
   }
 }
