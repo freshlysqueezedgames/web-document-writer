@@ -274,50 +274,29 @@ export default class DocumentComponentComponent extends React.Component<Document
   }
 
   RenderComponentType (): React.ReactElement {
-    let mode: string = ''
-
-    if (!this.state.draggable) {
-      switch (this.props.drop) {
-        case DROP_MODE.APPEND: {
-          mode = styles.down
-          break
-        }
-        case DROP_MODE.PREPEND: {
-          mode = styles.up
-          break
-        }
-        default : {
-          mode = ''
-          break
-        }
-      }
-    }
-
-    const className: string = `${styles.componentType} ${mode}`
-
     switch (this.props.componentType) {
       case DOCUMENT_COMPONENT_TYPE.HEADER_1 : {
-        return <h1 ref={this.ComponentRef} className={className} onClick={this.HandleContentClick}>
+        return <h1 ref={this.ComponentRef} className={styles.componentType} onClick={this.HandleContentClick}>
           {this.RenderContentSpan()}
         </h1>
       }
       case DOCUMENT_COMPONENT_TYPE.HEADER_2 : {
-        return <h2 ref={this.ComponentRef} className={className} onClick={this.HandleContentClick}>
+        return <h2 ref={this.ComponentRef} className={styles.componentType} onClick={this.HandleContentClick}>
           {this.RenderContentSpan()}
         </h2>
       }
       case DOCUMENT_COMPONENT_TYPE.HEADER_3 : {
-        return <h3 ref={this.ComponentRef} className={className} onClick={this.HandleContentClick}>
+        return <h3 ref={this.ComponentRef} className={styles.componentType} onClick={this.HandleContentClick}>
           {this.RenderContentSpan()}
         </h3>
       }
       case DOCUMENT_COMPONENT_TYPE.CODE : {
-        return <div ref={this.ComponentRef} className={className} onClick={this.HandleContentClick}>
+        return <div ref={this.ComponentRef} className={styles.componentType} onClick={this.HandleContentClick}>
           {this.RenderContentSpan()}
         </div>
       }
       default: {
-        return <div ref={this.ComponentRef} className={className} onClick={this.HandleContentClick}>
+        return <div ref={this.ComponentRef} className={styles.componentType} onClick={this.HandleContentClick}>
           {this.RenderContentSpan()}
         </div>
       }
@@ -341,9 +320,28 @@ export default class DocumentComponentComponent extends React.Component<Document
     const t: DocumentComponentComponent = this
     const props: DocumentComponentComponentProps = t.props
 
+    let mode: string = ''
+
+    if (!this.state.draggable) {
+      switch (t.props.drop) {
+        case DROP_MODE.APPEND: {
+          mode = styles.down
+          break
+        }
+        case DROP_MODE.PREPEND: {
+          mode = styles.up
+          break
+        }
+        default : {
+          mode = ''
+          break
+        }
+      }
+    }
+
     return <div 
       ref={t.ContainerRef}
-      className={`${styles.documentComponentComponent} ${t.state.mouseMode}`}
+      className={`${styles.documentComponentComponent} ${t.state.mouseMode} ${mode}`}
       draggable={t.state.draggable}
 
       onMouseEnter={t.HandleMouseEnter}

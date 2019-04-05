@@ -144,7 +144,9 @@ const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord
           return list
         }
 
-        return list.splice((<RecordOf<DocumentComponentState>>list.get(targetKey)).drop === DROP_MODE.APPEND ? targetKey : targetKey + 1, 0, value)
+        list = list.splice((<RecordOf<DocumentComponentState>>list.get(targetKey)).drop === DROP_MODE.APPEND ? targetKey : targetKey + 1, 0, value)
+
+        return list.map((record: DocumentComponentStateRecord): DocumentComponentStateRecord => record.set('drop', DROP_MODE.NONE))
       })
     }
     default: {

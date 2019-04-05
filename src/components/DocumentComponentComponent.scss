@@ -32,16 +32,14 @@ div.document-component-component {
   div.component-type {
     float: left;
     min-height: 12px;
+  }
+   
+  &.up {
+    animation: up 0.10s linear running forwards;
+  }
 
-    transform-origin: 0% 0%;
-    
-    &.up {
-      animation: up 0.10s linear running forwards;
-    }
-
-    &.down {
-      animation: down 0.10s linear running forwards;
-    }
+  &.down {
+    animation: down 0.10s linear running forwards;
   }
 
   $line : 1px dotted #fd5720;
@@ -109,24 +107,23 @@ div.document-component-component {
     left: 0px;
   }
 
-  transform-origin: 0% 0%;
   $distance: 20px;
 
   @keyframes up {
     0% {
-      transform: translateY(0px)
+      border-bottom: 10px solid transparentize(#fd5720, 1)
     }
     100% {
-      transform: translateY(-$distance)
+      border-bottom: 10px solid transparentize(#fd5720, 0)
     }
   }
 
   @keyframes down {
     0% {
-      transform: translateY(0px)
+      border-top: 10px solid transparentize(#fd5720, 1)
     }
     100% {
-      transform: translateY($distance)
+      border-top: 10px solid transparentize(#fd5720, 0)
     }
   }
 }
