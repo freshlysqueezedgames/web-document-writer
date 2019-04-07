@@ -8,8 +8,12 @@ import {
   DROP_MODE
 } from '../store/types'
 
+import {DragTarget} from './DragAndDrop'
+
 import * as styles from './DocumentComponentComponent.scss'
 import { RemoveButton, AddButton, DragIndicatorButton } from './Buttons';
+
+const DRAG_IDENTIFIER: string = 'document-component' 
 
 export type DocumentComponentComponentProps = Readonly<{
   id: string,
@@ -212,6 +216,9 @@ export default class DocumentComponentComponent extends React.Component<Document
   }
 
   MakeDraggable = () => this.setState({draggable: true})
+  
+  HandleDragStart = () => {DragTarget(DRAG_IDENTIFIER)}
+
   HandleDragEnd = () => {
     this.setState({draggable: false})
   
@@ -221,7 +228,7 @@ export default class DocumentComponentComponent extends React.Component<Document
   HandleDragOver = (event: React.DragEvent<HTMLElement>) => {
     event.stopPropagation()
 
-    if (!this.componentRef) {
+    if (!this.componentRef || DragTarget() !== DRAG_IDENTIFIER) {
       return
     }
 
@@ -347,6 +354,7 @@ export default class DocumentComponentComponent extends React.Component<Document
       onMouseEnter={t.HandleMouseEnter}
       onMouseLeave={t.HandleMouseExit}
 
+      onDragStart={t.HandleDragStart}
       onDragEnd={t.HandleDragEnd}
       onDragOver={t.HandleDragOver}
     >

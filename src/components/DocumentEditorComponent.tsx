@@ -19,7 +19,7 @@ const DocumentEditorComponent = (): React.ReactElement<HTMLDivElement> =>
     <CursorContainer presentation={RenderCursor}/>
   </div>
 
-const WithPositionalDragDocumentComponentTypeSelection = WithPositionalDrag<DocumentComponentTypeSelectionProps>(DocumentComponentTypeSelection, true)
+const WithPositionalDragDocumentComponentTypeSelection = WithPositionalDrag<DocumentComponentTypeSelectionProps>(DocumentComponentTypeSelection, true, 'document-component-type-selector')
 
 function RenderDocument (props: DocumentContainerProps): React.ReactElement<typeof React.Fragment> {
   return <>

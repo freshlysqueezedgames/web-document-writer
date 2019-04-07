@@ -13,7 +13,17 @@ export interface DropProps {}
 const dragImage: HTMLImageElement = new Image()
 dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs='
 
-export function WithPositionalDrag<P extends Object> (WrappedComponent: ReactComponentLike, fixed: boolean = false) {
+let dragTarget: string = ''
+
+export function DragTarget (identifier?: string): string {
+  if (identifier === undefined) {
+    return dragTarget
+  }
+  
+  return (dragTarget = identifier)
+}
+
+export function WithPositionalDrag<P extends Object> (WrappedComponent: ReactComponentLike, fixed: boolean = false, identifier: string = '') {
   return class extends React.Component<DragProps & P, DragState> {
     state: DragState = {
       top: 0,
@@ -35,6 +45,7 @@ export function WithPositionalDrag<P extends Object> (WrappedComponent: ReactCom
       this.startY = event.clientY
 
       event.dataTransfer.setDragImage(dragImage, 0, 0)
+      DragTarget(identifier)
     }
 
     OnDrag = (event: React.DragEvent) => {
