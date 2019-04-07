@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 
-import DocumentComponentComponent, { DocumentComponentComponentProps } from './DocumentComponentComponent'
+import DocumentComponentComponent from './DocumentComponentComponent'
 import DocumentCursorComponent from './DocumentCursorComponent'
 import DocumentComponentTypeSelection, {DocumentComponentTypeSelectionProps} from './DocumentComponentTypeSelection'
 
@@ -12,6 +12,7 @@ import {DocumentContainerProps, DocumentContainer, CursorContainer, CursorContai
 import {WithPositionalDrag} from './DragAndDrop'
 
 import * as styles from './DocumentEditorComponent.scss'
+import ImageUploadComponent from './ImageUploadComponent';
 
 const DocumentEditorComponent = (): React.ReactElement<HTMLDivElement> =>
   <div className={styles.documentEditorComponent}>
@@ -37,6 +38,7 @@ function RenderDocument (props: DocumentContainerProps): React.ReactElement<type
         OnMove={props.OnMove}
       />
     )}
+    <ImageUploadComponent/>
     <WithPositionalDragDocumentComponentTypeSelection OnSelection={props.OnComponentTypeChange}/>
   </>
 }
