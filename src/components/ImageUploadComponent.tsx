@@ -1,8 +1,7 @@
 import React from 'react'
+import WithAnimation, {KeyMap} from './Animated'
 
-export interface ImageUploadProps {
-
-}
+export interface ImageUploadProps {}
 
 enum DRAG_STATE {
   NONE,
@@ -17,6 +16,19 @@ export interface ImageUploadState {
 }
 
 import * as styles from './ImageUploadComponent.scss'
+
+export interface TimeBarStyles extends KeyMap<number> {
+  height: number
+}
+
+export interface TimeBarProps {
+  styles: TimeBarStyles
+}
+
+const WithAnimationTimeBar = WithAnimation<TimeBarStyles>((props: TimeBarProps) => {
+  console.log('I should make a change!', props)
+  return <div className={styles.bar} style={{height: `${props.styles.height * 100}%`}}/>
+}, {height: 0})
 
 export default class ImageUploadComponent extends React.Component<ImageUploadProps, ImageUploadState> {
   state: ImageUploadState = {
@@ -132,7 +144,7 @@ export default class ImageUploadComponent extends React.Component<ImageUploadPro
           </tr>
         </tbody>
       </table>
-      <div className={styles.bar} style={{height: `${t.state.progress * 100}%`}}/>
+      <WithAnimationTimeBar styles={{height: t.state.progress}}/>
       <input
         ref={t.inputReference}
         type="file"

@@ -1,14 +1,11 @@
 import * as React from 'react'
 import * as styles from './DragAndDrop.scss'
-import { ReactComponentLike } from 'prop-types';
+import { ReactComponentLike } from 'prop-types'
 
-export interface DragProps {}
 export interface DragState {
   top: number;
   left: number;
 }
-
-export interface DropProps {}
 
 const dragImage: HTMLImageElement = new Image()
 dragImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs='
@@ -24,7 +21,7 @@ export function DragTarget (identifier?: string): string {
 }
 
 export function WithPositionalDrag<P extends Object> (WrappedComponent: ReactComponentLike, fixed: boolean = false, identifier: string = '') {
-  return class extends React.Component<DragProps & P, DragState> {
+  return class extends React.Component<P, DragState> {
     state: DragState = {
       top: 0,
       left: 0
@@ -83,30 +80,3 @@ export function WithPositionalDrag<P extends Object> (WrappedComponent: ReactCom
     }
   }
 }
-
-// export function WithDrop<P extends Object> (WrappedComponent: ReactComponentLike) {
-//   return class extends React.Component<DropProps & P> {
-//     div: HTMLDivElement | null = null
-
-//     BindDiv = (ref: HTMLDivElement | null): void => {this.div = ref}
-
-//     OnDrop = (event: React.DragEvent): void => {
-//       event.preventDefault()
-//     }
-
-//     OnDragOver = (event: React.DragEvent): void => {
-//       event.preventDefault()
-//     }
-
-//     render () {
-//       return <div 
-//         className={styles.withDraggable} 
-//         ref={this.BindDiv}
-//         onDrop={this.OnDrop}
-//         onDragOver={this.OnDragOver}
-//       >
-//         <WrappedComponent/>
-//       </div>
-//     }
-//   }
-// }
