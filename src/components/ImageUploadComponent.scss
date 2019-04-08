@@ -1,11 +1,71 @@
-input.image-upload-component {
+div.image-upload-component {
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0px;
   left: 0px;
 
+  border: 0px dotted #000;
+  display: none;
+  text-align: center;
+
+  background: repeating-linear-gradient(
+    45deg,
+    #fafafa 0px,
+    #fafafa 10px,
+    #efefef 10px,
+    #efefef 20px
+  );
+
   &.image-entry {
-    background-color: aqua;
+    display: block;
+    animation: reveal 0.25s forwards running linear;
+  }
+
+  &.image-exit {
+    display: block;
+    animation: hide 0.25s forwards running linear;
+  }
+
+  input, table {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
+
+  input {
+    opacity: 0.01;
+  }
+
+  div.bar {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 0%;
+    background-color: transparentize($color: #AAA, $amount: 0.5)
+  }
+
+  @keyframes reveal {
+    0% {
+      opacity: 0;
+      border: 2px dotted #FFF;
+    }
+    100% {
+      opacity: 1;
+      border: 2px dotted #fd5720;
+    }
+  }
+
+  @keyframes hide {
+    100% {
+      opacity: 0;
+      border: 2px dotted #FFF;
+    }
+    0% {
+      opacity: 1;
+      border: 2px dotted #fd5720;
+    }
   }
 }
