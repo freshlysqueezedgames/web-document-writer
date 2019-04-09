@@ -50,7 +50,11 @@ const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord
           return list.push(DocumentComponentStateFactory({id, content, focused, componentType, drop: DROP_MODE.NONE}))
         }
 
-        return list.splice(index + 1, 0, DocumentComponentStateFactory({id, content, focused, componentType, drop: DROP_MODE.NONE}))
+        list = list.splice(index + 1, 0, DocumentComponentStateFactory({id, content, focused, componentType, drop: DROP_MODE.NONE}))
+      
+        console.timeEnd('test')
+
+        return list
       })
     }
     case 'PREPEND_COMPONENT': {

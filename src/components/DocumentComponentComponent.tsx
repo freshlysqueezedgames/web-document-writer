@@ -2,6 +2,7 @@
 
 import React from 'react'
 import ImageUploadComponent from './ImageUploadComponent'
+import CachedImage from './CachedImage'
 import KEY_CODE from '../utils'
 
 import {
@@ -50,6 +51,8 @@ const OFFSET_ZERO: Range = {
   startOffset: 0,
   endOffset: 0
 }
+
+const components : {[key: string]: any} = {}
 
 export default class DocumentComponentComponent extends React.Component<DocumentComponentComponentProps, DocumentComponentComponentState> {
   textAreaRef: HTMLTextAreaElement | null = null
@@ -227,6 +230,8 @@ export default class DocumentComponentComponent extends React.Component<Document
     this.setState({draggable: false})
   
     this.props.OnMove && this.props.OnMove(this.props.id)
+
+    DragTarget('')
   }
 
   HandleDragOver = (event: React.DragEvent<HTMLElement>) => {
@@ -254,8 +259,12 @@ export default class DocumentComponentComponent extends React.Component<Document
       result = await t.props.OnImageUpload(result)
     }
 
+    console.time('test')
+
     this.props.OnAppendContent && this.props.OnAppendContent(this.props.id, result, DOCUMENT_COMPONENT_TYPE.IMAGE)
   }
+
+  HandleDrop = () => DragTarget('')
 
   SetStateOffset () {
     const textAreaRef: HTMLTextAreaElement | null = this.textAreaRef
@@ -318,7 +327,7 @@ export default class DocumentComponentComponent extends React.Component<Document
       }
       case DOCUMENT_COMPONENT_TYPE.IMAGE : {
         return <div ref={this.ComponentRef} className={styles.componentType} onClick={this.HandleContentClick}>
-          <img src={this.props.content}/>
+          <CachedImage image={this.props.content}/>
         </div>
       }
       default: {
@@ -340,6 +349,23 @@ export default class DocumentComponentComponent extends React.Component<Document
       </span>
       {content.substr(endOffset)}
     </>
+  }
+
+  RenderTextArea () {
+    const t: DocumentComponentComponent = this
+    const props = t.props
+
+    if (this.props.componentType !== DOCUMENT_COMPONENT_TYPE.IMAGE) {
+      return <textarea
+        onChange={t.HandleTextAreaChange}
+        onKeyDown={t.HandleKeyDown}
+        onKeyUp={t.HandleKeyUp}
+        ref={t.TextAreaRef}
+        value={props.content}
+      />
+    }
+
+    return null
   }
 
   render (): React.ReactElement<HTMLDivElement> {
@@ -376,14 +402,9 @@ export default class DocumentComponentComponent extends React.Component<Document
       onDragStart={t.HandleDragStart}
       onDragEnd={t.HandleDragEnd}
       onDragOver={t.HandleDragOver}
+      onDrop={t.HandleDrop}
     >
-      <textarea
-        onChange={t.HandleTextAreaChange}
-        onKeyDown={t.HandleKeyDown}
-        onKeyUp={t.HandleKeyUp}
-        ref={t.TextAreaRef}
-        value={props.content}
-      />
+      {this.RenderTextArea()}
       {this.RenderComponentType()}
       <div className={`${styles.prepend} ${styles.hidden}`}>
         <AddButton OnClick={t.PrependContent}/>

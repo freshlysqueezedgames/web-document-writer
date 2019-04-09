@@ -1,5 +1,7 @@
 import React from 'react'
 import WithAnimation, {KeyMap} from './Animated'
+import * as styles from './ImageUploadComponent.scss'
+import { DragTarget } from './DragAndDrop'
 
 export interface ImageUploadProps {
   OnUpload: (result: string) => void
@@ -17,7 +19,7 @@ export interface ImageUploadState {
   progress: number
 }
 
-import * as styles from './ImageUploadComponent.scss'
+
 
 export interface TimeBarStyles extends KeyMap<number> {
   width: number
@@ -95,21 +97,21 @@ export default class ImageUploadComponent extends React.Component<ImageUploadPro
   }
 
   HandleDragEnter = (event: DragEvent) => {
-    if (!event.currentTarget) {
+    if (!event.currentTarget || DragTarget() !== '') {
       return
     }
 
-    if (this.dragEnterCount++ === 0 && event.target === document.body.parentElement) {
+    if (this.dragEnterCount++ === 0) {
       this.setState({drag: DRAG_STATE.ACTIVE})
     }
   }
 
   HandleDragLeave = (event: DragEvent) => {
-    if (!event.currentTarget) {
+    if (!event.currentTarget || DragTarget() !== '') {
       return
     }
 
-    if (--this.dragEnterCount === 0 && event.target === document.body.parentElement) {
+    if (--this.dragEnterCount === 0) {
       this.setState({drag: DRAG_STATE.INACTIVE})
     }
   }

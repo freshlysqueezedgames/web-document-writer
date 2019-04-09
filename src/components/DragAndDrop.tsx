@@ -63,6 +63,8 @@ export function WithPositionalDrag<P extends Object> (WrappedComponent: ReactCom
       } else {
         this.setState({top: 0, left: 0})
       }
+
+      DragTarget('')
     }
 
     render () {

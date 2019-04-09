@@ -55,11 +55,19 @@ div.document-component-component {
   div.prepend {
     border-top: $line;
     top: 0px;
+
+    div {
+      top: -15px;
+    }
   }
 
   div.append {
     border-bottom: $line;
     bottom: 0px;
+
+    div {
+      bottom: -15px;
+    }
   }
 
   &.entered {
@@ -95,7 +103,7 @@ div.document-component-component {
     width: 25px;
     height: 100%;
     position: absolute;
-    right: 0px;
+    right: -25px;
   }
 
   div.hidden {
@@ -104,7 +112,7 @@ div.document-component-component {
 
   div.drag {
     right: auto;
-    left: 0px;
+    left: -25px;
   }
 
   $distance: 20px;
