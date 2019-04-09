@@ -8,6 +8,8 @@ import {store} from '../store'
 
 import {SetDocument} from '../store/actions'
 import {DOCUMENT_COMPONENT_TYPE, DROP_MODE} from '../store/types'
+import {DragTarget} from './DragAndDrop'
+import {DRAG_IDENTIFIER} from './DocumentComponentComponent'
 
 import DocumentEditorComponent from './DocumentEditorComponent'
 import KEY_CODE from '../utils'
@@ -266,6 +268,8 @@ describe('<DocumentEditorComponent/>', (): void => {
   })
 
   test('Should be able to drag append and prepend components based on the position of the mouse', (): void => {
+    DragTarget(DRAG_IDENTIFIER)
+
     store.dispatch(SetDocument('test-document', [{
       id: 'test1',
       content: 'some more content',
@@ -287,9 +291,11 @@ describe('<DocumentEditorComponent/>', (): void => {
     )
 
     let component: ReactWrapper = wrapper.find(`.${componentStyles.documentComponentComponent}`)
+    let dragButton: ReactWrapper = component.at(0).find(`.${componentStyles.drag}`)
 
     expect(component).toHaveLength(2)
 
+    dragButton.simulate('mousedown')
     component.at(1).simulate('dragover')
     component.at(0).simulate('dragend')
 
@@ -313,9 +319,12 @@ describe('<DocumentEditorComponent/>', (): void => {
 
     component = wrapper.find(`.${componentStyles.documentComponentComponent}`)
 
+    dragButton = component.at(1).find(`.${componentStyles.drag}`)
+
+    dragButton.simulate('mousedown')
     component.at(0).simulate('dragover', {clientY: -10})
     component.at(1).simulate('dragend')
-
+    
     state = store.getState().toJS()
 
     expect(state.document.components).toMatchObject([{

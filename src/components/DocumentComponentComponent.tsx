@@ -14,7 +14,7 @@ import {DragTarget} from './DragAndDrop'
 import * as styles from './DocumentComponentComponent.scss'
 import { RemoveButton, AddButton, DragIndicatorButton } from './Buttons';
 
-const DRAG_IDENTIFIER: string = 'document-component' 
+export const DRAG_IDENTIFIER: string = 'document-component' 
 
 export type DocumentComponentComponentProps = Readonly<{
   id: string,
@@ -217,7 +217,9 @@ export default class DocumentComponentComponent extends React.Component<Document
     this.SetStateOffset()
   }
 
-  MakeDraggable = () => this.setState({draggable: true})
+  MakeDraggable = () => {
+    this.setState({draggable: true})
+  }
   
   HandleDragStart = () => {DragTarget(DRAG_IDENTIFIER)}
 

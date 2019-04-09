@@ -31,8 +31,6 @@ const DocumentEditorComponent = (props: DocumentEditorComponentProps): React.Rea
 const WithPositionalDragDocumentComponentTypeSelection = WithPositionalDrag<DocumentComponentTypeSelectionProps>(DocumentComponentTypeSelection, true, 'document-component-type-selector')
 
 function RenderDocument (props: DocumentContainerProps): React.ReactElement<typeof React.Fragment> {
-  console.log('my components', props.components)
-
   return <>
     {props.components && props.components.map((component: DocumentComponentState) => 
       <DocumentComponentComponent
