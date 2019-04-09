@@ -12,17 +12,27 @@ import {DocumentContainerProps, DocumentContainer, CursorContainer, CursorContai
 import {WithPositionalDrag} from './DragAndDrop'
 
 import * as styles from './DocumentEditorComponent.scss'
-import ImageUploadComponent from './ImageUploadComponent';
 
-const DocumentEditorComponent = (): React.ReactElement<HTMLDivElement> =>
-  <div className={styles.documentEditorComponent}>
+export interface DocumentEditorComponentProps {
+  OnImageUpload?: (data: string) => Promise<string>
+}
+
+let OnImageUpload: ((data: string) => Promise<string>) | undefined
+
+const DocumentEditorComponent = (props: DocumentEditorComponentProps): React.ReactElement<HTMLDivElement> => {
+  OnImageUpload = props.OnImageUpload
+
+  return <div className={styles.documentEditorComponent}>
     <DocumentContainer presentation={RenderDocument} />
     <CursorContainer presentation={RenderCursor}/>
   </div>
+}
 
 const WithPositionalDragDocumentComponentTypeSelection = WithPositionalDrag<DocumentComponentTypeSelectionProps>(DocumentComponentTypeSelection, true, 'document-component-type-selector')
 
 function RenderDocument (props: DocumentContainerProps): React.ReactElement<typeof React.Fragment> {
+  console.log('my components', props.components)
+
   return <>
     {props.components && props.components.map((component: DocumentComponentState) => 
       <DocumentComponentComponent
@@ -36,9 +46,9 @@ function RenderDocument (props: DocumentContainerProps): React.ReactElement<type
         OnRemoveContent={props.OnRemoveContent}
         OnMoveTarget={props.OnMoveTarget}
         OnMove={props.OnMove}
+        OnImageUpload={OnImageUpload}
       />
     )}
-    <ImageUploadComponent/>
     <WithPositionalDragDocumentComponentTypeSelection OnSelection={props.OnComponentTypeChange}/>
   </>
 }

@@ -1,7 +1,9 @@
 import React from 'react'
 import WithAnimation, {KeyMap} from './Animated'
 
-export interface ImageUploadProps {}
+export interface ImageUploadProps {
+  OnUpload: (result: string) => void
+}
 
 enum DRAG_STATE {
   NONE,
@@ -18,17 +20,14 @@ export interface ImageUploadState {
 import * as styles from './ImageUploadComponent.scss'
 
 export interface TimeBarStyles extends KeyMap<number> {
-  height: number
+  width: number
 }
 
 export interface TimeBarProps {
   styles: TimeBarStyles
 }
 
-const WithAnimationTimeBar = WithAnimation<TimeBarStyles>((props: TimeBarProps) => {
-  console.log('I should make a change!', props)
-  return <div className={styles.bar} style={{height: `${props.styles.height * 100}%`}}/>
-}, {height: 0})
+const WithAnimationTimeBar = WithAnimation<TimeBarStyles>((props: TimeBarProps) => <div className={styles.bar} style={{width: `${props.styles.width * 100}%`}}/>, {width: 0})
 
 export default class ImageUploadComponent extends React.Component<ImageUploadProps, ImageUploadState> {
   state: ImageUploadState = {
@@ -38,6 +37,7 @@ export default class ImageUploadComponent extends React.Component<ImageUploadPro
   }
 
   dragEnterCount: number = 0
+  uploading: boolean = false
 
   input: HTMLInputElement | null = null
   inputReference = (element: HTMLInputElement | null) => this.input = element
@@ -55,7 +55,9 @@ export default class ImageUploadComponent extends React.Component<ImageUploadPro
     const l : number = files.length
     let completed: number = 0
 
-    this.setState({...t.state, message: 'Uploading...'})
+    t.uploading = true
+
+    t.setState({...t.state, message: 'Uploading...'})
 
     while (++i < l) {
       const file : File = files[i]
@@ -64,11 +66,27 @@ export default class ImageUploadComponent extends React.Component<ImageUploadPro
       reader.onload = function () {
         const progress: number = ++completed / l
 
-        t.setState({...t.state, progress, message: progress === 1 ? 'Finished' : 'Uploading'})
+        if (progress < 1) {
+          t.setState({
+            ...t.state, 
+            progress, 
+            message: `Uploaded ${Math.round(progress * 100)}%`
+          })
+        } else {
+          t.dragEnterCount = 0
+          
+          t.setState({
+            ...t.state, 
+            progress: 0, 
+            message: `Upload Here`,
+            drag: DRAG_STATE.NONE
+          })
+
+          t.props.OnUpload && t.props.OnUpload(reader.result as string)
+        }
       }
 
       reader.onprogress = function (event: ProgressEvent) {
-        console.log('progress mate', event.loaded / event.total / l + completed / l)
         t.setState({...t.state, progress: event.loaded / event.total / l + completed / l})
       }
 
@@ -81,7 +99,7 @@ export default class ImageUploadComponent extends React.Component<ImageUploadPro
       return
     }
 
-    if (this.dragEnterCount++ === 0) {
+    if (this.dragEnterCount++ === 0 && event.target === document.body.parentElement) {
       this.setState({drag: DRAG_STATE.ACTIVE})
     }
   }
@@ -91,7 +109,14 @@ export default class ImageUploadComponent extends React.Component<ImageUploadPro
       return
     }
 
-    if (--this.dragEnterCount === 0) {
+    if (--this.dragEnterCount === 0 && event.target === document.body.parentElement) {
+      this.setState({drag: DRAG_STATE.INACTIVE})
+    }
+  }
+
+  HandleDragEnd = (event: DragEvent) => {
+    if (event.target !== this.input) {
+      this.dragEnterCount = 0
       this.setState({drag: DRAG_STATE.INACTIVE})
     }
   }
@@ -108,11 +133,13 @@ export default class ImageUploadComponent extends React.Component<ImageUploadPro
   componentDidMount () {
     document.addEventListener('dragenter', this.HandleDragEnter)
     document.addEventListener('dragleave', this.HandleDragLeave)
+    document.addEventListener('drop', this.HandleDragEnd)
   }
 
   componentWillUnmount () {
     document.removeEventListener('dragenter', this.HandleDragEnter)
     document.removeEventListener('dragleave', this.HandleDragLeave)
+    document.removeEventListener('drop', this.HandleDragEnd)
   }
 
   render () {
@@ -144,7 +171,7 @@ export default class ImageUploadComponent extends React.Component<ImageUploadPro
           </tr>
         </tbody>
       </table>
-      <WithAnimationTimeBar styles={{height: t.state.progress}}/>
+      <WithAnimationTimeBar styles={{width: t.state.progress}}/>
       <input
         ref={t.inputReference}
         type="file"

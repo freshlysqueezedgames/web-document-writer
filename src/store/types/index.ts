@@ -2,12 +2,13 @@
 
 import {List, RecordOf} from 'immutable'
 
-export const DOCUMENT_COMPONENT_TYPE: {[index: string]: number} = {
-  PARAGRAPH: 0,
-  HEADER_1: 1,
-  HEADER_2: 2,
-  HEADER_3: 3,
-  CODE: 4
+export enum DOCUMENT_COMPONENT_TYPE {
+  PARAGRAPH = 0,
+  HEADER_1,
+  HEADER_2,
+  HEADER_3,
+  CODE,
+  IMAGE
 }
 
 export enum DROP_MODE {

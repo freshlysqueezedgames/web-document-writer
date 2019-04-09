@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react'
+import ImageUploadComponent from './ImageUploadComponent'
 import KEY_CODE from '../utils'
 
 import {
@@ -23,13 +24,14 @@ export type DocumentComponentComponentProps = Readonly<{
   componentType: number,
 
   OnContentChange?: (id: string, content: string) => void,
-  OnAppendContent?: (id: string, content: string) => void,
+  OnAppendContent?: (id: string, content: string, componentType?: DOCUMENT_COMPONENT_TYPE) => void,
   OnPrependContent?: (id: string, content: string) => void,
   OnFocus?: (id: string) => void,
   OnCursorChange?: (top: number, right: number, bottom: number, left: number) => void
   OnRemoveContent?: (id: string) => void
   OnMoveTarget?: (id: string, mode: DROP_MODE) => void
   OnMove?: (id: string) => void
+  OnImageUpload?: (data: string) => Promise<string>
 }>
 
 export type DocumentComponentComponentState = Readonly<{
@@ -243,6 +245,16 @@ export default class DocumentComponentComponent extends React.Component<Document
     }
   }
 
+  HandleUpload = async (result: string) => {
+    const t: DocumentComponentComponent = this
+
+    if (t.props.OnImageUpload) {
+      result = await t.props.OnImageUpload(result)
+    }
+
+    this.props.OnAppendContent && this.props.OnAppendContent(this.props.id, result, DOCUMENT_COMPONENT_TYPE.IMAGE)
+  }
+
   SetStateOffset () {
     const textAreaRef: HTMLTextAreaElement | null = this.textAreaRef
 
@@ -300,6 +312,11 @@ export default class DocumentComponentComponent extends React.Component<Document
       case DOCUMENT_COMPONENT_TYPE.CODE : {
         return <div ref={this.ComponentRef} className={styles.componentType} onClick={this.HandleContentClick}>
           {this.RenderContentSpan()}
+        </div>
+      }
+      case DOCUMENT_COMPONENT_TYPE.IMAGE : {
+        return <div ref={this.ComponentRef} className={styles.componentType} onClick={this.HandleContentClick}>
+          <img src={this.props.content}/>
         </div>
       }
       default: {
@@ -381,6 +398,7 @@ export default class DocumentComponentComponent extends React.Component<Document
       >
         <DragIndicatorButton/>
       </div>
+      <ImageUploadComponent OnUpload={t.HandleUpload}/>
     </div>
   }
 

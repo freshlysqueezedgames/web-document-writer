@@ -19,9 +19,9 @@ export function LoadDocument (name: string, document: Array<DocumentComponentSta
   store.dispatch(SetDocument(name, document))
 }
 
-export function RenderDocument () {
+export function RenderDocument (OnImageUpload: (data: string) => Promise<string>) {
   return <ReactRedux.Provider store={store}>
-    <DocumentContainer presentation={() => <DocumentEditorComponent/>}/>
+    <DocumentContainer presentation={() => <DocumentEditorComponent OnImageUpload={OnImageUpload}/>}/>
   </ReactRedux.Provider>
 }
 
@@ -66,7 +66,12 @@ const app: HTMLElement | null = document.getElementById('web-document-writer-6ns
 if (app) {
   render(
     <div className={styles.wrapper}>
-      {RenderDocument()}
+      {RenderDocument((data: string): Promise<string> => {
+        return new Promise((resolve) => {
+          console.log('my word I have the data')
+          resolve(data)
+        })
+      })}
     </div>, app
   )
 }

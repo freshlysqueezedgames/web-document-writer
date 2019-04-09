@@ -25,7 +25,8 @@ import {
 
 import {
   DocumentComponentState,
-  DROP_MODE
+  DROP_MODE,
+  DOCUMENT_COMPONENT_TYPE
 } from '../store/types'
 
 import * as styles from './DocumentContainer.scss'
@@ -45,7 +46,7 @@ interface DocumentContainerMappedStateProps {
 }
 
 interface DocumentContainerMappedDispatchProps {
-  OnAppendContent: (id: string, value: string) => void
+  OnAppendContent: (id: string, value: string, componentType?: DOCUMENT_COMPONENT_TYPE) => void
   OnPrependContent: (id: string, value: string) => void
   OnContentChange: (id: string, content: string) => void
   OnFocusChange: (id: string) => void
@@ -71,7 +72,7 @@ const MapStateToProps = (state: EditorStateRecord): DocumentContainerMappedState
 }
 
 const MapDispatchToProps = (dispatch: (action: Action) => void): DocumentContainerMappedDispatchProps => ({
-  OnAppendContent: (id: string, value: string): void => dispatch(AppendComponent(id, shortid.generate(), value)),
+  OnAppendContent: (id: string, value: string, componentType: DOCUMENT_COMPONENT_TYPE = DOCUMENT_COMPONENT_TYPE.PARAGRAPH): void => dispatch(AppendComponent(id, shortid.generate(), value, false, componentType)),
   OnPrependContent: (id: string, value: string): void => dispatch(PrependComponent(id, shortid.generate(), value)),
   OnContentChange: (id: string, content: string): void => dispatch(UpdateComponent(id, content)),
   OnFocusChange: (id: string): void => dispatch(FocusComponent(id)),
