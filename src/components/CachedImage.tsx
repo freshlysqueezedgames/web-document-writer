@@ -1,5 +1,7 @@
 import React from 'react'
 
+import * as styles from './CachedImage.scss'
+
 export interface CachedImageProps {
   style?: React.CSSProperties
   image: string
@@ -12,7 +14,7 @@ export default class CachedImage extends React.Component<CachedImageProps, {}> {
   render () {
     const props: CachedImageProps = this.props
 
-    return <canvas style={props.style} ref={this.canvasReference}/>
+    return <canvas style={props.style} ref={this.canvasReference} className={styles.image}/>
   }
 
   componentDidMount () {
@@ -37,11 +39,13 @@ export default class CachedImage extends React.Component<CachedImageProps, {}> {
       if (!t.canvas) {
         return
       }
-      
-      t.canvas.width = img.width
-      t.canvas.height = img.height
 
-      context.drawImage(img, 0, 0)
+      const s: number = t.canvas.scrollWidth / img.width
+      
+      t.canvas.width = t.canvas.scrollWidth
+      t.canvas.height = img.height * s
+
+      context.drawImage(img, 0, 0, img.width, img.height, 0, 0, t.canvas.width, t.canvas.height)
     }
   }
 }
