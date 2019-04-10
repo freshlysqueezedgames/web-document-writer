@@ -52,8 +52,6 @@ const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord
 
         list = list.splice(index + 1, 0, DocumentComponentStateFactory({id, content, focused, componentType, drop: DROP_MODE.NONE}))
       
-        console.timeEnd('test')
-
         return list
       })
     }

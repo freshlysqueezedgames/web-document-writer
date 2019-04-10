@@ -267,8 +267,6 @@ export default class DocumentComponentComponent extends React.Component<Document
       result = await t.props.OnImageUpload(result)
     }
 
-    console.time('test')
-
     this.props.OnAppendContent && this.props.OnAppendContent(this.props.id, result, DOCUMENT_COMPONENT_TYPE.IMAGE)
   }
 

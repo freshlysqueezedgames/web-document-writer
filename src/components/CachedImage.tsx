@@ -7,19 +7,30 @@ export interface CachedImageProps {
   image: string
 }
 
-export default class CachedImage extends React.Component<CachedImageProps, {}> {
+export interface CachedImageState {
+  style?: React.CSSProperties
+}
+
+export default class CachedImage extends React.Component<CachedImageProps, CachedImageState> {
   canvas: HTMLCanvasElement | null = null
   canvasReference = (element: HTMLCanvasElement | null) => this.canvas = element
 
-  render () {
-    const props: CachedImageProps = this.props
+  constructor (props: CachedImageProps) {
+    super(props)
 
-    return <canvas style={props.style} ref={this.canvasReference} className={styles.image}/>
+    this.state = {
+      style: props.style
+    }
+  }
+
+  render () {
+    const state: CachedImageState = this.state
+
+    return <canvas style={state.style} ref={this.canvasReference} className={styles.image}/>
   }
 
   componentDidMount () {
     const t : CachedImage = this
-    console.log('this is my image bro!', this.props, this.canvas)
 
     if (!this.canvas) {
       return
@@ -41,11 +52,17 @@ export default class CachedImage extends React.Component<CachedImageProps, {}> {
       }
 
       const s: number = t.canvas.scrollWidth / img.width
-      
-      t.canvas.width = t.canvas.scrollWidth
-      t.canvas.height = img.height * s
+      const width: number = s < 1 ? t.canvas.scrollWidth : img.width
+      const height: number = img.height * Math.min(s, 1)
 
-      context.drawImage(img, 0, 0, img.width, img.height, 0, 0, t.canvas.width, t.canvas.height)
+      t.canvas.width = width
+      t.canvas.height = height
+
+      if (s > 1) {
+        t.setState({style: {width, height}})
+      }
+
+      context.drawImage(img, 0, 0, img.width, img.height, 0, 0, width, height)
     }
   }
 }
