@@ -12,7 +12,7 @@ import {
   DROP_MODE
 } from '../types'
 
-const DocumentComponentStateFactory: (state?: DocumentComponentState) => DocumentComponentStateRecord = Record({
+const DocumentComponentStateFactory = Record({
   id: '',
   content: '',
   focused: false,
@@ -20,7 +20,7 @@ const DocumentComponentStateFactory: (state?: DocumentComponentState) => Documen
   componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
 })
 
-const DocumentStateFactory: (state?: DocumentState) => DocumentStateRecord = Record({
+const DocumentStateFactory = Record({
   slug: 'default-slug',
   components: List()
 })

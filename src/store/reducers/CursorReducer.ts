@@ -7,7 +7,7 @@ import {
   CursorStateRecord
 } from '../types'
 
-const CursorStateFactory: (state?: CursorState) => CursorStateRecord = Record({
+const CursorStateFactory = Record({
   top: 0,
   right: 0,
   bottom: 0,
