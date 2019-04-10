@@ -4,9 +4,8 @@ import * as React from 'react'
 import {mount, ReactWrapper} from 'enzyme'
 
 import {Provider} from 'react-redux'
-import {store} from '../store'
+import {store, GetDocument, SetDocument} from '../store'
 
-import {SetDocument} from '../store/actions'
 import {DOCUMENT_COMPONENT_TYPE, DROP_MODE} from '../store/types'
 import {DragTarget} from './DragAndDrop'
 import {DRAG_IDENTIFIER} from './DocumentComponentComponent'
@@ -24,7 +23,7 @@ describe('<DocumentEditorComponent/>', (): void => {
   let keyMapStyles = styles as {[key: string]: string}
 
   test('Should render the title and slug of the project', (): void => {
-    store.dispatch(SetDocument('test-document', []))
+    SetDocument('test-document', [])
 
     const wrapper: ReactWrapper = mount(<Provider store={store}>
       <DocumentEditorComponent/>
@@ -34,19 +33,13 @@ describe('<DocumentEditorComponent/>', (): void => {
   })
 
   test('Should be able to render a list of document component components for its content', () => {
-    store.dispatch(SetDocument('test', [{
-      id: 'test1',
+    SetDocument('test', [{
       content: 'test1',
-      focused: false,
-      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
     }, {
-      id: 'test2',
       content: 'test2',
-      focused: false,
-      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
-    }]))
+    }])
 
     const wrapper: ReactWrapper = mount(<Provider store={store}>
       <DocumentEditorComponent/>
@@ -56,13 +49,10 @@ describe('<DocumentEditorComponent/>', (): void => {
   })
 
   test('Should append new DocumentComponentComponent\'s when ctrl+return is used within a DocumentComponentComponent', (): void => {
-    store.dispatch(SetDocument('test-document', [{
-      id: 'test1',
+    SetDocument('test-document', [{
       content: 'test1',
-      focused: false,
-      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
-    }]))
+    }])
 
     const wrapper: ReactWrapper = mount(
       <Provider store={store}>
@@ -81,13 +71,10 @@ describe('<DocumentEditorComponent/>', (): void => {
   })
 
   test('Should prepend new DocumentComponentComponent\'s when ctrl+shift+return is used within a DocumentComponentComponent', (): void => {
-    store.dispatch(SetDocument('test-document', [{
-      id: 'test1',
+    SetDocument('test-document', [{
       content: 'test1',
-      focused: false,
-      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
-    }]))
+    }])
 
     const wrapper: ReactWrapper = mount(
       <Provider store={store}>
@@ -107,13 +94,10 @@ describe('<DocumentEditorComponent/>', (): void => {
   })
 
   test('Should update the content within a component when the user makes a change to the text', (): void => {
-    store.dispatch(SetDocument('test-document', [{
-      id: 'test1',
+    SetDocument('test-document', [{
       content: '',
-      focused: false,
-      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
-    }]))
+    }])
 
     const wrapper: ReactWrapper = mount(
       <Provider store={store}>
@@ -134,13 +118,10 @@ describe('<DocumentEditorComponent/>', (): void => {
   })
 
   test('Should be able to focus into a particular DocumentComponentComponent', (): void => {
-    store.dispatch(SetDocument('test-document', [{
-      id: 'test1',
+    SetDocument('test-document', [{
       content: '',
-      focused: false,
-      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
-    }]))
+    }])
 
     const wrapper: ReactWrapper = mount(
       <Provider store={store}>
@@ -170,19 +151,28 @@ describe('<DocumentEditorComponent/>', (): void => {
   })
 
   test('Should update a components type when the component type has been modified', (): void => {
-    store.dispatch(SetDocument('test-document', [{
-      id: 'test1',
+    SetDocument('test-document', [{
       content: '',
-      focused: true,
-      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
-    }]))
+    }])
 
     const wrapper: ReactWrapper = mount(
       <Provider store={store}>
         <DocumentEditorComponent/>
       </Provider>
     )
+
+    const getSelection: () => Selection = window.getSelection
+    
+    window.getSelection = jest.fn().mockImplementation((): {rangeCount: number} => ({
+      rangeCount: 0
+    }))
+
+    let component: ReactWrapper = wrapper.find(`.${componentStyles.componentType}`)
+
+    expect(component).toHaveLength(1)
+
+    component.simulate('click')
 
     const buttons: ReactWrapper = wrapper.find(`.${keyMapStyles.documentComponentTypeSelection} .${keyMapStyles.button}`)
 
@@ -192,21 +182,20 @@ describe('<DocumentEditorComponent/>', (): void => {
 
     h1Button.simulate('click')
 
-    const component: ReactWrapper = wrapper.find('DocumentComponentComponent')
+    component = wrapper.find('DocumentComponentComponent')
 
     expect(component).toHaveLength(1)
 
     expect(component.prop('componentType')).toEqual(DOCUMENT_COMPONENT_TYPE.HEADER_1)
+  
+    window.getSelection = getSelection
   })
 
   test('Should be able to remove a component', (): void => {
-    store.dispatch(SetDocument('test-document', [{
-      id: 'test1',
+    SetDocument('test-document', [{
       content: '',
-      focused: true,
-      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
-    }]))
+    }])
 
     const wrapper: ReactWrapper = mount(
       <Provider store={store}>
@@ -232,13 +221,10 @@ describe('<DocumentEditorComponent/>', (): void => {
   })
 
   test('Should be able to cancel removal of component', (): void => {
-    store.dispatch(SetDocument('test-document', [{
-      id: 'test1',
+    SetDocument('test-document', [{
       content: '',
-      focused: true,
-      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
-    }]))
+    }])
 
     const wrapper: ReactWrapper = mount(
       <Provider store={store}>
@@ -270,19 +256,13 @@ describe('<DocumentEditorComponent/>', (): void => {
   test('Should be able to drag append and prepend components based on the position of the mouse', (): void => {
     DragTarget(DRAG_IDENTIFIER)
 
-    store.dispatch(SetDocument('test-document', [{
-      id: 'test1',
+    SetDocument('test-document', [{
       content: 'some more content',
-      focused: false,
-      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
     }, {
-      id: 'test2',
       content: 'some more content',
-      focused: false,
-      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
-    }]))
+    }])
 
     const wrapper: ReactWrapper = mount(
       <Provider store={store}>
@@ -299,21 +279,15 @@ describe('<DocumentEditorComponent/>', (): void => {
     component.at(1).simulate('dragover')
     component.at(0).simulate('dragend')
 
-    let state = store.getState().toJS()
+    let state = GetDocument()
     
-    expect(state.document.components).toHaveLength(2)
+    expect(state).toHaveLength(2)
 
-    expect(state.document.components).toMatchObject([{
-      id: 'test2',
+    expect(state).toMatchObject([{
       content: 'some more content',
-      focused: false,
-      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
     }, {
-      id: 'test1',
       content: 'some more content',
-      focused: false,
-      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
     }])
 
@@ -325,19 +299,13 @@ describe('<DocumentEditorComponent/>', (): void => {
     component.at(0).simulate('dragover', {clientY: -10})
     component.at(1).simulate('dragend')
     
-    state = store.getState().toJS()
+    state = GetDocument()
 
-    expect(state.document.components).toMatchObject([{
-      id: 'test1',
+    expect(state).toMatchObject([{
       content: 'some more content',
-      focused: false,
-      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
     }, {
-      id: 'test2',
       content: 'some more content',
-      focused: false,
-      drop: DROP_MODE.NONE,
       componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
     }])
   })
