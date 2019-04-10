@@ -133,7 +133,7 @@ describe('<DocumentEditorComponent/>', (): void => {
 
     expect(content).toHaveLength(1)
 
-    const getSelection: () => Selection = window.getSelection
+    const getSelection: () => Selection | null = window.getSelection
     
     window.getSelection = jest.fn().mockImplementation((): {rangeCount: number} => ({
       rangeCount: 0
@@ -162,7 +162,7 @@ describe('<DocumentEditorComponent/>', (): void => {
       </Provider>
     )
 
-    const getSelection: () => Selection = window.getSelection
+    const getSelection: () => Selection | null = window.getSelection
     
     window.getSelection = jest.fn().mockImplementation((): {rangeCount: number} => ({
       rangeCount: 0

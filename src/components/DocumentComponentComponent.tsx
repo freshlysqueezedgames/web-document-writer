@@ -107,18 +107,26 @@ export default class DocumentComponentComponent extends React.Component<Document
       return
     }
 
-    const selection: Selection = window.getSelection()
-    let {startOffset, endOffset} = selection.rangeCount ? selection.getRangeAt(0) : OFFSET_ZERO
+    const selection: Selection | null = window.getSelection()
 
-    let anchorOffset = this.GetNodeTextOffset(selection.anchorNode)
-    let focusOffset = this.GetNodeTextOffset(selection.focusNode)
+    let {startOffset, endOffset} = OFFSET_ZERO
 
-    if (this.GetFurthestNode(selection.anchorNode, selection.focusNode)) {
-      startOffset += focusOffset
-      endOffset += anchorOffset
-    } else {
-      startOffset += anchorOffset
-      endOffset += focusOffset
+    if (selection) {
+      const range = selection.rangeCount ? selection.getRangeAt(0) : OFFSET_ZERO
+
+      startOffset = range.startOffset
+      endOffset = range.endOffset
+
+      let anchorOffset = this.GetNodeTextOffset(selection.anchorNode)
+      let focusOffset = this.GetNodeTextOffset(selection.focusNode)
+  
+      if (this.GetFurthestNode(selection.anchorNode, selection.focusNode)) {
+        startOffset += focusOffset
+        endOffset += anchorOffset
+      } else {
+        startOffset += anchorOffset
+        endOffset += focusOffset
+      }
     }
 
     textAreaRef.focus()
@@ -134,7 +142,7 @@ export default class DocumentComponentComponent extends React.Component<Document
   HandleMouseEnter = (): void => this.setState({mouseMode: styles.entered})
   HandleMouseExit = (): void => this.setState({mouseMode: styles.exited})
 
-  IterateBackwardsThroughNodes (node: Node, callback: (node: Node, parent: boolean) => boolean | void): void {
+  IterateBackwardsThroughNodes (node: Node | null, callback: (node: Node, parent: boolean) => boolean | void): void {
     while (node) {
       if (node.previousSibling) {
         node = node.previousSibling
@@ -158,7 +166,7 @@ export default class DocumentComponentComponent extends React.Component<Document
     }
   }
 
-  GetNodeTextOffset (node: Node): number {
+  GetNodeTextOffset (node: Node | null): number {
     let i: number = 0
 
     this.IterateBackwardsThroughNodes(node, (node: Node, parent: boolean): void => {
@@ -170,7 +178,7 @@ export default class DocumentComponentComponent extends React.Component<Document
     return i
   }
 
-  GetFurthestNode (node1: Node, node2: Node): boolean {
+  GetFurthestNode (node1: Node | null, node2: Node | null): boolean {
     let isFurthest = false
 
     this.IterateBackwardsThroughNodes(node1, (node: Node): boolean | void => {
