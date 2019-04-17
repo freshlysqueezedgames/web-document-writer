@@ -9,12 +9,14 @@ import {
 import * as styles from './DocumentComponentTypeSelection.scss'
 
 export interface DocumentComponentTypeSelectionProps {
-  OnSelection: (componentType: number) => void
+  OnSelection: (componentType: number) => void,
+  OnSave: () => void
 }
 
-interface DocumentComponentTypeSelectionButtonProps extends DocumentComponentTypeSelectionProps {
+interface DocumentComponentTypeSelectionButtonProps {
   componentType: number,
-  label: string
+  label: string,
+  OnSelection: (componentType: DOCUMENT_COMPONENT_TYPE) => void
 }
 
 class DocumentComponentTypeSelectionButton extends React.Component<DocumentComponentTypeSelectionButtonProps> {
@@ -37,6 +39,9 @@ const DocumentComponentTypeSelection = (props: DocumentComponentTypeSelectionPro
     <DocumentComponentTypeSelectionButton label="H3" componentType={DOCUMENT_COMPONENT_TYPE.HEADER_3} OnSelection={props.OnSelection}/>
     <DocumentComponentTypeSelectionButton label="Paragraph" componentType={DOCUMENT_COMPONENT_TYPE.PARAGRAPH} OnSelection={props.OnSelection}/>
     <DocumentComponentTypeSelectionButton label="Code" componentType={DOCUMENT_COMPONENT_TYPE.CODE} OnSelection={props.OnSelection}/>
+    <div className={`${styles.saveButton} ${styles.button}`} onClick={props.OnSave}>
+      Save
+    </div>
   </div>
 
 export default DocumentComponentTypeSelection

@@ -11,6 +11,7 @@ import {
   DocumentComponentStateRecord,
   DROP_MODE
 } from '../types'
+import shortid = require('shortid');
 
 const DocumentComponentStateFactory = Record({
   id: '',
@@ -34,7 +35,19 @@ export const defaultDocumentStateRecord: DocumentStateRecord = DocumentStateFact
 const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord, action: Action): DocumentStateRecord => {
   switch (action.type) {
     case 'SET_DOCUMENT': {
-      return state.set('slug', action.slug).set('components', List(action.content.map((state: DocumentComponentState): DocumentComponentStateRecord => DocumentComponentStateFactory(state))))
+      let content: DocumentComponentState[] = action.content
+
+      if (!content || !content.length) {
+        content = [{
+          id: shortid.generate(),
+          content: '',
+          focused: false,
+          drop: DROP_MODE.NONE,
+          componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
+        }]
+      }
+
+      return state.set('slug', action.slug).set('components', List(content.map((state: DocumentComponentState): DocumentComponentStateRecord => DocumentComponentStateFactory(state))))
     }
     case 'APPEND_COMPONENT': {
       const {after, id, content, focused, componentType} = action
@@ -50,13 +63,11 @@ const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord
           return list.push(DocumentComponentStateFactory({id, content, focused, componentType, drop: DROP_MODE.NONE}))
         }
 
-        list = list.splice(index + 1, 0, DocumentComponentStateFactory({id, content, focused, componentType, drop: DROP_MODE.NONE}))
-      
-        return list
+        return list.splice(index + 1, 0, DocumentComponentStateFactory({id, content, focused, componentType, drop: DROP_MODE.NONE}))
       })
     }
     case 'PREPEND_COMPONENT': {
-      const {before, id, content, focused, componentType} = action 
+      const {before, id, content, focused, componentType} = action
 
       return state.update("components", (list: List<DocumentComponentStateRecord>): List<DocumentComponentStateRecord> => {
         const index: number = list.findIndex((record: DocumentComponentStateRecord): boolean => record.get("id") === before)
@@ -106,7 +117,7 @@ const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord
       })
     }
     case 'REMOVE_COMPONENT': {
-      const {id} = action 
+      const {id} = action
 
       return state.update('components', (list: List<DocumentComponentStateRecord>): List<DocumentComponentStateRecord> => {
         const key: number | typeof undefined = list.findKey((record: DocumentComponentStateRecord): boolean => record.get('id') === id)
@@ -115,7 +126,19 @@ const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord
           return list
         }
 
-        return list.remove(key)
+        list = list.remove(key)
+
+        if (list.count() < 1) {
+          return list.push(DocumentComponentStateFactory({
+            id: shortid.generate(),
+            content: '',
+            focused: false,
+            drop: DROP_MODE.NONE,
+            componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
+          }))
+        }
+
+        return list
       })
     }
     case 'MOVE_TARGET_COMPONENT_ACTION': {

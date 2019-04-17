@@ -6,7 +6,8 @@ import DocumentComponentComponent from './DocumentComponentComponent'
 import DocumentCursorComponent from './DocumentCursorComponent'
 import DocumentComponentTypeSelection, {DocumentComponentTypeSelectionProps} from './DocumentComponentTypeSelection'
 
-import {DocumentComponentState} from '../store/types'
+import {DocumentComponentState, DocumentComponentDefinition} from '../store/types'
+import {GetDocument} from '../store'
 import {DocumentContainerProps, DocumentContainer, CursorContainer, CursorContainerProps} from '../containers'
 
 import {WithPositionalDrag} from './DragAndDrop'
@@ -14,16 +15,19 @@ import {WithPositionalDrag} from './DragAndDrop'
 import * as styles from './DocumentEditorComponent.scss'
 
 export interface DocumentEditorComponentProps {
+  OnSave?: (document: Array<DocumentComponentDefinition>) => Promise<void>,
   OnImageUpload?: (data: string) => Promise<string>
 }
 
 let OnImageUpload: ((data: string) => Promise<string>) | undefined
+let OnSave: ((document: Array<DocumentComponentDefinition>) => Promise<void>) | undefined
 
 const DocumentEditorComponent = (props: DocumentEditorComponentProps): React.ReactElement<HTMLDivElement> => {
   OnImageUpload = props.OnImageUpload
+  OnSave = props.OnSave
 
   return <div className={styles.documentEditorComponent}>
-    <DocumentContainer presentation={RenderDocument} />
+    <DocumentContainer presentation={RenderDocument}/>
     <CursorContainer presentation={RenderCursor}/>
   </div>
 }
@@ -47,7 +51,9 @@ function RenderDocument (props: DocumentContainerProps): React.ReactElement<type
         OnImageUpload={OnImageUpload}
       />
     )}
-    <WithPositionalDragDocumentComponentTypeSelection OnSelection={props.OnComponentTypeChange}/>
+    <WithPositionalDragDocumentComponentTypeSelection OnSelection={props.OnComponentTypeChange} OnSave={() => {
+      OnSave && OnSave(GetDocument())
+    }}/>
   </>
 }
 

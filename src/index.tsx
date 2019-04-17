@@ -17,9 +17,9 @@ export function LoadDocument (name: string, document: Array<DocumentComponentDef
   SetDocument(name, document)
 }
 
-export function RenderDocument (OnImageUpload: (data: string) => Promise<string>) {
+export function RenderDocument (OnSave: (document: Array<DocumentComponentDefinition>) => Promise<void>, OnImageUpload: (data: string) => Promise<string>) {
   return <ReactRedux.Provider store={store}>
-    <DocumentContainer presentation={() => <DocumentEditorComponent OnImageUpload={OnImageUpload}/>}/>
+    <DocumentContainer presentation={() => <DocumentEditorComponent OnImageUpload={OnImageUpload} OnSave={OnSave}/>}/>
   </ReactRedux.Provider>
 }
 
@@ -30,30 +30,24 @@ export {
 const app: HTMLElement | null = document.getElementById('web-document-writer-6nsy621t8hkjxsu8')
 
 if (app) {
-  LoadDocument('test-document', [{
-    content: 'Welcome To Your Document Editor',
-    componentType: DOCUMENT_COMPONENT_TYPE.HEADER_1
-  }, {
-    content: 'This is where you start',
-    componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
-  }, {
-    content: 'This is a header 2',
-    componentType: DOCUMENT_COMPONENT_TYPE.HEADER_2
-  }, {
-    content: 'This is a header 3',
-    componentType: DOCUMENT_COMPONENT_TYPE.HEADER_3
-  }, {
-    content: 'This is a code',
-    componentType: DOCUMENT_COMPONENT_TYPE.CODE
-  }])
+  LoadDocument('document', [])
+
+  const OnSave = (document: Array<DocumentComponentDefinition>): Promise<void> => {
+    return new Promise((resolve) => {
+      console.log('got me a document', document)
+      resolve()
+    })
+  }
+
+  const OnImageUpload = (data: string): Promise<string> => {
+    return new Promise((resolve) => {
+      resolve(data)
+    })
+  }
 
   render(
     <div className={styles.wrapper}>
-      {RenderDocument((data: string): Promise<string> => {
-        return new Promise((resolve) => {
-          resolve(data)
-        })
-      })}
+      {RenderDocument(OnSave, OnImageUpload)}
     </div>, app
   )
 }

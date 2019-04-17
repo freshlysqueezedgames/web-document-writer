@@ -13,7 +13,7 @@ import {
 import {DragTarget} from './DragAndDrop'
 
 import * as styles from './DocumentComponentComponent.scss'
-import { RemoveButton, AddButton, DragIndicatorButton } from './Buttons';
+import { RemoveButton, AddButton, DragIndicatorButton } from './Buttons'
 
 export const DRAG_IDENTIFIER: string = 'document-component' 
 

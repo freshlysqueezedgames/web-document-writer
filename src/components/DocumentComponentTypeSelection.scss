@@ -43,6 +43,16 @@ div.document-component-type-selection {
     width: 4px;
     padding: 7px 6px;
   }
+
+  div.save-button {
+    width: auto;
+    height: 100%;
+    float: left;
+    background-color: #FFF;
+    color: #000;
+    padding: 10px;
+    border-left: 2px solid #AAA;
+  }
 }
 
 @keyframes hover {

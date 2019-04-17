@@ -7,7 +7,7 @@ export interface ImageUploadProps {
   OnUpload: (result: string) => void
 }
 
-enum DRAG_STATE {
+export enum DRAG_STATE {
   NONE,
   ACTIVE,
   INACTIVE
@@ -18,8 +18,6 @@ export interface ImageUploadState {
   message: string,
   progress: number
 }
-
-
 
 export interface TimeBarStyles extends KeyMap<number> {
   width: number
@@ -65,6 +63,8 @@ export default class ImageUploadComponent extends React.Component<ImageUploadPro
       const file : File = files[i]
       const reader : FileReader = new FileReader
 
+      console.log('uploading file!', file)
+
       reader.onload = function () {
         const progress: number = ++completed / l
 
@@ -83,6 +83,8 @@ export default class ImageUploadComponent extends React.Component<ImageUploadPro
             message: `Upload Here`,
             drag: DRAG_STATE.NONE
           })
+
+          console.log('done!')
 
           t.props.OnUpload && t.props.OnUpload(reader.result as string)
         }
