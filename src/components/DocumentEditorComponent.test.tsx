@@ -176,7 +176,7 @@ describe('<DocumentEditorComponent/>', (): void => {
 
     const buttons: ReactWrapper = wrapper.find(`.${keyMapStyles.documentComponentTypeSelection} .${keyMapStyles.button}`)
 
-    expect(buttons).toHaveLength(5)
+    expect(buttons).toHaveLength(6)
 
     const h1Button: ReactWrapper = buttons.first()
 
@@ -217,7 +217,10 @@ describe('<DocumentEditorComponent/>', (): void => {
 
     jest.runAllTimers()
 
-    expect(store.getState().toJS().document.components).toHaveLength(0)
+    expect(store.getState().toJS().document.components).toMatchObject([{
+      content: '',
+      componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
+    }])
   })
 
   test('Should be able to cancel removal of component', (): void => {

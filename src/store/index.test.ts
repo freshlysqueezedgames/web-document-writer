@@ -25,7 +25,12 @@ describe('#Store', (): void => {
 
     expect(store.getState().toJS().document).toMatchObject({
       slug: 'test',
-      components: []
+      components: [{
+        componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH,
+        content: '',
+        drop: DROP_MODE.NONE,
+        focused: false
+      }]
     })
   })
 
@@ -56,14 +61,24 @@ describe('#Store', (): void => {
 
     expect(store.getState().toJS().document).toMatchObject({
       slug: 'test',
-      components: []
+      components: [{
+        componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH,
+        content: '',
+        drop: DROP_MODE.NONE,
+        focused: false
+      }]
     })
 
     store.dispatch(AppendComponent('', id, content))
 
     expect(store.getState().toJS().document).toMatchObject({
       slug: 'test',
-      components: [{id, content}]
+      components: [{
+        componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH,
+        content: '',
+        drop: DROP_MODE.NONE,
+        focused: false
+      }, {id, content}]
     })
   })
 
@@ -74,6 +89,11 @@ describe('#Store', (): void => {
     expect(store.getState().toJS().document).toMatchObject({
       slug: 'test',
       components: [{
+        componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH,
+        content: '',
+        drop: DROP_MODE.NONE,
+        focused: false
+      }, {
         id,
         content
       }, {

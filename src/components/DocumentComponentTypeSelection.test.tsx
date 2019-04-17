@@ -16,7 +16,7 @@ describe('<DocumentComponentTypeSelection>', (): void => {
 
     const buttons: ReactWrapper = wrapper.find(`div.${styles.button}`)
 
-    expect(buttons).toHaveLength(5)
+    expect(buttons).toHaveLength(6)
 
     const h1Button: ReactWrapper = buttons.first()
 
