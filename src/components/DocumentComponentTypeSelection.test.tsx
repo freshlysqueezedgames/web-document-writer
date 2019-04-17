@@ -24,8 +24,4 @@ describe('<DocumentComponentTypeSelection>', (): void => {
 
     expect(mock).toHaveBeenCalledWith(DOCUMENT_COMPONENT_TYPE.HEADER_1)
   })
-
-  test('Should highlight the component type that the element already is', (): void => {
-
-  })
 })
