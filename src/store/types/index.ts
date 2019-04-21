@@ -11,21 +11,52 @@ export enum DOCUMENT_COMPONENT_TYPE {
   IMAGE
 }
 
+export enum DOCUMENT_HIGHLIGHT_TYPE {
+  BOLD,
+  ITALIC,
+  UNDERLINE,
+  LINK
+}
+
 export enum DROP_MODE {
   NONE = 0,
   APPEND,
   PREPEND 
 }
 
-export interface DocumentComponentDefinition {
-  content: string
-  componentType: DOCUMENT_COMPONENT_TYPE
+export interface LinkOptions {
+  url: string
 }
 
-export interface DocumentComponentState extends DocumentComponentDefinition {
+export type HighlightOptions = LinkOptions
+
+export interface Highlight {
+  start: number,
+  end: number,
+  name: DOCUMENT_HIGHLIGHT_TYPE,
+  options?: HighlightOptions
+}
+
+export interface DocumentComponentBase {
+  content: string
+  componentType: DOCUMENT_COMPONENT_TYPE,
+}
+
+export interface DocumentComponentDefinition extends DocumentComponentBase {
+  highlights?: Highlight[]
+}
+
+export interface DocumentComponentConfig extends DocumentComponentDefinition {
+  id: string,
+  focused: boolean,
+  drop: DROP_MODE
+} 
+
+export interface DocumentComponentState extends DocumentComponentBase {
   id: string
   focused: boolean
   drop: DROP_MODE
+  highlights: List<RecordOf<Highlight>>
 }
 
 export type DocumentComponentStateRecord = RecordOf<DocumentComponentState>

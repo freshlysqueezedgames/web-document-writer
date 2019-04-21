@@ -6,7 +6,7 @@ import DocumentComponentComponent from './DocumentComponentComponent'
 import DocumentCursorComponent from './DocumentCursorComponent'
 import DocumentComponentTypeSelection, {DocumentComponentTypeSelectionProps} from './DocumentComponentTypeSelection'
 
-import {DocumentComponentState, DocumentComponentDefinition} from '../store/types'
+import {DocumentComponentConfig, DocumentComponentDefinition} from '../store/types'
 import {GetDocument} from '../store'
 import {DocumentContainerProps, DocumentContainer, CursorContainer, CursorContainerProps} from '../containers'
 
@@ -36,7 +36,7 @@ const WithPositionalDragDocumentComponentTypeSelection = WithPositionalDrag<Docu
 
 function RenderDocument (props: DocumentContainerProps): React.ReactElement<typeof React.Fragment> {
   return <>
-    {props.components && props.components.map((component: DocumentComponentState) => 
+    {props.components && props.components.map((component: DocumentComponentConfig) => 
       <DocumentComponentComponent
         key={component.id}
         {...component}

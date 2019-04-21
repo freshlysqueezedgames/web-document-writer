@@ -2,13 +2,16 @@
 import {
   DOCUMENT_COMPONENT_TYPE,
   DocumentComponentState,
-  DROP_MODE
+  DROP_MODE,
+  DOCUMENT_HIGHLIGHT_TYPE,
+  HighlightOptions,
+  DocumentComponentConfig
 } from '../types'
 
 export interface DocumentAction {
-  type: 'SET_DOCUMENT';
-  slug: string;
-  content: DocumentComponentState[];
+  type: 'SET_DOCUMENT'
+  slug: string
+  content: DocumentComponentConfig[]
 }
 
 export interface AddComponentAction {
@@ -74,6 +77,15 @@ export interface MoveComponentAction {
   id: string
 }
 
+export interface HighlightRangeAction {
+  type: 'HIGHLIGHT_RANGE',
+  id: string,
+  start: number,
+  end: number,
+  name: DOCUMENT_HIGHLIGHT_TYPE,
+  options?: HighlightOptions
+}
+
 export type Action = 
   DocumentAction | 
   PrependComponentAction |
@@ -86,9 +98,10 @@ export type Action =
   RemoveComponentAction |
   MoveTargetComponentAction |
   MoveComponentAction | 
+  HighlightRangeAction |
   {type: 'EMPTY'}
 
-export const SetDocument = (slug: string, content: DocumentComponentState[]): DocumentAction => ({
+export const SetDocument = (slug: string, content: DocumentComponentConfig[]): DocumentAction => ({
   type: 'SET_DOCUMENT',
   slug,
   content
@@ -158,3 +171,11 @@ export const MoveComponent = (id: string): MoveComponentAction => ({
   id
 })
 
+export const HighlightRange = (id: string, start: number, end: number, name: DOCUMENT_HIGHLIGHT_TYPE, options?: HighlightOptions): HighlightRangeAction => ({
+  type: 'HIGHLIGHT_RANGE',
+  id,
+  start,
+  end,
+  name,
+  options
+})

@@ -6,7 +6,7 @@ import * as ReactRedux from 'react-redux'
 import shortid from 'shortid'
 
 import {store, SetDocument} from './store'
-import {DOCUMENT_COMPONENT_TYPE, DocumentComponentDefinition} from './store/types'
+import {DOCUMENT_COMPONENT_TYPE, DocumentComponentDefinition, DOCUMENT_HIGHLIGHT_TYPE} from './store/types'
 
 import DocumentEditorComponent from './components'
 
@@ -30,7 +30,23 @@ export {
 const app: HTMLElement | null = document.getElementById('web-document-writer-6nsy621t8hkjxsu8')
 
 if (app) {
-  LoadDocument('document', [])
+  LoadDocument('document', [{
+    componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH,
+    content: 'Here is some basic type text that you can use to highlight things',
+    highlights: [{
+      start: 2,
+      end: 8,
+      name: DOCUMENT_HIGHLIGHT_TYPE.ITALIC
+    }, {
+      start: 10,
+      end: 20,
+      name: DOCUMENT_HIGHLIGHT_TYPE.BOLD
+    }, {
+      start: 13,
+      end: 18,
+      name: DOCUMENT_HIGHLIGHT_TYPE.UNDERLINE
+    }]
+  }])
 
   const OnSave = (document: Array<DocumentComponentDefinition>): Promise<void> => {
     return new Promise((resolve) => {

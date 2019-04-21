@@ -2,23 +2,27 @@
 
 import {Record, List, RecordOf} from 'immutable'
 import {Action} from '../actions'
+import HighlightsReducer, { HighlightRecordFactory } from './HighlightsReducer'
 
 import {
   DOCUMENT_COMPONENT_TYPE,
-  DocumentState,
   DocumentComponentState,
   DocumentStateRecord,
   DocumentComponentStateRecord,
-  DROP_MODE
+  DROP_MODE,
+  Highlight,
+  DocumentComponentConfig
 } from '../types'
-import shortid = require('shortid');
+
+import shortid from 'shortid'
 
 const DocumentComponentStateFactory = Record({
   id: '',
   content: '',
   focused: false,
   drop: DROP_MODE.NONE,
-  componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
+  componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH,
+  highlights: List<RecordOf<Highlight>>()
 })
 
 const DocumentStateFactory = Record({
@@ -35,19 +39,29 @@ export const defaultDocumentStateRecord: DocumentStateRecord = DocumentStateFact
 const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord, action: Action): DocumentStateRecord => {
   switch (action.type) {
     case 'SET_DOCUMENT': {
-      let content: DocumentComponentState[] = action.content
-
+      let content: DocumentComponentConfig[] = action.content
+      
       if (!content || !content.length) {
         content = [{
           id: shortid.generate(),
           content: '',
           focused: false,
           drop: DROP_MODE.NONE,
-          componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH
+          componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH,
+          highlights: []
         }]
       }
 
-      return state.set('slug', action.slug).set('components', List(content.map((state: DocumentComponentState): DocumentComponentStateRecord => DocumentComponentStateFactory(state))))
+      console.log('setting document!', action)
+
+      const mapped = content.map((state: DocumentComponentConfig): DocumentComponentStateRecord => {
+        console.log('hello there', state)
+        const highlights = List((state.highlights || []).map((highlight: Highlight) => HighlightRecordFactory(highlight)))
+
+        return DocumentComponentStateFactory({...state, highlights: HighlightsReducer(highlights, action)})
+      })
+
+      return state.set('slug', action.slug).set('components', List(mapped))
     }
     case 'APPEND_COMPONENT': {
       const {after, id, content, focused, componentType} = action
@@ -168,6 +182,21 @@ const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord
         list = list.splice((<RecordOf<DocumentComponentState>>list.get(targetKey)).drop === DROP_MODE.APPEND ? targetKey : targetKey + 1, 0, value)
 
         return list.map((record: DocumentComponentStateRecord): DocumentComponentStateRecord => record.set('drop', DROP_MODE.NONE))
+      })
+    }
+    case 'HIGHLIGHT_RANGE': {
+      const {id} = action
+
+      return state.update('components', (list: List<DocumentComponentStateRecord>): List<DocumentComponentStateRecord> => {
+        const key: number | typeof undefined = list.findKey((record: DocumentComponentStateRecord): boolean => record.get('id') === id)
+
+        if (key === undefined) {
+          return list
+        }
+        
+        const record = <DocumentComponentStateRecord>list.get(key)
+
+        return list.setIn([key, 'highlights'], HighlightsReducer(record.get('highlights'), action))
       })
     }
     default: {

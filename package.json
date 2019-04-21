@@ -1,6 +1,6 @@
 {
   "name": "@freshlysqueezedgames/web-document-writer",
-  "version": "0.10.4",
+  "version": "0.11.0",
   "description": "Tool for embedding a document writer as part of your webview.",
   "main": "dist/web-document-writer.js",
   "types": "dist/index.d.ts",

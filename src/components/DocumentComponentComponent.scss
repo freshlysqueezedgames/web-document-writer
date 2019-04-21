@@ -17,7 +17,7 @@ div.document-component-component {
     overflow: hidden;
   }
 
-  span {
+  span.selection {
     min-height: 100%;
     display: inline;
     background-color: transparentize($color: #fd5720, $amount: 0.5);
@@ -133,5 +133,17 @@ div.document-component-component {
     100% {
       border-top: 10px solid transparentize(#fd5720, 0)
     }
+  }
+
+  span.bold {
+    font-weight: bold;
+  }
+
+  span.italic {
+    font-style: italic;
+  }
+
+  span.underline {
+    text-decoration: underline;
   }
 }

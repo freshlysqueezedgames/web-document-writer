@@ -1,4 +1,5 @@
 export const documentComponentComponent: string;
+export const selection: string;
 export const code: string;
 export const componentType: string;
 export const up: string;
@@ -10,3 +11,6 @@ export const hidden: string;
 export const exited: string;
 export const remove: string;
 export const drag: string;
+export const bold: string;
+export const italic: string;
+export const underline: string;

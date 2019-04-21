@@ -7,7 +7,9 @@ import KEY_CODE from '../utils'
 
 import {
   DOCUMENT_COMPONENT_TYPE,
-  DROP_MODE
+  DROP_MODE,
+  Highlight,
+  DOCUMENT_HIGHLIGHT_TYPE
 } from '../store/types'
 
 import {DragTarget} from './DragAndDrop'
@@ -23,6 +25,7 @@ export type DocumentComponentComponentProps = Readonly<{
   focused: boolean,
   drop: DROP_MODE,
   componentType: number,
+  highlights?: Highlight[],
 
   OnContentChange?: (id: string, content: string) => void,
   OnAppendContent?: (id: string, content: string, componentType?: DOCUMENT_COMPONENT_TYPE) => void,
@@ -50,6 +53,12 @@ export type Range = Readonly<{
 const OFFSET_ZERO: Range = {
   startOffset: 0,
   endOffset: 0
+}
+
+export interface SelectionHighlight {
+  start: number,
+  end: number,
+  name: -1
 }
 
 const components : {[key: string]: any} = {}
@@ -344,16 +353,134 @@ export default class DocumentComponentComponent extends React.Component<Document
     }
   }
 
+  RenderContent (highlights: Highlight[], content: string): (JSX.Element | string)[] {
+    if (!highlights.length) {
+      return [content]
+    }
+
+    const first: Highlight = highlights[0]
+    let last = {end: 0}
+
+    return [
+      content.substr(0, first.start),
+      ...this.RenderContentHighlight(highlights, content, last),
+      content.substr(last.end)
+    ]
+  }
+
+  RenderContentHighlight (highlights: Highlight[], content: string, last: {end: number}, i: number = 0): (JSX.Element | string)[] {
+    const {start, end, name} = highlights[i]
+    let highlight: Highlight | undefined
+    const children: Highlight[] = []
+    let elements: (JSX.Element | string)[] = []
+
+    if (end > last.end) {
+      last.end = end
+    }
+
+    // Figure out which portion of the array belongs to the parent as children
+    while ((highlight = highlights[++i])) {
+      if (highlight.start >= end) {
+        break
+      }
+
+      children.push(highlight)
+    }
+
+    let j = -1
+    let offsetStart = start
+
+    // Next recursively make a heap of JSX elements, taking care to keep content in between
+    while ((highlight = children[++j])) {
+      if (highlight.start > offsetStart) {
+        elements.push(content.substr(offsetStart, highlight.start - offsetStart))
+      }
+
+      elements = [...elements, ...this.RenderContentHighlight(children, content, last)]
+      offsetStart = highlight.end
+    }
+    
+    if (offsetStart < end) {
+      elements.push(content.substr(offsetStart, end - offsetStart))
+    }
+
+    let className: string = ""
+
+    switch (name) {
+      case DOCUMENT_HIGHLIGHT_TYPE.BOLD: {
+        className = styles.bold
+        break
+      }
+      case DOCUMENT_HIGHLIGHT_TYPE.ITALIC: {
+        className = styles.italic
+        break
+      }
+      case DOCUMENT_HIGHLIGHT_TYPE.UNDERLINE: {
+        className = styles.underline
+      }
+    }
+
+    const span: JSX.Element = <span className={className}>
+      {elements}
+    </span>
+
+    if (i < highlights.length) {
+      return [span, content.substr(end, highlights[i].start - end), ...this.RenderContentHighlight(highlights, content, last, i)]
+    }
+
+    return [span]
+  }
+
+  InsertSelectionHighlight (highlights: Highlight[]): (Highlight | SelectionHighlight)[] {
+    const {startOffset, endOffset} = this.state
+    let highlight: Highlight | undefined
+    const affected: Highlight[] = []
+    let i: number = -1
+
+    // first establish which highlights are affected, by excluding ones completely outside the range
+    while((highlight = highlights[++i])) {
+      const {start, end} = highlight
+
+      if (startOffset > end) { // this sits before the selection begins
+        continue
+      }
+
+      if (start < startOffset && end > endOffset) { // this is larger and therefore BEFORE the selection
+        continue
+      }
+
+      if (endOffset < start) { // this sits after the selection and is therefore not of interest.
+        break
+      }
+
+      affected.push(highlight)
+    }
+
+    // next we need to look at the ones that are affected and break them up into smaller segments to accommodate the new span
+    let j: number = -1
+
+    while ((highlight = affected[++j])) {
+
+    }
+    
+    return highlights
+  }
+
   RenderContentSpan () {
     const content: string = this.props.content
     const {startOffset, endOffset} = this.state
 
+    console.log('I am rendering!', content)
+
+    this.InsertSelectionHighlight(this.props.highlights || [])
+
     return <>
       {content.substr(0, startOffset)}
-      <span ref={this.SpanRef}>
+      <span ref={this.SpanRef} className={styles.selection}>
         {content.substr(startOffset, endOffset - startOffset)}
       </span>
       {content.substr(endOffset)}
+      {this.RenderContent(this.props.highlights || [], content)}
     </>
   }
 

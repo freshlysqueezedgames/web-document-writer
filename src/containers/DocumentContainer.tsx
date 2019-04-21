@@ -25,24 +25,16 @@ import {
 
 import {
   DocumentComponentState,
+  DocumentComponentConfig,
   DROP_MODE,
   DOCUMENT_COMPONENT_TYPE
 } from '../store/types'
 
 import * as styles from './DocumentContainer.scss'
 
-export type DocumentComponent = {
-
-}
-
-export type Document = {
-  slug: string,
-  components: Array<DocumentComponentState>
-}
-
 interface DocumentContainerMappedStateProps {
   slug: string,
-  components: Array<DocumentComponentState>
+  components: Array<DocumentComponentConfig>
 }
 
 interface DocumentContainerMappedDispatchProps {
@@ -63,7 +55,7 @@ export interface DocumentContainerProps extends DocumentContainerMappedStateProp
 }
 
 const MapStateToProps = (state: EditorStateRecord): DocumentContainerMappedStateProps => {
-  const document: Document = state.toJS().document
+  const document: DocumentContainerMappedStateProps = state.toJS().document
   
   return {
     slug: document.slug,
