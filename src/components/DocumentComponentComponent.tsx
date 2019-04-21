@@ -399,7 +399,7 @@ export default class DocumentComponentComponent extends React.Component<Document
       elements = [...elements, ...this.RenderContentHighlight(children, content, last)]
       offsetStart = highlight.end
     }
-    
+
     if (offsetStart < end) {
       elements.push(content.substr(offsetStart, end - offsetStart))
     }
@@ -460,7 +460,7 @@ export default class DocumentComponentComponent extends React.Component<Document
     let j: number = -1
 
     while ((highlight = affected[++j])) {
-
+      
     }
     
     return highlights
