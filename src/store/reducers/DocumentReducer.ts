@@ -52,10 +52,7 @@ const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord
         }]
       }
 
-      console.log('setting document!', action)
-
       const mapped = content.map((state: DocumentComponentConfig): DocumentComponentStateRecord => {
-        console.log('hello there', state)
         const highlights = List((state.highlights || []).map((highlight: Highlight) => HighlightRecordFactory(highlight)))
 
         return DocumentComponentStateFactory({...state, highlights: HighlightsReducer(highlights, action)})

@@ -55,10 +55,18 @@ const OFFSET_ZERO: Range = {
   endOffset: 0
 }
 
+export interface RenderHighlight {
+  start: number,
+  end: number,
+  name: DOCUMENT_HIGHLIGHT_TYPE,
+  rendered: boolean
+}
+
 export interface SelectionHighlight {
   start: number,
   end: number,
-  name: -1
+  name: -1,
+  rendered: boolean
 }
 
 const components : {[key: string]: any} = {}
@@ -353,7 +361,7 @@ export default class DocumentComponentComponent extends React.Component<Document
     }
   }
 
-  RenderContent (highlights: Highlight[], content: string): (JSX.Element | string)[] {
+  RenderContent (highlights: (RenderHighlight | SelectionHighlight)[], content: string): (JSX.Element | string)[] {
     if (!highlights.length) {
       return [content]
     }
@@ -368,10 +376,11 @@ export default class DocumentComponentComponent extends React.Component<Document
     ]
   }
 
-  RenderContentHighlight (highlights: Highlight[], content: string, last: {end: number}, i: number = 0): (JSX.Element | string)[] {
+  RenderContentHighlight (highlights: (RenderHighlight | SelectionHighlight)[], content: string, last: {end: number}, i: number = 0): (JSX.Element | string)[] {
     const {start, end, name} = highlights[i]
-    let highlight: Highlight | undefined
-    const children: Highlight[] = []
+    const temp = highlights[i]
+    let highlight: RenderHighlight | SelectionHighlight | undefined
+    const children: (RenderHighlight | SelectionHighlight)[] = []
     let elements: (JSX.Element | string)[] = []
 
     if (end > last.end) {
@@ -392,6 +401,10 @@ export default class DocumentComponentComponent extends React.Component<Document
 
     // Next recursively make a heap of JSX elements, taking care to keep content in between
     while ((highlight = children[++j])) {
+      if (highlight.rendered) {
+        continue
+      }
+
       if (highlight.start > offsetStart) {
         elements.push(content.substr(offsetStart, highlight.start - offsetStart))
       }
@@ -417,12 +430,19 @@ export default class DocumentComponentComponent extends React.Component<Document
       }
       case DOCUMENT_HIGHLIGHT_TYPE.UNDERLINE: {
         className = styles.underline
+        break
+      }
+      case -1: {
+        className = styles.selection
+        break
       }
     }
 
     const span: JSX.Element = <span className={className}>
       {elements}
     </span>
+
+    temp.rendered = true
 
     if (i < highlights.length) {
       return [span, content.substr(end, highlights[i].start - end), ...this.RenderContentHighlight(highlights, content, last, i)]
@@ -431,14 +451,17 @@ export default class DocumentComponentComponent extends React.Component<Document
     return [span]
   }
 
-  InsertSelectionHighlight (highlights: Highlight[]): (Highlight | SelectionHighlight)[] {
+  InsertSelectionHighlight (highlights: Highlight[]): (RenderHighlight | SelectionHighlight)[] {
     const {startOffset, endOffset} = this.state
-    let highlight: Highlight | undefined
-    const affected: Highlight[] = []
+    const output: (RenderHighlight | SelectionHighlight)[] = highlights.map((highlight: Highlight): RenderHighlight => ({...highlight, rendered: false})) // we will modify props otherwise
+
+    let highlight: RenderHighlight | SelectionHighlight | undefined
+    const affected: (RenderHighlight | SelectionHighlight)[] = []
     let i: number = -1
+    let insertAt: number = -1
 
     // first establish which highlights are affected, by excluding ones completely outside the range
-    while((highlight = highlights[++i])) {
+    while((highlight = output[++i])) {
       const {start, end} = highlight
 
       if (startOffset > end) { // this sits before the selection begins
@@ -449,6 +472,10 @@ export default class DocumentComponentComponent extends React.Component<Document
         continue
       }
 
+      if (insertAt === -1) {
+        insertAt = i // we will want to insert our range here
+      }
+
       if (endOffset < start) { // this sits after the selection and is therefore not of interest.
         break
       }
@@ -456,14 +483,45 @@ export default class DocumentComponentComponent extends React.Component<Document
       affected.push(highlight)
     }
 
+    // lets insert our seletion index
+    if (insertAt !== undefined) {
+      output.splice(insertAt, 0, {
+        start: startOffset,
+        end: endOffset,
+        name: -1,
+        rendered: false
+      })
+    }
+
     // next we need to look at the ones that are affected and break them up into smaller segments to accommodate the new span
     let j: number = -1
 
     while ((highlight = affected[++j])) {
-      
+      // any highlights that span across the startOffset need to be split into two across that range threshold
+      if (highlight.start < startOffset) {
+        const preceding: RenderHighlight = {
+          ...highlight,
+          end: startOffset
+        }
+
+        highlight.start = startOffset
+        output.splice(insertAt++, 0, preceding)
+      } else if (highlight.end > endOffset) {
+        const appending: RenderHighlight = {
+          ...highlight,
+          start: endOffset
+        }
+
+        highlight.end = endOffset
+        output.splice(insertAt + 1, 0, appending)
+      }
     }
+
+    console.log('these are the ranges we have', output)
+    console.log('these ranges are affected', affected)
+    console.log('we should insert our range at', insertAt)
     
-    return highlights
+    return output
   }
 
   RenderContentSpan () {
@@ -472,15 +530,14 @@ export default class DocumentComponentComponent extends React.Component<Document
 
     console.log('I am rendering!', content)
 
-    this.InsertSelectionHighlight(this.props.highlights || [])
-
     return <>
       {content.substr(0, startOffset)}
       <span ref={this.SpanRef} className={styles.selection}>
         {content.substr(startOffset, endOffset - startOffset)}
       </span>
       {content.substr(endOffset)}
-      {this.RenderContent(this.props.highlights || [], content)}
+      <br/>
+      {this.RenderContent(this.InsertSelectionHighlight(this.props.highlights || []), content)}
     </>
   }
 
