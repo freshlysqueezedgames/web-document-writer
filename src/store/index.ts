@@ -19,8 +19,6 @@ export function SetDocument (name: string, document: Array<DocumentComponentDefi
     drop: DROP_MODE.NONE
   }))
 
-  console.log('this is the map', map)
-
   store.dispatch(SetDocumentAction(name, map))
 }
 

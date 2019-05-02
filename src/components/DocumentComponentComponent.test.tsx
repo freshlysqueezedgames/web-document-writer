@@ -5,7 +5,7 @@ import {shallow, mount, ShallowWrapper, ReactWrapper} from 'enzyme'
 
 import {DOCUMENT_COMPONENT_TYPE, DROP_MODE} from '../store/types'
 
-import DocumentComponentComponent, {Range} from './DocumentComponentComponent'
+import DocumentComponentComponent, {OffsetRange} from './DocumentComponentComponent'
 import KEY_CODE from '../utils'
 
 import * as styles from './DocumentComponentComponent.scss'
@@ -43,10 +43,10 @@ describe('<DocumentComponentComponent/>', (): void => {
   })
 
   test('Should focus on the clicked position in the textarea when the content is clicked', (): void => {
-    const getSelection: () => Selection = window.getSelection
+    const getSelection = window.getSelection
     
-    window.getSelection = jest.fn().mockImplementation((): {getRangeAt: () => Range, rangeCount: number} => ({
-      getRangeAt: (): Range => ({
+    window.getSelection = jest.fn().mockImplementation((): {getRangeAt: () => OffsetRange, rangeCount: number} => ({
+      getRangeAt: (): OffsetRange => ({
         startOffset: 5,
         endOffset: 5
       }),
@@ -75,10 +75,10 @@ describe('<DocumentComponentComponent/>', (): void => {
   })
 
   test('Should be able to highlight the correct range of content across multiple nodes', (): void => {
-    const getSelection: () => Selection = window.getSelection
+    const getSelection = window.getSelection
     
-    window.getSelection = jest.fn().mockImplementation((): {getRangeAt: () => Range, rangeCount: number} => ({
-      getRangeAt: (): Range => ({
+    window.getSelection = jest.fn().mockImplementation((): {getRangeAt: () => OffsetRange, rangeCount: number} => ({
+      getRangeAt: (): OffsetRange => ({
         startOffset: 5,
         endOffset: 5
       }),
@@ -105,8 +105,8 @@ describe('<DocumentComponentComponent/>', (): void => {
 
     const previousSibling = {}
 
-    window.getSelection = jest.fn().mockImplementation((): {getRangeAt: () => Range, rangeCount: number, focusNode: any, anchorNode: any} => ({
-      getRangeAt: (): Range => ({
+    window.getSelection = jest.fn().mockImplementation((): {getRangeAt: () => OffsetRange, rangeCount: number, focusNode: any, anchorNode: any} => ({
+      getRangeAt: (): OffsetRange => ({
         startOffset: 2,
         endOffset: 10
       }),
@@ -142,7 +142,7 @@ describe('<DocumentComponentComponent/>', (): void => {
   })
 
   test('Should have a default range of 0, 0 if the selection range is not available', () => {
-    const getSelection: () => Selection = window.getSelection
+    const getSelection = window.getSelection
     
     window.getSelection = jest.fn().mockImplementation((): {rangeCount: number} => ({
       rangeCount: 0

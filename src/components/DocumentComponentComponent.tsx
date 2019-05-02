@@ -9,8 +9,13 @@ import {
   DOCUMENT_COMPONENT_TYPE,
   DROP_MODE,
   Highlight,
+  Range,
   DOCUMENT_HIGHLIGHT_TYPE
 } from '../store/types'
+
+import {
+  AddRange
+} from '../store/ranges'
 
 import {DragTarget} from './DragAndDrop'
 
@@ -45,26 +50,21 @@ export type DocumentComponentComponentState = Readonly<{
   draggable: boolean
 }>
 
-export type Range = Readonly<{
+export type OffsetRange = Readonly<{
   startOffset: number,
   endOffset: number
 }>
 
-const OFFSET_ZERO: Range = {
+const OFFSET_ZERO : OffsetRange = {
   startOffset: 0,
   endOffset: 0
 }
 
-export interface RenderHighlight {
-  start: number,
-  end: number,
-  name: DOCUMENT_HIGHLIGHT_TYPE,
+export interface RenderHighlight extends Highlight{
   rendered: boolean
 }
 
-export interface SelectionHighlight {
-  start: number,
-  end: number,
+export interface SelectionHighlight extends Range {
   name: -1,
   rendered: boolean
 }
@@ -369,6 +369,8 @@ export default class DocumentComponentComponent extends React.Component<Document
     const first: Highlight = highlights[0]
     let last = {end: 0}
 
+    console.log('these are the highlights', highlights)
+
     return [
       content.substr(0, first.start),
       ...this.RenderContentHighlight(highlights, content, last),
@@ -402,6 +404,7 @@ export default class DocumentComponentComponent extends React.Component<Document
     // Next recursively make a heap of JSX elements, taking care to keep content in between
     while ((highlight = children[++j])) {
       if (highlight.rendered) {
+        offsetStart = highlight.end
         continue
       }
 
@@ -444,6 +447,8 @@ export default class DocumentComponentComponent extends React.Component<Document
 
     temp.rendered = true
 
+    console.log('rendering this bit.', elements)
+
     if (i < highlights.length) {
       return [span, content.substr(end, highlights[i].start - end), ...this.RenderContentHighlight(highlights, content, last, i)]
     }
@@ -453,82 +458,20 @@ export default class DocumentComponentComponent extends React.Component<Document
 
   InsertSelectionHighlight (highlights: Highlight[]): (RenderHighlight | SelectionHighlight)[] {
     const {startOffset, endOffset} = this.state
-    const output: (RenderHighlight | SelectionHighlight)[] = highlights.map((highlight: Highlight): RenderHighlight => ({...highlight, rendered: false})) // we will modify props otherwise
-
-    let highlight: RenderHighlight | SelectionHighlight | undefined
-    const affected: (RenderHighlight | SelectionHighlight)[] = []
-    let i: number = -1
-    let insertAt: number = -1
-
-    // first establish which highlights are affected, by excluding ones completely outside the range
-    while((highlight = output[++i])) {
-      const {start, end} = highlight
-
-      if (startOffset > end) { // this sits before the selection begins
-        continue
-      }
-
-      if (start < startOffset && end > endOffset) { // this is larger and therefore BEFORE the selection
-        continue
-      }
-
-      if (insertAt === -1) {
-        insertAt = i // we will want to insert our range here
-      }
-
-      if (endOffset < start) { // this sits after the selection and is therefore not of interest.
-        break
-      }
-
-      affected.push(highlight)
+    const renderedHighlights = highlights.map((highlight: Highlight): RenderHighlight => ({...highlight, rendered: false}))
+    const selectionHighlight = {
+      start: startOffset, 
+      end: endOffset, 
+      name: -1,
+      rendered: false
     }
 
-    // lets insert our seletion index
-    if (insertAt !== undefined) {
-      output.splice(insertAt, 0, {
-        start: startOffset,
-        end: endOffset,
-        name: -1,
-        rendered: false
-      })
-    }
-
-    // next we need to look at the ones that are affected and break them up into smaller segments to accommodate the new span
-    let j: number = -1
-
-    while ((highlight = affected[++j])) {
-      // any highlights that span across the startOffset need to be split into two across that range threshold
-      if (highlight.start < startOffset) {
-        const preceding: RenderHighlight = {
-          ...highlight,
-          end: startOffset
-        }
-
-        highlight.start = startOffset
-        output.splice(insertAt++, 0, preceding)
-      } else if (highlight.end > endOffset) {
-        const appending: RenderHighlight = {
-          ...highlight,
-          start: endOffset
-        }
-
-        highlight.end = endOffset
-        output.splice(insertAt + 1, 0, appending)
-      }
-    }
-
-    console.log('these are the ranges we have', output)
-    console.log('these ranges are affected', affected)
-    console.log('we should insert our range at', insertAt)
-    
-    return output
+    return AddRange<RenderHighlight | SelectionHighlight>(renderedHighlights, selectionHighlight) // we will modify props otherwise
   }
 
   RenderContentSpan () {
     const content: string = this.props.content
     const {startOffset, endOffset} = this.state
-
-    console.log('I am rendering!', content)
 
     return <>
       {content.substr(0, startOffset)}

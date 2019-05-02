@@ -30,9 +30,12 @@ export interface LinkOptions {
 
 export type HighlightOptions = LinkOptions
 
-export interface Highlight {
+export interface Range {
   start: number,
-  end: number,
+  end: number
+}
+
+export interface Highlight extends Range {
   name: DOCUMENT_HIGHLIGHT_TYPE,
   options?: HighlightOptions
 }
