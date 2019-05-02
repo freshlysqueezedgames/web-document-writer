@@ -367,18 +367,20 @@ export default class DocumentComponentComponent extends React.Component<Document
     }
 
     const first: Highlight = highlights[0]
-    let last = {end: 0}
+    let last = {end: 0, length: 0}
 
-    console.log('these are the highlights', highlights)
+    console.log('the highlights are here', highlights)
 
-    return [
+    const output = [
       content.substr(0, first.start),
       ...this.RenderContentHighlight(highlights, content, last),
       content.substr(last.end)
     ]
+
+    return output
   }
 
-  RenderContentHighlight (highlights: (RenderHighlight | SelectionHighlight)[], content: string, last: {end: number}, i: number = 0): (JSX.Element | string)[] {
+  RenderContentHighlight (highlights: (RenderHighlight | SelectionHighlight)[], content: string, last: {end: number, length: number}, i: number = 0): (JSX.Element | string)[] {
     const {start, end, name} = highlights[i]
     const temp = highlights[i]
     let highlight: RenderHighlight | SelectionHighlight | undefined
@@ -399,25 +401,26 @@ export default class DocumentComponentComponent extends React.Component<Document
     }
 
     let j = -1
-    let offsetStart = start
+    last.length = start
 
     // Next recursively make a heap of JSX elements, taking care to keep content in between
     while ((highlight = children[++j])) {
       if (highlight.rendered) {
-        offsetStart = highlight.end
+        last.length = Math.max(highlight.end, last.length)
         continue
       }
 
-      if (highlight.start > offsetStart) {
-        elements.push(content.substr(offsetStart, highlight.start - offsetStart))
+      if (highlight.start > last.length) {
+        elements.push(content.substr(last.length, highlight.start - last.length))
       }
 
+      last.length = highlight.end
       elements = [...elements, ...this.RenderContentHighlight(children, content, last)]
-      offsetStart = highlight.end
     }
 
-    if (offsetStart < end) {
-      elements.push(content.substr(offsetStart, end - offsetStart))
+    if (last.length < end) {
+      elements.push(content.substr(last.length, end - last.length))
+      last.length = end
     }
 
     let className: string = ""
@@ -441,13 +444,19 @@ export default class DocumentComponentComponent extends React.Component<Document
       }
     }
 
-    const span: JSX.Element = <span className={className}>
+    let span: JSX.Element = <span className={className}>
       {elements}
     </span>
 
-    temp.rendered = true
+    if (name === -1) {
+      span = <span ref={this.SpanRef} className={className}>
+        {elements}
+      </span>
+    }
 
-    console.log('rendering this bit.', elements)
+    console.log('these are my elements', elements)
+
+    temp.rendered = true
 
     if (i < highlights.length) {
       return [span, content.substr(end, highlights[i].start - end), ...this.RenderContentHighlight(highlights, content, last, i)]
@@ -470,18 +479,7 @@ export default class DocumentComponentComponent extends React.Component<Document
   }
 
   RenderContentSpan () {
-    const content: string = this.props.content
-    const {startOffset, endOffset} = this.state
-
-    return <>
-      {content.substr(0, startOffset)}
-      <span ref={this.SpanRef} className={styles.selection}>
-        {content.substr(startOffset, endOffset - startOffset)}
-      </span>
-      {content.substr(endOffset)}
-      <br/>
-      {this.RenderContent(this.InsertSelectionHighlight(this.props.highlights || []), content)}
-    </>
+    return this.RenderContent(this.InsertSelectionHighlight(this.props.highlights || []), this.props.content)
   }
 
   RenderTextArea () {
