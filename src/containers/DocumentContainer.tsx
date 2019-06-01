@@ -25,11 +25,11 @@ import {
 } from '../store/actions'
 
 import {
-  DocumentComponentState,
   DocumentComponentConfig,
   DROP_MODE,
   DOCUMENT_COMPONENT_TYPE,
-  DOCUMENT_HIGHLIGHT_TYPE
+  DOCUMENT_HIGHLIGHT_TYPE,
+  HighlightOptions
 } from '../store/types'
 
 import * as styles from './DocumentContainer.scss'
@@ -60,6 +60,8 @@ export interface DocumentContainerProps extends DocumentContainerMappedStateProp
 const MapStateToProps = (state: EditorStateRecord): DocumentContainerMappedStateProps => {
   const document: DocumentContainerMappedStateProps = state.toJS().document
   
+  console.log('this is the document', document)
+
   return {
     slug: document.slug,
     components: document.components
@@ -73,7 +75,7 @@ const MapDispatchToProps = (dispatch: (action: Action) => void): DocumentContain
   OnFocusChange: (id: string): void => dispatch(FocusComponent(id)),
   OnCursorChange: (top: number, right: number, bottom: number, left: number) => dispatch(UpdateCursor(top, right, bottom, left)),
   OnComponentTypeChange: (componentType: number) => dispatch(UpdateComponentType(componentType)),
-  OnHighlightTypeChange: (highlightType: DOCUMENT_HIGHLIGHT_TYPE, startOffset: number, endOffset: number) => dispatch(UpdateHighlightType(highlightType, startOffset, endOffset)),
+  OnHighlightTypeChange: (highlightType: DOCUMENT_HIGHLIGHT_TYPE, startOffset: number, endOffset: number, options?: HighlightOptions) => dispatch(UpdateHighlightType(highlightType, startOffset, endOffset, options)),
   OnCursorOffsetChange: (offsetX: number, offsetY: number) => dispatch(UpdateCursorOffsets(offsetX, offsetY)),
   OnRemoveContent: (id: string): void => dispatch(RemoveComponent(id)),
   OnMoveTarget: (id: string, mode: DROP_MODE): void => dispatch(MoveTargetComponent(id, mode)),

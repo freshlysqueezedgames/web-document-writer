@@ -14,3 +14,4 @@ export const drag: string;
 export const bold: string;
 export const italic: string;
 export const underline: string;
+export const link: string;

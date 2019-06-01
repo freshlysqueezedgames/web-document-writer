@@ -8,7 +8,8 @@ export type HighlightRecord = RecordOf<Highlight>
 export const HighlightRecordFactory = Record<Highlight>({
   start: 0,
   end: 0,
-  name: DOCUMENT_HIGHLIGHT_TYPE.BOLD
+  name: DOCUMENT_HIGHLIGHT_TYPE.BOLD,
+  options: undefined
 })
 
 const HighlightsReducer = (state: List<HighlightRecord>, action: Action): List<HighlightRecord> => {
@@ -22,7 +23,7 @@ const HighlightsReducer = (state: List<HighlightRecord>, action: Action): List<H
       let list: Array<Highlight> = []
 
       while (++i < l) {
-        list.push((<HighlightRecord>state.get(i)).toJS())
+        list.push((<HighlightRecord>state.get(i)).toJSON())
       }
 
       list = UpdateRanges(list, index, difference)
@@ -30,16 +31,15 @@ const HighlightsReducer = (state: List<HighlightRecord>, action: Action): List<H
       return List<HighlightRecord>(list.map((item: Highlight) => HighlightRecordFactory(item)))
     }
     case 'UPDATE_HIGHLIGHT_TYPE': {
-      const {highlightType, startOffset, endOffset} = action
+      const {highlightType, startOffset, endOffset, options} = action
       const list: Highlight[] = state.toJS()
-
-      console.log(list, highlightType, startOffset, endOffset)
 
       return List(AddRange<Highlight>(list, {
         name: highlightType,
         start: startOffset,
-        end: endOffset
-      }).map((item: Highlight) => HighlightRecordFactory(item)))
+        end: endOffset,
+        options
+      })).map((item: Highlight) => HighlightRecordFactory(item))
     }
     default: {
       return state

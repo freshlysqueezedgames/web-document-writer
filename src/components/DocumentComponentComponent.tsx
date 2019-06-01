@@ -10,7 +10,9 @@ import {
   DROP_MODE,
   Highlight,
   Range,
-  DOCUMENT_HIGHLIGHT_TYPE
+  DOCUMENT_HIGHLIGHT_TYPE,
+  LinkOptions,
+  HighlightOptions
 } from '../store/types'
 
 import {
@@ -61,8 +63,9 @@ const OFFSET_ZERO : OffsetRange = {
   endOffset: 0
 }
 
-export interface RenderHighlight extends Highlight{
+export interface RenderHighlight extends Highlight {
   rendered: boolean
+  options?: HighlightOptions
 }
 
 export interface SelectionHighlight extends Range {
@@ -447,6 +450,9 @@ export default class DocumentComponentComponent extends React.Component<Document
         className = styles.underline
         break
       }
+      case DOCUMENT_HIGHLIGHT_TYPE.LINK: {
+        className = styles.link
+      }
       case -1: {
         className = styles.selection
         break
@@ -457,7 +463,11 @@ export default class DocumentComponentComponent extends React.Component<Document
       {elements}
     </span>
 
-    if (name === -1) {
+    if (name === DOCUMENT_HIGHLIGHT_TYPE.LINK) {
+      const options = ((temp as RenderHighlight).options as LinkOptions)
+
+      span = <a className={className} target="_blank" href={options.url}>{elements}</a>
+    } else if (name === -1) {
       span = <span ref={this.SpanRef} className={className}>
         {elements}
       </span>

@@ -60,6 +60,13 @@ div.document-component-type-selection {
     float: left;
     background-color: #AAA;
   }
+
+  input {
+    vertical-align: middle;
+    border-width: 0px 1px 0px 1px;
+    padding: 0px 10px;
+    height: 100%;
+  }
 }
 
 @keyframes hover {

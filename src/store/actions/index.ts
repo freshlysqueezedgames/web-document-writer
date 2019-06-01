@@ -52,7 +52,8 @@ export interface UpdateHighlightTypeAction {
   type: 'UPDATE_HIGHLIGHT_TYPE'
   highlightType: number,
   startOffset: number,
-  endOffset: number
+  endOffset: number,
+  options?: HighlightOptions
 }
 
 export interface FocusComponentAction {
@@ -155,11 +156,12 @@ export const UpdateComponentType = (componentType: number): UpdateComponentTypeA
   componentType
 })
 
-export const UpdateHighlightType = (highlightType: number, startOffset: number, endOffset: number): UpdateHighlightTypeAction => ({
+export const UpdateHighlightType = (highlightType: number, startOffset: number, endOffset: number, options?: HighlightOptions): UpdateHighlightTypeAction => ({
   type: 'UPDATE_HIGHLIGHT_TYPE',
   highlightType,
   startOffset,
-  endOffset
+  endOffset,
+  options
 })
 
 export const FocusComponent = (id: string): FocusComponentAction => ({
