@@ -13,6 +13,7 @@ import {
   AppendComponent,
   UpdateComponent,
   UpdateComponentType,
+  UpdateHighlightType,
   FocusComponent,
   UpdateCursor,
   UpdateCursorOffsets,
@@ -27,7 +28,8 @@ import {
   DocumentComponentState,
   DocumentComponentConfig,
   DROP_MODE,
-  DOCUMENT_COMPONENT_TYPE
+  DOCUMENT_COMPONENT_TYPE,
+  DOCUMENT_HIGHLIGHT_TYPE
 } from '../store/types'
 
 import * as styles from './DocumentContainer.scss'
@@ -40,10 +42,11 @@ interface DocumentContainerMappedStateProps {
 interface DocumentContainerMappedDispatchProps {
   OnAppendContent: (id: string, value: string, componentType?: DOCUMENT_COMPONENT_TYPE) => void
   OnPrependContent: (id: string, value: string) => void
-  OnContentChange: (id: string, content: string) => void
+  OnContentChange: (id: string, content: string, index: number, difference: number) => void
   OnFocusChange: (id: string) => void
   OnCursorChange: (top: number, right: number, bottom: number, left: number) => void
   OnComponentTypeChange: (componentType: number) => void
+  OnHighlightTypeChange: (highlightType: DOCUMENT_HIGHLIGHT_TYPE, startOffset: number, endOffset: number) => void
   OnCursorOffsetChange: (offsetX: number, offsetY: number) => void
   OnRemoveContent: (id: string) => void
   OnMoveTarget: (id: string, mode: DROP_MODE) => void
@@ -66,10 +69,11 @@ const MapStateToProps = (state: EditorStateRecord): DocumentContainerMappedState
 const MapDispatchToProps = (dispatch: (action: Action) => void): DocumentContainerMappedDispatchProps => ({
   OnAppendContent: (id: string, value: string, componentType: DOCUMENT_COMPONENT_TYPE = DOCUMENT_COMPONENT_TYPE.PARAGRAPH): void => dispatch(AppendComponent(id, shortid.generate(), value, false, componentType)),
   OnPrependContent: (id: string, value: string): void => dispatch(PrependComponent(id, shortid.generate(), value)),
-  OnContentChange: (id: string, content: string): void => dispatch(UpdateComponent(id, content)),
+  OnContentChange: (id: string, content: string, index: number, difference: number): void => dispatch(UpdateComponent(id, content, index, difference)),
   OnFocusChange: (id: string): void => dispatch(FocusComponent(id)),
   OnCursorChange: (top: number, right: number, bottom: number, left: number) => dispatch(UpdateCursor(top, right, bottom, left)),
-  OnComponentTypeChange: (componentType: number) => dispatch(UpdateComponentType(componentType) as Action),
+  OnComponentTypeChange: (componentType: number) => dispatch(UpdateComponentType(componentType)),
+  OnHighlightTypeChange: (highlightType: DOCUMENT_HIGHLIGHT_TYPE, startOffset: number, endOffset: number) => dispatch(UpdateHighlightType(highlightType, startOffset, endOffset)),
   OnCursorOffsetChange: (offsetX: number, offsetY: number) => dispatch(UpdateCursorOffsets(offsetX, offsetY)),
   OnRemoveContent: (id: string): void => dispatch(RemoveComponent(id)),
   OnMoveTarget: (id: string, mode: DROP_MODE): void => dispatch(MoveTargetComponent(id, mode)),

@@ -10,7 +10,13 @@ import * as styles from './DocumentComponentTypeSelection.scss'
 describe('<DocumentComponentTypeSelection>', (): void => {
   test('Should allow the user to select the type of component', (): void => {
     const mock: jest.Mock = jest.fn()
-    const wrapper: ReactWrapper = mount(<DocumentComponentTypeSelection OnSelection={(componentType: number) => mock(componentType)} OnSave={() => {}}/>)
+    const wrapper: ReactWrapper = mount(<DocumentComponentTypeSelection 
+      startOffset={0}
+      endOffset={0}
+      OnSelection={(componentType: number) => mock(componentType)} 
+      OnSave={() => {}} 
+      OnHighlight={() => {}}
+    />)
 
     expect(wrapper.find(`.${styles.documentComponentTypeSelection}`)).toHaveLength(1)
 

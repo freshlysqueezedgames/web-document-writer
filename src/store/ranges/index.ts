@@ -79,3 +79,30 @@ export const AddRange = <T extends Range>(ranges: T[], insert: T): T[] => {
 
   return ranges
 }
+
+export const UpdateRanges = <T extends Range>(list: T[], index: number, difference: number): T[] => {
+  const l = list.length
+  let i = -1
+
+  while (++i < l) {
+    let record = list[i]
+    let start = record.start
+    let end = record.end
+
+    if (start > index + difference) {
+      start += difference
+      end += difference
+    } else if (start < index && ((difference > 0 && end + 1 >= index) || (difference < 0 && end > index))) {
+      end += difference
+    }
+
+    if (end <= start) {
+      continue
+    }
+
+    record.start = start
+    record.end = end
+  }
+
+  return list
+}

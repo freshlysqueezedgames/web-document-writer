@@ -7,7 +7,6 @@ import EditorReducer from './reducers/EditorReducer'
 import {DocumentComponentDefinition, DocumentComponentConfig, DROP_MODE} from './types'
 import {SetDocument as SetDocumentAction} from './actions'
 import shortid from 'shortid'
-import { List } from 'immutable'
 
 export const store: Redux.Store = createStore(EditorReducer)
 

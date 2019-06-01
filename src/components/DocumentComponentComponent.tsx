@@ -25,33 +25,34 @@ import { RemoveButton, AddButton, DragIndicatorButton } from './Buttons'
 export const DRAG_IDENTIFIER: string = 'document-component' 
 
 export type DocumentComponentComponentProps = Readonly<{
-  id: string,
-  content: string,
-  focused: boolean,
-  drop: DROP_MODE,
-  componentType: number,
-  highlights?: Highlight[],
+  id: string
+  content: string
+  focused: boolean
+  drop: DROP_MODE
+  componentType: number
+  highlights?: Highlight[]
 
-  OnContentChange?: (id: string, content: string) => void,
-  OnAppendContent?: (id: string, content: string, componentType?: DOCUMENT_COMPONENT_TYPE) => void,
-  OnPrependContent?: (id: string, content: string) => void,
-  OnFocus?: (id: string) => void,
+  OnContentChange?: (id: string, content: string, index: number, difference: number) => void
+  OnAppendContent?: (id: string, content: string, componentType?: DOCUMENT_COMPONENT_TYPE) => void
+  OnPrependContent?: (id: string, content: string) => void
+  OnFocus?: (id: string) => void
   OnCursorChange?: (top: number, right: number, bottom: number, left: number) => void
   OnRemoveContent?: (id: string) => void
   OnMoveTarget?: (id: string, mode: DROP_MODE) => void
   OnMove?: (id: string) => void
   OnImageUpload?: (data: string) => Promise<string>
+  OnHighlightChange?: (startOffset: number, endOffset: number) => void
 }>
 
 export type DocumentComponentComponentState = Readonly<{
-  startOffset: number,
-  endOffset: number,
-  mouseMode: string,
+  startOffset: number
+  endOffset: number
+  mouseMode: string
   draggable: boolean
 }>
 
 export type OffsetRange = Readonly<{
-  startOffset: number,
+  startOffset: number
   endOffset: number
 }>
 
@@ -68,8 +69,6 @@ export interface SelectionHighlight extends Range {
   name: -1,
   rendered: boolean
 }
-
-const components : {[key: string]: any} = {}
 
 export default class DocumentComponentComponent extends React.Component<DocumentComponentComponentProps, DocumentComponentComponentState> {
   textAreaRef: HTMLTextAreaElement | null = null
@@ -113,7 +112,15 @@ export default class DocumentComponentComponent extends React.Component<Document
   HandleTextAreaChange = (): void => {
     const props: DocumentComponentComponentProps = this.props
 
-    props.OnContentChange && this.textAreaRef && props.OnContentChange(props.id, this.textAreaRef.value)
+    let index: number = 0
+    let difference: number = 0
+
+    if (this.textAreaRef) {
+      index = this.textAreaRef.selectionStart
+      difference = this.textAreaRef.value.length - this.props.content.length
+    }
+
+    props.OnContentChange && this.textAreaRef && props.OnContentChange(props.id, this.textAreaRef.value, index, difference)
   }
 
   HandleContentClick = (): void => {
@@ -154,6 +161,8 @@ export default class DocumentComponentComponent extends React.Component<Document
 
     t.offsetUpdate = true
     t.setState({startOffset, endOffset})
+
+    t.props.OnHighlightChange && t.props.OnHighlightChange(startOffset, endOffset)
   }
 
   HandleMouseEnter = (): void => this.setState({mouseMode: styles.entered})
@@ -302,6 +311,8 @@ export default class DocumentComponentComponent extends React.Component<Document
       startOffset: textAreaRef.selectionStart,
       endOffset: textAreaRef.selectionEnd
     })
+
+    this.props.OnHighlightChange && this.props.OnHighlightChange(textAreaRef.selectionStart, textAreaRef.selectionEnd)
   }
 
   AppendContent = () => {
@@ -368,8 +379,6 @@ export default class DocumentComponentComponent extends React.Component<Document
 
     const first: Highlight = highlights[0]
     let last = {end: 0, length: 0}
-
-    console.log('the highlights are here', highlights)
 
     const output = [
       content.substr(0, first.start),
@@ -453,8 +462,6 @@ export default class DocumentComponentComponent extends React.Component<Document
         {elements}
       </span>
     }
-
-    console.log('these are my elements', elements)
 
     temp.rendered = true
 

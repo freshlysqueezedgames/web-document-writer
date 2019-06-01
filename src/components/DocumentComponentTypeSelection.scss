@@ -53,6 +53,13 @@ div.document-component-type-selection {
     padding: 10px;
     border-left: 2px solid #AAA;
   }
+
+  div.partition {
+    width: 2px;
+    height: 100%;
+    float: left;
+    background-color: #AAA;
+  }
 }
 
 @keyframes hover {

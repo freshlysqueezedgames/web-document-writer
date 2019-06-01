@@ -104,7 +104,9 @@ const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord
           return list
         }
 
-        return list.update(key, (record: DocumentComponentStateRecord): DocumentComponentStateRecord => record.set('content', content))
+        return list.update(key, (record: DocumentComponentStateRecord): DocumentComponentStateRecord => {
+          return record.set('content', content).set('highlights', HighlightsReducer(record.get('highlights'), action))
+        })
       })
     }
     case 'UPDATE_COMPONENT_TYPE': {
@@ -118,6 +120,21 @@ const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord
         }
 
         return list.update(key, (record: DocumentComponentStateRecord): DocumentComponentStateRecord => record.set('componentType', componentType))
+      })
+    }
+    case 'UPDATE_HIGHLIGHT_TYPE': {
+      console.log('where is mr pinky', state, action)
+
+      return state.update('components', (list: List<DocumentComponentStateRecord>): List<DocumentComponentStateRecord> => {
+        const key: number | typeof undefined = list.findKey((record: DocumentComponentStateRecord): boolean => record.get('focused'))
+
+        if (key === undefined) {
+          return list
+        }
+
+        const record = <DocumentComponentStateRecord>list.get(key)
+
+        return list.setIn([key, 'highlights'], HighlightsReducer(record.get('highlights'), action))
       })
     }
     case 'FOCUS_COMPONENT': {

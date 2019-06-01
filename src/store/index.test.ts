@@ -118,7 +118,7 @@ describe('#Store', (): void => {
 
     const newValue = 'this is the next value'
 
-    store.dispatch(UpdateComponent(id, newValue))
+    store.dispatch(UpdateComponent(id, newValue, 0, content.length))
 
     expect(store.getState().toJS().document).toMatchObject({
       slug: 'test',
@@ -136,7 +136,7 @@ describe('#Store', (): void => {
 
     expect(store.getState().toJS().document).toMatchObject(result)
 
-    store.dispatch(UpdateComponent('non-existent id', 'some new value'))
+    store.dispatch(UpdateComponent('non-existent id', 'some new value', 0, 15))
 
     expect(store.getState().toJS().document).toMatchObject(result)
   })

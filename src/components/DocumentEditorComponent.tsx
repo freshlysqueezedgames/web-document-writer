@@ -34,27 +34,54 @@ const DocumentEditorComponent = (props: DocumentEditorComponentProps): React.Rea
 
 const WithPositionalDragDocumentComponentTypeSelection = WithPositionalDrag<DocumentComponentTypeSelectionProps>(DocumentComponentTypeSelection, true, 'document-component-type-selector')
 
-function RenderDocument (props: DocumentContainerProps): React.ReactElement<typeof React.Fragment> {
-  return <>
-    {props.components && props.components.map((component: DocumentComponentConfig) => 
-      <DocumentComponentComponent
-        key={component.id}
-        {...component}
-        OnContentChange={props.OnContentChange}
-        OnAppendContent={props.OnAppendContent}
-        OnPrependContent={props.OnPrependContent}
-        OnFocus={props.OnFocusChange}
-        OnCursorChange={props.OnCursorChange}
-        OnRemoveContent={props.OnRemoveContent}
-        OnMoveTarget={props.OnMoveTarget}
-        OnMove={props.OnMove}
-        OnImageUpload={OnImageUpload}
+export interface DocumentState {
+  startOffset: number
+  endOffset: number
+}
+
+function RenderDocument (props: DocumentContainerProps) {
+  return <DocumentComponent {...props}/>
+}
+
+class DocumentComponent extends React.Component<DocumentContainerProps, DocumentState> {
+  state: DocumentState = {
+    startOffset: 0,
+    endOffset: 0
+  }
+
+  OnHighlightChange = (startOffset: number, endOffset: number) => this.setState({startOffset, endOffset})
+
+  render (): React.ReactElement<typeof React.Fragment> {
+    const props: DocumentContainerProps = this.props
+    const t: DocumentComponent = this
+    
+    return <>
+      {props.components && props.components.map((component: DocumentComponentConfig) => 
+        <DocumentComponentComponent
+          key={component.id}
+          {...component}
+          OnContentChange={props.OnContentChange}
+          OnAppendContent={props.OnAppendContent}
+          OnPrependContent={props.OnPrependContent}
+          OnFocus={props.OnFocusChange}
+          OnCursorChange={props.OnCursorChange}
+          OnRemoveContent={props.OnRemoveContent}
+          OnMoveTarget={props.OnMoveTarget}
+          OnMove={props.OnMove}
+          OnImageUpload={OnImageUpload}
+          OnHighlightChange={t.OnHighlightChange}
+        />
+      )}
+      <WithPositionalDragDocumentComponentTypeSelection
+        {...this.state}
+        OnSelection={props.OnComponentTypeChange}
+        OnHighlight={props.OnHighlightTypeChange}
+        OnSave={() => {
+          OnSave && OnSave(GetDocument())
+        }}
       />
-    )}
-    <WithPositionalDragDocumentComponentTypeSelection OnSelection={props.OnComponentTypeChange} OnSave={() => {
-      OnSave && OnSave(GetDocument())
-    }}/>
-  </>
+    </>
+  }
 }
 
 function RenderCursor (props: CursorContainerProps) {

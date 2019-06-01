@@ -1,7 +1,6 @@
 // @flow
 import {
   DOCUMENT_COMPONENT_TYPE,
-  DocumentComponentState,
   DROP_MODE,
   DOCUMENT_HIGHLIGHT_TYPE,
   HighlightOptions,
@@ -35,6 +34,8 @@ export interface UpdateComponentAction {
   type: 'UPDATE_COMPONENT';
   id: string;
   content: string;
+  index: number;
+  difference: number;
 }
 
 export interface RemoveComponentAction {
@@ -45,6 +46,13 @@ export interface RemoveComponentAction {
 export interface UpdateComponentTypeAction {
   type: 'UPDATE_COMPONENT_TYPE';
   componentType: number;
+}
+
+export interface UpdateHighlightTypeAction {
+  type: 'UPDATE_HIGHLIGHT_TYPE'
+  highlightType: number,
+  startOffset: number,
+  endOffset: number
 }
 
 export interface FocusComponentAction {
@@ -77,13 +85,21 @@ export interface MoveComponentAction {
   id: string
 }
 
-export interface HighlightRangeAction {
-  type: 'HIGHLIGHT_RANGE',
+export interface RangeAction {
   id: string,
   start: number,
   end: number,
-  name: DOCUMENT_HIGHLIGHT_TYPE,
   options?: HighlightOptions
+}
+
+export interface HighlightRangeAction extends RangeAction {
+  type: 'HIGHLIGHT_RANGE',
+  name: DOCUMENT_HIGHLIGHT_TYPE
+}
+
+export interface ComponentRangeAction extends RangeAction {
+  type: 'COMPONENT_RANGE',
+  name: DOCUMENT_COMPONENT_TYPE
 }
 
 export type Action = 
@@ -92,6 +108,7 @@ export type Action =
   AppendComponentAction | 
   UpdateComponentAction |
   UpdateComponentTypeAction | 
+  UpdateHighlightTypeAction |
   FocusComponentAction | 
   UpdateCursorAction | 
   UpdateCursorOffsetsAction |
@@ -125,15 +142,24 @@ export const AppendComponent = (after: string, id: string, content: string, focu
   componentType
 })
 
-export const UpdateComponent = (id: string, content: string): UpdateComponentAction => ({
+export const UpdateComponent = (id: string, content: string, index: number, difference: number): UpdateComponentAction => ({
   type: 'UPDATE_COMPONENT',
   id,
-  content
+  content,
+  index,
+  difference
 })
 
 export const UpdateComponentType = (componentType: number): UpdateComponentTypeAction => ({
   type: 'UPDATE_COMPONENT_TYPE',
   componentType
+})
+
+export const UpdateHighlightType = (highlightType: number, startOffset: number, endOffset: number): UpdateHighlightTypeAction => ({
+  type: 'UPDATE_HIGHLIGHT_TYPE',
+  highlightType,
+  startOffset,
+  endOffset
 })
 
 export const FocusComponent = (id: string): FocusComponentAction => ({
@@ -173,6 +199,15 @@ export const MoveComponent = (id: string): MoveComponentAction => ({
 
 export const HighlightRange = (id: string, start: number, end: number, name: DOCUMENT_HIGHLIGHT_TYPE, options?: HighlightOptions): HighlightRangeAction => ({
   type: 'HIGHLIGHT_RANGE',
+  id,
+  start,
+  end,
+  name,
+  options
+})
+
+export const ComponentRange = (id: string, start: number, end: number, name: DOCUMENT_COMPONENT_TYPE, options?: HighlightOptions): ComponentRangeAction => ({
+  type: 'COMPONENT_RANGE',
   id,
   start,
   end,
