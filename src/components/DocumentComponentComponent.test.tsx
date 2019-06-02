@@ -31,7 +31,7 @@ describe('<DocumentComponentComponent/>', (): void => {
     textArea.simulate('change')
 
     expect(contentChangeMock).toHaveBeenCalledTimes(1)
-    expect(contentChangeMock).toHaveBeenCalledWith('test', 'This is the content')
+    expect(contentChangeMock).toHaveBeenCalledWith('test', 'This is the content', 0, 0)
   })
 
   test('Should have an area that reflects the content in textarea', (): void => {

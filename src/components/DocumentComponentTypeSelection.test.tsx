@@ -13,16 +13,18 @@ describe('<DocumentComponentTypeSelection>', (): void => {
     const wrapper: ReactWrapper = mount(<DocumentComponentTypeSelection 
       startOffset={0}
       endOffset={0}
+      component={undefined}
       OnSelection={(componentType: number) => mock(componentType)} 
       OnSave={() => {}} 
       OnHighlight={() => {}}
+      OnRemoveHighlight={() => {}}
     />)
 
     expect(wrapper.find(`.${styles.documentComponentTypeSelection}`)).toHaveLength(1)
 
     const buttons: ReactWrapper = wrapper.find(`div.${styles.button}`)
 
-    expect(buttons).toHaveLength(6)
+    expect(buttons).toHaveLength(10)
 
     const h1Button: ReactWrapper = buttons.first()
 

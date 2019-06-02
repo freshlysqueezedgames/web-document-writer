@@ -34,14 +34,17 @@ if (app) {
     componentType: DOCUMENT_COMPONENT_TYPE.PARAGRAPH,
     content: 'Here is some basic type text that you can use to highlight things',
     highlights: [{
+      id: shortid.generate(),
       start: 2,
       end: 8,
       name: DOCUMENT_HIGHLIGHT_TYPE.ITALIC
     }, {
+      id: shortid.generate(),
       start: 10,
       end: 20,
       name: DOCUMENT_HIGHLIGHT_TYPE.BOLD
     }, {
+      id: shortid.generate(),
       start: 13,
       end: 18,
       name: DOCUMENT_HIGHLIGHT_TYPE.UNDERLINE

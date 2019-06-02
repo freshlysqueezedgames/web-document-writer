@@ -1,12 +1,13 @@
 import React from 'react'
 
 import {
-  AddRange
+  AddRange, RemoveRanges
 } from '.'
 
 import {
   Range
 } from '../types'
+import { endianness } from 'os';
 
 describe('Ranges', () => {
   test('Should be able to add a new range in front of its child elements', () => {
@@ -111,8 +112,6 @@ describe('Ranges', () => {
   })
 
   test('Should be able to split children that span across the start index', () => {
-    console.log('beans of nazarath')
-    
     const ranges: Range[] = [{
       start: 2,
       end: 8
@@ -145,5 +144,119 @@ describe('Ranges', () => {
       start: 13,
       end: 18
     }])
+  })
+
+  describe('Removing Ranges', () => {
+    test('Should be able to remove a range from a list', () => {
+      const ranges: Range[] = [{
+        start: 2,
+        end: 8
+      }, {
+        start: 10,
+        end: 20
+      }, {
+        start: 30,
+        end: 35
+      }]
+  
+      RemoveRanges(ranges, 10, 20, () => true)
+  
+      expect(ranges).toMatchObject([{
+        start: 2,
+        end: 8
+      }, {
+        start: 30,
+        end: 35
+      }])
+    })
+
+    test('Should be able to remove any number of nested ranges', () => {
+      const ranges: Range[] = [{
+        start: 2,
+        end: 8
+      }, {
+        start: 10,
+        end: 20
+      }, {
+        start: 13,
+        end: 18
+      }]
+  
+      RemoveRanges(ranges, 10, 20, () => true)
+  
+      expect(ranges).toMatchObject([{
+        start: 2,
+        end: 8
+      }])
+    })
+
+    test('Should be able to split ranges that overlap', () => {
+      const ranges: Range[] = [{
+        start: 2,
+        end: 8
+      }, {
+        start: 10,
+        end: 20
+      }]
+  
+      RemoveRanges(ranges, 6, 12, () => true)
+  
+      expect(ranges).toMatchObject([{
+        start: 2,
+        end: 6
+      }, {
+        start: 12,
+        end: 20
+      }])
+    })
+
+    test('SHould be able to split a range that embodies the entire range and more', () => {
+      const ranges: Range[] = [{
+        start: 2,
+        end: 10
+      }]
+  
+      RemoveRanges(ranges, 4, 8, () => true)
+  
+      expect(ranges).toMatchObject([{
+        start: 2,
+        end: 4
+      }, {
+        start: 8,
+        end: 10
+      }])      
+    })
+
+    test('Should be able to remove based on a condition', () => {
+      interface RangeWithValue extends Range {
+        removeable: boolean
+      }
+
+      const ranges: RangeWithValue[] = [{
+        start: 2,
+        end: 8,
+        removeable: true
+      }, {
+        start: 12,
+        end: 20,
+        removeable: false
+      }, {
+        start: 14,
+        end: 18,
+        removeable: true
+      }]
+  
+      RemoveRanges<RangeWithValue>(ranges, 12, 20, (item: RangeWithValue) => item.removeable)
+  
+      expect(ranges).toMatchObject([{
+        start: 2,
+        end: 8,
+        removeable: true
+      }, {
+        start: 12,
+        end: 20,
+        removeable: false
+      }])
+    })
   })
 })

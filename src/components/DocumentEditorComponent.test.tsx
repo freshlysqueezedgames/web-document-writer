@@ -176,7 +176,7 @@ describe('<DocumentEditorComponent/>', (): void => {
 
     const buttons: ReactWrapper = wrapper.find(`.${keyMapStyles.documentComponentTypeSelection} .${keyMapStyles.button}`)
 
-    expect(buttons).toHaveLength(6)
+    expect(buttons).toHaveLength(10)
 
     const h1Button: ReactWrapper = buttons.first()
 

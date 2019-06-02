@@ -56,6 +56,19 @@ export interface UpdateHighlightTypeAction {
   options?: HighlightOptions
 }
 
+export interface RemoveHighlightTypeAction {
+  type: 'REMOVE_HIGHLIGHT_TYPE',
+  highlightType: DOCUMENT_HIGHLIGHT_TYPE,
+  startOffset: number,
+  endOffset: number
+}
+
+export interface DeleteHighlightAction {
+  type: 'DELETE_HIGHLIGHT',
+  componentId: string,
+  id: string
+}
+
 export interface FocusComponentAction {
   type: 'FOCUS_COMPONENT';
   id: string;
@@ -110,6 +123,8 @@ export type Action =
   UpdateComponentAction |
   UpdateComponentTypeAction | 
   UpdateHighlightTypeAction |
+  RemoveHighlightTypeAction |
+  DeleteHighlightAction |
   FocusComponentAction | 
   UpdateCursorAction | 
   UpdateCursorOffsetsAction |
@@ -162,6 +177,19 @@ export const UpdateHighlightType = (highlightType: number, startOffset: number, 
   startOffset,
   endOffset,
   options
+})
+
+export const RemoveHighlightType = (highlightType: DOCUMENT_HIGHLIGHT_TYPE, startOffset: number, endOffset: number): RemoveHighlightTypeAction => ({
+  type: 'REMOVE_HIGHLIGHT_TYPE',
+  highlightType,
+  startOffset,
+  endOffset
+})
+
+export const DeleteHighlight = (componentId: string, id: string): DeleteHighlightAction => ({
+  type: 'DELETE_HIGHLIGHT',
+  componentId,
+  id
 })
 
 export const FocusComponent = (id: string): FocusComponentAction => ({

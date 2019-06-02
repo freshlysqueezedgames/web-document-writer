@@ -6,7 +6,7 @@ import DocumentComponentComponent from './DocumentComponentComponent'
 import DocumentCursorComponent from './DocumentCursorComponent'
 import DocumentComponentTypeSelection, {DocumentComponentTypeSelectionProps} from './DocumentComponentTypeSelection'
 
-import {DocumentComponentConfig, DocumentComponentDefinition} from '../store/types'
+import {DocumentComponentConfig, DocumentComponentDefinition, Highlight} from '../store/types'
 import {GetDocument} from '../store'
 import {DocumentContainerProps, DocumentContainer, CursorContainer, CursorContainerProps} from '../containers'
 
@@ -54,10 +54,16 @@ class DocumentComponent extends React.Component<DocumentContainerProps, Document
   render (): React.ReactElement<typeof React.Fragment> {
     const props: DocumentContainerProps = this.props
     const t: DocumentComponent = this
+
+    let focusedComponent: DocumentComponentConfig | undefined
     
     return <>
-      {props.components && props.components.map((component: DocumentComponentConfig) => 
-        <DocumentComponentComponent
+      {props.components && props.components.map((component: DocumentComponentConfig) => {
+        if (component.focused) {
+          focusedComponent = component
+        }
+        
+        return <DocumentComponentComponent
           key={component.id}
           {...component}
           OnContentChange={props.OnContentChange}
@@ -70,12 +76,15 @@ class DocumentComponent extends React.Component<DocumentContainerProps, Document
           OnMove={props.OnMove}
           OnImageUpload={OnImageUpload}
           OnHighlightChange={t.OnHighlightChange}
+          OnDeleteHighlight={props.OnDeleteHighlight}
         />
-      )}
+      })}
       <WithPositionalDragDocumentComponentTypeSelection
         {...this.state}
+        component={focusedComponent}
         OnSelection={props.OnComponentTypeChange}
         OnHighlight={props.OnHighlightTypeChange}
+        OnRemoveHighlight={props.OnRemoveHighlightType}
         OnSave={() => {
           OnSave && OnSave(GetDocument())
         }}

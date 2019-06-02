@@ -5,7 +5,7 @@ export interface Indices {
   length: number
 }
 
-const RangeIndices = <T extends Range>(ranges: T[], insert: T): Indices => {
+export const RangeIndices = <T extends Range>(ranges: T[], insert: T): Indices => {
   let range: T | undefined
   let i: number = -1
   let from: number = -1
@@ -102,6 +102,50 @@ export const UpdateRanges = <T extends Range>(list: T[], index: number, differen
 
     record.start = start
     record.end = end
+  }
+
+  return list
+}
+
+export const RemoveRanges = <T extends Range>(list: T[], start: number, end: number, condition: (item: T) => boolean): T[] => {
+  let i: number = list.length
+
+  if (start === end) {
+    return list
+  }
+
+  while (i--) {
+    const range: T = list[i]
+    
+    if (range.end < start) { // we are at the end, exit
+      break
+    }
+
+    if (range.start > end) { // we haven't found a range inside the one specified yet
+      continue
+    }
+
+    if (!condition(range)) { // this is not a removable item
+      continue
+    }
+
+    if (range.end <= end && range.start >= start) { // this is within range and can be removed
+      list.splice(i, 1)
+      continue
+    }
+
+    if (range.end > end && range.start < start) { // this has been split, create ranges either side
+      list.splice(i, 0, {...range, end: start})
+      range.start = end
+      continue
+    }
+
+    if (range.start < start) { // this has an overlap with the start, make end the range start
+      range.end = start
+      continue
+    }
+
+    range.start = end // only option left is there is an overlap with end, make the start the range end
   }
 
   return list

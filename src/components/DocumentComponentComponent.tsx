@@ -8,8 +8,8 @@ import KEY_CODE from '../utils'
 import {
   DOCUMENT_COMPONENT_TYPE,
   DROP_MODE,
-  Highlight,
   Range,
+  Highlight,
   DOCUMENT_HIGHLIGHT_TYPE,
   LinkOptions,
   HighlightOptions
@@ -23,6 +23,7 @@ import {DragTarget} from './DragAndDrop'
 
 import * as styles from './DocumentComponentComponent.scss'
 import { RemoveButton, AddButton, DragIndicatorButton } from './Buttons'
+import { HighlightComponent, LinkHighlightComponent } from './highlights'
 
 export const DRAG_IDENTIFIER: string = 'document-component' 
 
@@ -44,6 +45,7 @@ export type DocumentComponentComponentProps = Readonly<{
   OnMove?: (id: string) => void
   OnImageUpload?: (data: string) => Promise<string>
   OnHighlightChange?: (startOffset: number, endOffset: number) => void
+  OnDeleteHighlight?: (componentId: string, id:string) => void
 }>
 
 export type DocumentComponentComponentState = Readonly<{
@@ -69,6 +71,7 @@ export interface RenderHighlight extends Highlight {
 }
 
 export interface SelectionHighlight extends Range {
+  id: string,
   name: -1,
   rendered: boolean
 }
@@ -170,6 +173,8 @@ export default class DocumentComponentComponent extends React.Component<Document
 
   HandleMouseEnter = (): void => this.setState({mouseMode: styles.entered})
   HandleMouseExit = (): void => this.setState({mouseMode: styles.exited})
+
+  OnDeleteHighlight = (id: string) => this.props.OnDeleteHighlight && this.props.OnDeleteHighlight(this.props.id, id)
 
   IterateBackwardsThroughNodes (node: Node | null, callback: (node: Node, parent: boolean) => boolean | void): void {
     while (node) {
@@ -393,7 +398,7 @@ export default class DocumentComponentComponent extends React.Component<Document
   }
 
   RenderContentHighlight (highlights: (RenderHighlight | SelectionHighlight)[], content: string, last: {end: number, length: number}, i: number = 0): (JSX.Element | string)[] {
-    const {start, end, name} = highlights[i]
+    const {start, end, name, id} = highlights[i]
     const temp = highlights[i]
     let highlight: RenderHighlight | SelectionHighlight | undefined
     const children: (RenderHighlight | SelectionHighlight)[] = []
@@ -459,16 +464,22 @@ export default class DocumentComponentComponent extends React.Component<Document
       }
     }
 
-    let span: JSX.Element = <span className={className}>
-      {elements}
-    </span>
+    let span = HighlightComponent({id, className, elements})
 
     if (name === DOCUMENT_HIGHLIGHT_TYPE.LINK) {
       const options = ((temp as RenderHighlight).options as LinkOptions)
 
-      span = <a className={className} target="_blank" href={options.url}>{elements}</a>
+      span = <LinkHighlightComponent
+        key={`${start}${end}${name}`}
+        id={id} 
+        className={className}
+        options={options}
+        elements={elements}
+        root={this.containerRef}
+        OnDelete={this.OnDeleteHighlight}
+      />
     } else if (name === -1) {
-      span = <span ref={this.SpanRef} className={className}>
+      span = <span key={"highlight"} ref={this.SpanRef} className={className}>
         {elements}
       </span>
     }
@@ -486,7 +497,8 @@ export default class DocumentComponentComponent extends React.Component<Document
     const {startOffset, endOffset} = this.state
     const renderedHighlights = highlights.map((highlight: Highlight): RenderHighlight => ({...highlight, rendered: false}))
     const selectionHighlight = {
-      start: startOffset, 
+      id: 'selectionhighlight',
+      start: startOffset,
       end: endOffset, 
       name: -1,
       rendered: false
@@ -518,8 +530,6 @@ export default class DocumentComponentComponent extends React.Component<Document
 
   render (): React.ReactElement<HTMLDivElement> {
     const t: DocumentComponentComponent = this
-    const props: DocumentComponentComponentProps = t.props
-
     let mode: string = ''
 
     if (!this.state.draggable) {

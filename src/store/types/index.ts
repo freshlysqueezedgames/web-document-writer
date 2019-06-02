@@ -3,6 +3,7 @@
 import {List, RecordOf} from 'immutable'
 
 export enum DOCUMENT_COMPONENT_TYPE {
+  NONE = -1,
   PARAGRAPH = 0,
   HEADER_1,
   HEADER_2,
@@ -36,6 +37,7 @@ export interface Range {
 }
 
 export interface Highlight extends Range {
+  id: string,
   name: DOCUMENT_HIGHLIGHT_TYPE,
   options?: HighlightOptions
 }

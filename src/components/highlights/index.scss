@@ -1,0 +1,36 @@
+div.link-options {
+  position: absolute;
+  margin-top: -30px;
+  display: none;
+  border: 1px solid #BBB;
+  border-radius: 10px;
+  height: 30px;
+
+  &.reveal,
+  &:hover {
+    display: flex;
+  }
+
+  overflow: hidden;
+  background-color: #efefef;
+  z-index: 2;
+}
+
+div.url {
+  display: inline-flex;
+  padding: 5px;
+}
+
+div.delete-button {
+  display: inline-flex;
+  padding: 1px;
+  border-left: 1px solid #BBB;
+  width: 30px;
+  height: 30px;
+  background-color: #fd5720;
+
+  svg {
+    height: 20px;
+    margin: 5px;
+  }
+}

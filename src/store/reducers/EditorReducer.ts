@@ -25,6 +25,8 @@ const EditorReducer = (state: EditorStateRecord = defaultEditorStateRecord, acti
     case 'UPDATE_COMPONENT':
     case 'UPDATE_COMPONENT_TYPE':
     case 'UPDATE_HIGHLIGHT_TYPE':
+    case 'REMOVE_HIGHLIGHT_TYPE':
+    case 'DELETE_HIGHLIGHT':
     case 'FOCUS_COMPONENT':
     case 'REMOVE_COMPONENT':
     case 'MOVE_COMPONENT_ACTION':

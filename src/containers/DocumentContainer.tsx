@@ -14,6 +14,7 @@ import {
   UpdateComponent,
   UpdateComponentType,
   UpdateHighlightType,
+  RemoveHighlightType,
   FocusComponent,
   UpdateCursor,
   UpdateCursorOffsets,
@@ -21,7 +22,8 @@ import {
   PrependComponent,
   RemoveComponent,
   MoveComponent,
-  MoveTargetComponent
+  MoveTargetComponent,
+  DeleteHighlight
 } from '../store/actions'
 
 import {
@@ -47,6 +49,8 @@ interface DocumentContainerMappedDispatchProps {
   OnCursorChange: (top: number, right: number, bottom: number, left: number) => void
   OnComponentTypeChange: (componentType: number) => void
   OnHighlightTypeChange: (highlightType: DOCUMENT_HIGHLIGHT_TYPE, startOffset: number, endOffset: number) => void
+  OnRemoveHighlightType: (highlightType: DOCUMENT_HIGHLIGHT_TYPE, startOffset: number, endOffset: number) => void
+  OnDeleteHighlight: (componentId: string, id: string) => void
   OnCursorOffsetChange: (offsetX: number, offsetY: number) => void
   OnRemoveContent: (id: string) => void
   OnMoveTarget: (id: string, mode: DROP_MODE) => void
@@ -59,8 +63,6 @@ export interface DocumentContainerProps extends DocumentContainerMappedStateProp
 
 const MapStateToProps = (state: EditorStateRecord): DocumentContainerMappedStateProps => {
   const document: DocumentContainerMappedStateProps = state.toJS().document
-  
-  console.log('this is the document', document)
 
   return {
     slug: document.slug,
@@ -76,6 +78,8 @@ const MapDispatchToProps = (dispatch: (action: Action) => void): DocumentContain
   OnCursorChange: (top: number, right: number, bottom: number, left: number) => dispatch(UpdateCursor(top, right, bottom, left)),
   OnComponentTypeChange: (componentType: number) => dispatch(UpdateComponentType(componentType)),
   OnHighlightTypeChange: (highlightType: DOCUMENT_HIGHLIGHT_TYPE, startOffset: number, endOffset: number, options?: HighlightOptions) => dispatch(UpdateHighlightType(highlightType, startOffset, endOffset, options)),
+  OnRemoveHighlightType: (highlightType: DOCUMENT_HIGHLIGHT_TYPE, startOffset: number, endOffset: number) => dispatch(RemoveHighlightType(highlightType, startOffset, endOffset)),
+  OnDeleteHighlight: (componentId: string, id: string) => dispatch(DeleteHighlight(componentId, id)),
   OnCursorOffsetChange: (offsetX: number, offsetY: number) => dispatch(UpdateCursorOffsets(offsetX, offsetY)),
   OnRemoveContent: (id: string): void => dispatch(RemoveComponent(id)),
   OnMoveTarget: (id: string, mode: DROP_MODE): void => dispatch(MoveTargetComponent(id, mode)),

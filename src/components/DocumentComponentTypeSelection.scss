@@ -25,6 +25,14 @@ div.document-component-type-selection {
     &:hover {
       animation: hover 0.25s forwards running;
     }
+
+    &.active {
+      background-color: #DDD;
+
+      &:hover {
+        animation: hover 0.25s backwards running;
+      }
+    }
   }
 
   div.button:not(:last-child) {

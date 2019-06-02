@@ -123,10 +123,35 @@ const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord
       })
     }
     case 'UPDATE_HIGHLIGHT_TYPE': {
-      console.log('where is mr pinky', state, action)
-
       return state.update('components', (list: List<DocumentComponentStateRecord>): List<DocumentComponentStateRecord> => {
         const key: number | typeof undefined = list.findKey((record: DocumentComponentStateRecord): boolean => record.get('focused'))
+
+        if (key === undefined) {
+          return list
+        }
+
+        const record = <DocumentComponentStateRecord>list.get(key)
+
+        return list.setIn([key, 'highlights'], HighlightsReducer(record.get('highlights'), action))
+      })
+    }
+    case 'REMOVE_HIGHLIGHT_TYPE': {
+      return state.update('components', (list: List<DocumentComponentStateRecord>): List<DocumentComponentStateRecord> => {
+        const key: number | typeof undefined = list.findKey((record: DocumentComponentStateRecord): boolean => record.get('focused'))
+
+        if (key === undefined) {
+          return list
+        }
+
+        const record = <DocumentComponentStateRecord>list.get(key)
+
+        return list.setIn([key, 'highlights'], HighlightsReducer(record.get('highlights'), action))
+      })
+    }
+    case 'DELETE_HIGHLIGHT': {
+      return state.update('components', (list: List<DocumentComponentStateRecord>): List<DocumentComponentStateRecord> => {
+        const {componentId} = action
+        const key: number | typeof undefined = list.findKey((record: DocumentComponentStateRecord): boolean => record.get('id') === componentId)
 
         if (key === undefined) {
           return list
