@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {
-  AddRange, RemoveRanges
+  AddRange, RemoveRanges, UpdateRanges
 } from '.'
 
 import {
@@ -257,6 +257,23 @@ describe('Ranges', () => {
         end: 20,
         removeable: false
       }])
+    })
+
+    test('Should remove ranges that have been deleted as a result of range removal', () => {
+      const ranges: Range[] = [{
+        start: 2,
+        end: 8
+      }, {
+        start: 12,
+        end: 20
+      }, {
+        start: 14,
+        end: 18
+      }]
+
+      UpdateRanges<Range>(ranges, 20, -20)
+
+      expect(ranges).toMatchObject([])
     })
   })
 })

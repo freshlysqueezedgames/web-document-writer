@@ -81,10 +81,9 @@ export const AddRange = <T extends Range>(ranges: T[], insert: T): T[] => {
 }
 
 export const UpdateRanges = <T extends Range>(list: T[], index: number, difference: number): T[] => {
-  const l = list.length
-  let i = -1
+  let i = list.length
 
-  while (++i < l) {
+  while (i--) {
     let record = list[i]
     let start = record.start
     let end = record.end
@@ -96,7 +95,8 @@ export const UpdateRanges = <T extends Range>(list: T[], index: number, differen
       end += difference
     }
 
-    if (end <= start) {
+    if (end <= start || start < 0 || end < 0) {
+      list.splice(i, 1)
       continue
     }
 
