@@ -4,14 +4,10 @@ import * as React from 'react'
 import * as ReactRedux from 'react-redux'
 
 import {
-  CursorState
-} from '../store/types'
-
-import {
   EditorStateRecord
 } from '../store/reducers/EditorReducer'
 
-interface CursorContainerMappedStateProps {
+export interface CursorContainerPresentationProps {
   top: number,
   right: number,
   bottom: number,
@@ -20,19 +16,19 @@ interface CursorContainerMappedStateProps {
   offsetY?: number
 }
 
-export interface CursorContainerProps extends CursorContainerMappedStateProps {
-  presentation?: (props: CursorContainerProps) => React.ReactElement
+interface MappedStateProps {
+  cursor: EditorStateRecord
 }
 
-function MapStateToProps (state: EditorStateRecord): CursorContainerMappedStateProps {
-  const cursor: CursorState = state.toJS().cursor
-  
-  return {...cursor}
+export interface CursorContainerProps {
+  presentation?: (props: CursorContainerPresentationProps) => React.ReactElement
 }
 
-const CursorContainer = (props: CursorContainerProps): React.ReactElement<typeof React.Fragment> =>
+const MapStateToProps = (state: EditorStateRecord): MappedStateProps => ({cursor: state})
+
+const CursorContainer = (props: CursorContainerProps & MappedStateProps): React.ReactElement<typeof React.Fragment> =>
   <React.Fragment>
-    {props.presentation && props.presentation(props)}
+    {props.presentation && props.presentation(props.cursor.toJSON().cursor)}
   </React.Fragment>
 
 export default ReactRedux.connect(MapStateToProps)(CursorContainer)

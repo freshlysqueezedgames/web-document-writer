@@ -6,9 +6,9 @@ import DocumentComponentComponent from './DocumentComponentComponent'
 import DocumentCursorComponent from './DocumentCursorComponent'
 import DocumentComponentTypeSelection, {DocumentComponentTypeSelectionProps} from './DocumentComponentTypeSelection'
 
-import {DocumentComponentConfig, DocumentComponentDefinition, Highlight} from '../store/types'
+import {DocumentComponentConfig, DocumentComponentDefinition} from '../store/types'
 import {GetDocument} from '../store'
-import {DocumentContainerProps, DocumentContainer, CursorContainer, CursorContainerProps} from '../containers'
+import {DocumentContainerPresentationProps, DocumentContainer, CursorContainer, CursorContainerPresentationProps} from '../containers'
 
 import {WithPositionalDrag} from './DragAndDrop'
 
@@ -39,11 +39,11 @@ export interface DocumentState {
   endOffset: number
 }
 
-function RenderDocument (props: DocumentContainerProps) {
+function RenderDocument (props: DocumentContainerPresentationProps) {
   return <DocumentComponent {...props}/>
 }
 
-class DocumentComponent extends React.Component<DocumentContainerProps, DocumentState> {
+class DocumentComponent extends React.Component<DocumentContainerPresentationProps, DocumentState> {
   state: DocumentState = {
     startOffset: 0,
     endOffset: 0
@@ -52,7 +52,7 @@ class DocumentComponent extends React.Component<DocumentContainerProps, Document
   OnHighlightChange = (startOffset: number, endOffset: number) => this.setState({startOffset, endOffset})
 
   render (): React.ReactElement<typeof React.Fragment> {
-    const props: DocumentContainerProps = this.props
+    const props: DocumentContainerPresentationProps = this.props
     const t: DocumentComponent = this
 
     let focusedComponent: DocumentComponentConfig | undefined
@@ -93,7 +93,7 @@ class DocumentComponent extends React.Component<DocumentContainerProps, Document
   }
 }
 
-function RenderCursor (props: CursorContainerProps) {
+function RenderCursor (props: CursorContainerPresentationProps) {
   return <DocumentCursorComponent top={props.top} right={props.right} bottom={props.bottom} left={props.left} offsetX={props.offsetX} offsetY={props.offsetY}/>
 }
 

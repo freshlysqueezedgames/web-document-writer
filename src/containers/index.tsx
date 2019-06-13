@@ -1,11 +1,13 @@
 // @flow
 
-import DocumentContainer, {DocumentContainerProps} from './DocumentContainer'
-import CursorContainer, {CursorContainerProps} from './CursorContainer'
+import DocumentContainer, {DocumentContainerProps, DocumentContainerPresentationProps} from './DocumentContainer'
+import CursorContainer, {CursorContainerProps, CursorContainerPresentationProps} from './CursorContainer'
 
 export {
   DocumentContainer,
   CursorContainer,
   DocumentContainerProps,
-  CursorContainerProps
+  CursorContainerProps,
+  CursorContainerPresentationProps,
+  DocumentContainerPresentationProps
 }

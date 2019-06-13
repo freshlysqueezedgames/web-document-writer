@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 
-import {CursorContainerProps} from '../containers'
+import {CursorContainerPresentationProps} from '../containers'
 
 import * as styles from './DocumentCursorComponent.scss'
 
@@ -13,7 +13,7 @@ type CursorComponentState = Readonly<{
   left: number
 }>
 
-export default class DocumentCursorComponent extends React.Component<CursorContainerProps, CursorComponentState> {
+export default class DocumentCursorComponent extends React.Component<CursorContainerPresentationProps, CursorComponentState> {
   lastTop: number | undefined
   lastRight: number | undefined
   lastBottom: number | undefined
@@ -21,7 +21,7 @@ export default class DocumentCursorComponent extends React.Component<CursorConta
   
   time: number = 62.5 // milliseconds
   
-  constructor (props: CursorContainerProps) {
+  constructor (props: CursorContainerPresentationProps) {
     super(props)
 
     this.state = {
@@ -35,7 +35,7 @@ export default class DocumentCursorComponent extends React.Component<CursorConta
   OnAnimationFrame: ((timestamp: number) => void) | undefined
 
   componentDidUpdate (): void {
-    const props: CursorContainerProps = this.props
+    const props: CursorContainerPresentationProps = this.props
     const state: CursorComponentState = this.state
 
     if (!(

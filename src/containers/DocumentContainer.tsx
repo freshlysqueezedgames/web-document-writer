@@ -27,6 +27,7 @@ import {
 } from '../store/actions'
 
 import {
+  DocumentState,
   DocumentComponentConfig,
   DROP_MODE,
   DOCUMENT_COMPONENT_TYPE,
@@ -35,11 +36,6 @@ import {
 } from '../store/types'
 
 import * as styles from './DocumentContainer.scss'
-
-interface DocumentContainerMappedStateProps {
-  slug: string,
-  components: Array<DocumentComponentConfig>
-}
 
 interface DocumentContainerMappedDispatchProps {
   OnAppendContent: (id: string, value: string, componentType?: DOCUMENT_COMPONENT_TYPE) => void
@@ -57,18 +53,20 @@ interface DocumentContainerMappedDispatchProps {
   OnMove: (id: string) => void
 }
 
-export interface DocumentContainerProps extends DocumentContainerMappedStateProps, DocumentContainerMappedDispatchProps {
-  presentation?: (props: DocumentContainerProps) => React.ReactElement
+export interface DocumentContainerProps extends DocumentContainerMappedDispatchProps {
+  presentation?: (props: DocumentContainerPresentationProps) => React.ReactElement
 }
 
-const MapStateToProps = (state: EditorStateRecord): DocumentContainerMappedStateProps => {
-  const document: DocumentContainerMappedStateProps = state.toJS().document
-
-  return {
-    slug: document.slug,
-    components: document.components
-  }
+export interface DocumentContainerPresentationProps extends DocumentContainerMappedDispatchProps {
+  slug: string,
+  components: Array<DocumentComponentConfig>
 }
+
+interface MapStateProps {
+  state: EditorStateRecord
+}
+
+const MapStateToProps = (state: EditorStateRecord): MapStateProps => ({state})
 
 const MapDispatchToProps = (dispatch: (action: Action) => void): DocumentContainerMappedDispatchProps => ({
   OnAppendContent: (id: string, value: string, componentType: DOCUMENT_COMPONENT_TYPE = DOCUMENT_COMPONENT_TYPE.PARAGRAPH): void => dispatch(AppendComponent(id, shortid.generate(), value, false, componentType)),
@@ -86,7 +84,7 @@ const MapDispatchToProps = (dispatch: (action: Action) => void): DocumentContain
   OnMove: (id: string) => dispatch(MoveComponent(id))
 })
 
-class DocumentContainer extends React.Component<DocumentContainerProps> {
+class DocumentContainer extends React.Component<DocumentContainerProps & MapStateProps> {
   private element: HTMLDivElement | null = null
 
   ElementRef = (ref: HTMLDivElement | null) => this.element = ref 
@@ -111,10 +109,27 @@ class DocumentContainer extends React.Component<DocumentContainerProps> {
   }
 
   render (): React.ReactElement<typeof React.Fragment> {
-    const props: DocumentContainerProps = this.props
+    const props: DocumentContainerProps & MapStateProps = this.props
+    const document: DocumentState = props.state.get('document').toJSON()
 
     return <div ref={this.ElementRef} className={styles.documentContainerComponent}>
-      {props.presentation && props.presentation(props)}
+      {props.presentation && props.presentation({
+        slug: document.slug,
+        components: document.components.toJS(),
+        OnAppendContent: props.OnAppendContent,
+        OnComponentTypeChange: props.OnComponentTypeChange,
+        OnContentChange: props.OnContentChange,
+        OnCursorChange: props.OnCursorChange,
+        OnCursorOffsetChange: props.OnCursorOffsetChange,
+        OnDeleteHighlight: props.OnDeleteHighlight,
+        OnFocusChange: props.OnFocusChange,
+        OnHighlightTypeChange: props.OnHighlightTypeChange,
+        OnMove: props.OnMove,
+        OnMoveTarget: props.OnMoveTarget,
+        OnPrependContent: props.OnPrependContent,
+        OnRemoveContent: props.OnRemoveContent,
+        OnRemoveHighlightType: props.OnRemoveHighlightType
+      })}
     </div>
   }
 }
