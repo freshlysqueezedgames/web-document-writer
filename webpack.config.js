@@ -1,8 +1,58 @@
 const path = require('path')
+const fs = require('fs')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const extractCSS = new ExtractTextPlugin('styles.css')
+
+function DTSBundlePlugin (root) {
+  DTSBundlePlugin.prototype.apply = function (compiler) {
+    compiler.plugin('done', function () {
+      const dts = require('dts-bundle')
+
+      dts.bundle({
+        name: 'web-document-writer',
+        main: path.resolve(__dirname, root),
+        out: path.resolve(__dirname, root),
+        removeSource: true,
+        outputAsModuleFolder: true
+      })
+    })
+  }
+}
+
+function RemoveEmptyFoldersPlugin (root) {
+  RemoveEmptyFoldersPlugin.prototype.apply = function (compiler) {
+    compiler.plugin('done', function () {
+      function RemoveEmpty (dir, files) {
+        let i = files.length
+
+        while (i--) {
+          const file = files[i]
+          const subDir = path.resolve(__dirname, dir + '/' + file)
+
+          if (fs.lstatSync(subDir).isFile()) {
+            continue
+          }
+          
+          if (RemoveEmpty(dir + '/' + file, fs.readdirSync(subDir))) {
+            files.splice(i, 1)
+          }
+        }
+
+        if (!files.length) {
+          fs.rmdirSync(path.resolve(__dirname, dir))
+        }
+
+        return !files.length
+      }
+
+      const dir = path.resolve(__dirname, root)
+
+      RemoveEmpty(root, fs.readdirSync(dir))
+    })
+  }
+}
 
 module.exports = {
   entry: './src',
@@ -80,6 +130,8 @@ module.exports = {
       filename: 'index.html',
       template: './src/index.html'
     }),
-    extractCSS
+    extractCSS,
+    new DTSBundlePlugin('./dist/index.d.ts'),
+    new RemoveEmptyFoldersPlugin('./dist')
   ]
 }

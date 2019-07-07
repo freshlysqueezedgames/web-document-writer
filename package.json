@@ -1,6 +1,6 @@
 {
   "name": "@freshlysqueezedgames/web-document-writer",
-  "version": "0.11.0",
+  "version": "0.12.1",
   "description": "Tool for embedding a document writer as part of your webview.",
   "main": "dist/web-document-writer.js",
   "types": "dist/index.d.ts",
@@ -53,6 +53,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
+    "dts-bundle": "^0.7.3",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
     "eslint": "^5.9.0",

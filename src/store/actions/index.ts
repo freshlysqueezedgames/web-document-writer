@@ -116,6 +116,14 @@ export interface ComponentRangeAction extends RangeAction {
   name: DOCUMENT_COMPONENT_TYPE
 }
 
+export interface UndoAction {
+  type: 'UNDO'
+}
+
+export interface RedoAction {
+  type: 'REDO'
+}
+
 export type Action = 
   DocumentAction | 
   PrependComponentAction |
@@ -132,6 +140,8 @@ export type Action =
   MoveTargetComponentAction |
   MoveComponentAction | 
   HighlightRangeAction |
+  UndoAction |
+  RedoAction |
   {type: 'EMPTY'}
 
 export const SetDocument = (slug: string, content: DocumentComponentConfig[]): DocumentAction => ({
@@ -243,4 +253,12 @@ export const ComponentRange = (id: string, start: number, end: number, name: DOC
   end,
   name,
   options
+})
+
+export const Undo = (): UndoAction => ({
+  type: 'UNDO'
+})
+
+export const Redo = (): RedoAction => ({
+  type: 'REDO'
 })
