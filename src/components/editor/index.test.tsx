@@ -4,18 +4,18 @@ import * as React from 'react'
 import {mount, ReactWrapper} from 'enzyme'
 
 import {Provider} from 'react-redux'
-import {store, GetDocument, SetDocument} from '../store'
+import {store, GetDocument, SetDocument} from '../../store'
 
-import {DOCUMENT_COMPONENT_TYPE, DROP_MODE} from '../store/types'
-import {DragTarget} from './DragAndDrop'
-import {DRAG_IDENTIFIER} from './DocumentComponentComponent'
+import {DOCUMENT_COMPONENT_TYPE, DROP_MODE} from '../../store/types'
+import {DragTarget} from '../drag-and-drop'
+import {DRAG_IDENTIFIER} from '../document/index'
 
-import DocumentEditorComponent from './DocumentEditorComponent'
-import KEY_CODE from '../utils'
+import DocumentEditorComponent from '.'
+import KEY_CODE from '../../utils'
 
-import * as styles from './DocumentEditorComponent.scss'
-import * as componentStyles from './DocumentComponentComponent.scss'
-import * as buttonStyles from './Buttons.scss'
+import * as styles from './index.scss'
+import * as componentStyles from '../document/index.scss'
+import * as buttonStyles from '../buttons/index.scss'
 
 jest.useFakeTimers()
 

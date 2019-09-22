@@ -2,17 +2,19 @@
 
 import * as React from 'react'
 
-import DocumentComponentComponent from './DocumentComponentComponent'
-import DocumentCursorComponent from './DocumentCursorComponent'
-import DocumentComponentTypeSelection, {DocumentComponentTypeSelectionProps} from './DocumentComponentTypeSelection'
+import DocumentComponentComponent from '../document'
+import DocumentCursorComponent from '../cursor'
+import DocumentComponentTypeSelection, {DocumentComponentTypeSelectionProps} from '../type-selection'
 
-import {DocumentComponentConfig, DocumentComponentDefinition} from '../store/types'
-import {GetDocument} from '../store'
-import {DocumentContainerPresentationProps, DocumentContainer, CursorContainer, CursorContainerPresentationProps} from '../containers'
+import {DocumentComponentConfig, DocumentComponentDefinition} from '../../store/types'
+import {GetDocument} from '../../store'
+import {DocumentContainerPresentationProps, DocumentContainer, CursorContainer, CursorContainerPresentationProps} from '../../containers'
 
-import {WithPositionalDrag} from './DragAndDrop'
+import {WithPositionalDrag} from '../drag-and-drop'
 
-import * as styles from './DocumentEditorComponent.scss'
+import * as styles from './index.scss'
+
+console.log("this is positional drag", WithPositionalDrag)
 
 export interface DocumentEditorComponentProps {
   OnSave?: (document: Array<DocumentComponentDefinition>) => Promise<void>,

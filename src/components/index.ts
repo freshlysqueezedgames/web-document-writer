@@ -1,5 +1,5 @@
 // @flow
 
-import DocumentEditorComponent from './DocumentEditorComponent'
+import DocumentEditorComponent from './editor'
 
 export default DocumentEditorComponent

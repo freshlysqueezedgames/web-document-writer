@@ -1,10 +1,12 @@
 {
   "name": "@freshlysqueezedgames/web-document-writer",
-  "version": "0.12.1",
+  "version": "0.12.5",
   "description": "Tool for embedding a document writer as part of your webview.",
   "main": "dist/web-document-writer.js",
   "types": "dist/index.d.ts",
+  "mode": "development",
   "scripts": {
+    "watch": "webpack --watch",
     "build": "webpack",
     "serve": "npm run build && http-server ./dist -p 3002 -g",
     "test": "tsc -p tsconfig.tests.json && jest ./test --verbose --coverage",

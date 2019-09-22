@@ -1,7 +1,7 @@
 import React from 'react'
-import WithAnimation, {KeyMap} from './Animated'
-import * as styles from './ImageUploadComponent.scss'
-import { DragTarget } from './DragAndDrop'
+import WithAnimation, {KeyMap} from '../animated'
+import * as styles from './index.scss'
+import { DragTarget } from '../drag-and-drop'
 
 export interface ImageUploadProps {
   OnUpload: (result: string) => void

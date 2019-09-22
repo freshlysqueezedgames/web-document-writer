@@ -2,10 +2,10 @@
 import * as React from 'react'
 import {mount, ReactWrapper} from 'enzyme'
 
-import DocumentComponentTypeSelection from './DocumentComponentTypeSelection'
-import {DOCUMENT_COMPONENT_TYPE} from '../store/types'
+import DocumentComponentTypeSelection from '.'
+import {DOCUMENT_COMPONENT_TYPE} from '../../store/types'
 
-import * as styles from './DocumentComponentTypeSelection.scss'
+import * as styles from './index.scss'
 
 describe('<DocumentComponentTypeSelection>', (): void => {
   test('Should allow the user to select the type of component', (): void => {

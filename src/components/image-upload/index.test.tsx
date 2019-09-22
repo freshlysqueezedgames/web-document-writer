@@ -1,10 +1,10 @@
 import React from 'react'
 
-import ImageUploadComponent, { DRAG_STATE } from './ImageUploadComponent'
-import { DragTarget } from './DragAndDrop'
+import ImageUploadComponent, { DRAG_STATE } from '.'
+import { DragTarget } from '../drag-and-drop'
 import { mount, ReactWrapper } from 'enzyme'
 
-import * as styles from './ImageUploadComponent.scss'
+import * as styles from './index.scss'
 
 jest.useFakeTimers()
 

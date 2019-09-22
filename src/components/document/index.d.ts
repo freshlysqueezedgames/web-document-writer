@@ -1,5 +1,5 @@
 import React from 'react';
-import { DOCUMENT_COMPONENT_TYPE, DROP_MODE, Range, Highlight, HighlightOptions } from '../store/types';
+import { DOCUMENT_COMPONENT_TYPE, DROP_MODE, Range, Highlight, HighlightOptions } from '../../store/types';
 export declare const DRAG_IDENTIFIER: string;
 export declare type DocumentComponentComponentProps = Readonly<{
     id: string;

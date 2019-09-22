@@ -2,7 +2,7 @@ import * as React from 'react'
 import { LinkOptions } from '../../store/types'
 
 import * as styles from './index.scss'
-import { Remove } from '../Symbols'
+import { Remove } from '../symbols'
 
 interface HighlightComponentProps {
   id: string,

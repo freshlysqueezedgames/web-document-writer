@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {ReactWrapper, mount} from 'enzyme'
-import { WithPositionalDrag } from './DragAndDrop';
+import { WithPositionalDrag } from '.';
 
-import * as styles from './DragAndDrop.scss'
+import * as styles from './index.scss'
 
 describe('<WithPositionalDrag/>', (): void => {
   test('Should be able to create drag events that fix the position of elements', (): void => {

@@ -2,9 +2,9 @@
 
 import * as React from 'react'
 
-import {CursorContainerPresentationProps} from '../containers'
+import {CursorContainerPresentationProps} from '../../containers'
 
-import * as styles from './DocumentCursorComponent.scss'
+import * as styles from './index.scss'
 
 type CursorComponentState = Readonly<{
   top: number,

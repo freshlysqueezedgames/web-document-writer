@@ -1,14 +1,14 @@
 // @flow
 import * as React from 'react'
-import {DragIndicator} from './Symbols'
-import {LinkOptions, DocumentComponentConfig, Highlight} from '../store/types'
+import {DragIndicator} from '../symbols'
+import {LinkOptions, DocumentComponentConfig} from '../../store/types'
 
 import {
   DOCUMENT_COMPONENT_TYPE, DOCUMENT_HIGHLIGHT_TYPE, HighlightOptions
-} from '../store/types'
+} from '../../store/types'
 
-import * as styles from './DocumentComponentTypeSelection.scss'
-import { KeyMap } from './Animated'
+import * as styles from './index.scss'
+import { KeyMap } from '../animated'
 
 export interface DocumentComponentTypeSelectionProps {
   startOffset: number

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CursorContainerPresentationProps } from '../containers';
+import { CursorContainerPresentationProps } from '../../containers';
 declare type CursorComponentState = Readonly<{
     top: number;
     right: number;

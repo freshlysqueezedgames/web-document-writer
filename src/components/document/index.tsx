@@ -1,9 +1,9 @@
 // @flow
 
 import React from 'react'
-import ImageUploadComponent from './ImageUploadComponent'
-import CachedImage from './CachedImage'
-import KEY_CODE from '../utils'
+import ImageUploadComponent from '../image-upload'
+import CachedImage from '../cached-image'
+import KEY_CODE from '../../utils'
 
 import {
   DOCUMENT_COMPONENT_TYPE,
@@ -13,17 +13,17 @@ import {
   DOCUMENT_HIGHLIGHT_TYPE,
   LinkOptions,
   HighlightOptions
-} from '../store/types'
+} from '../../store/types'
 
 import {
   AddRange
-} from '../store/ranges'
+} from '../../store/ranges'
 
-import {DragTarget} from './DragAndDrop'
+import {DragTarget} from '../drag-and-drop'
 
-import * as styles from './DocumentComponentComponent.scss'
-import { RemoveButton, AddButton, DragIndicatorButton } from './Buttons'
-import { HighlightComponent, LinkHighlightComponent } from './highlights'
+import * as styles from './index.scss'
+import { RemoveButton, AddButton, DragIndicatorButton } from '../buttons'
+import { HighlightComponent, LinkHighlightComponent } from '../highlights'
 
 export const DRAG_IDENTIFIER: string = 'document-component' 
 

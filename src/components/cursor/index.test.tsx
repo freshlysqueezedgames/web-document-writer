@@ -2,9 +2,9 @@
 
 import * as React from 'react'
 import {shallow, ShallowWrapper} from 'enzyme'
-import DocumentCursorComponent from './DocumentCursorComponent'
+import DocumentCursorComponent from '.'
 
-import * as styles from './DocumentCursorComponent.scss'
+import * as styles from './index.scss'
 
 describe('<DocumentCursorComponent/>', (): void => {
   test('Should render a div representing the cursor element', (): void => {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DocumentComponentDefinition } from '../store/types';
+import { DocumentComponentDefinition } from '../../store/types';
 export interface DocumentEditorComponentProps {
     OnSave?: (document: Array<DocumentComponentDefinition>) => Promise<void>;
     OnImageUpload?: (data: string) => Promise<string>;

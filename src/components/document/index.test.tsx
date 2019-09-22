@@ -3,13 +3,13 @@
 import React, {Component} from 'react'
 import {shallow, mount, ShallowWrapper, ReactWrapper} from 'enzyme'
 
-import {DOCUMENT_COMPONENT_TYPE, DROP_MODE} from '../store/types'
+import {DOCUMENT_COMPONENT_TYPE, DROP_MODE} from '../../store/types'
 
-import DocumentComponentComponent, {OffsetRange} from './DocumentComponentComponent'
-import KEY_CODE from '../utils'
+import DocumentComponentComponent, {OffsetRange} from '.'
+import KEY_CODE from '../../utils'
 
-import * as styles from './DocumentComponentComponent.scss'
-import * as buttonStyles from './Buttons.scss'
+import * as styles from './index.scss'
+import * as buttonStyles from '../buttons/index.scss'
 
 describe('<DocumentComponentComponent/>', (): void => {
   test('Should render the content of document component state', (): void => {

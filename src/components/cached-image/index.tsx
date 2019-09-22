@@ -1,6 +1,6 @@
 import React from 'react'
 
-import * as styles from './CachedImage.scss'
+import * as styles from './index.scss'
 
 export interface CachedImageProps {
   style?: React.CSSProperties

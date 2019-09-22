@@ -1,5 +1,5 @@
 import * as React from 'react'
-import * as styles from './DragAndDrop.scss'
+import * as styles from './index.scss'
 import { ReactComponentLike } from 'prop-types'
 
 export interface DragState {

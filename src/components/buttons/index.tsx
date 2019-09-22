@@ -1,7 +1,7 @@
 import * as React from 'react'
-import {Remove, Add, DragIndicator} from './Symbols'
+import {Remove, Add, DragIndicator} from '../symbols'
 
-import * as styles from './Buttons.scss'
+import * as styles from './index.scss'
 
 export interface ButtonProps {
   OnClick: () => void

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { LinkOptions, DocumentComponentConfig } from '../store/types';
-import { DOCUMENT_COMPONENT_TYPE, DOCUMENT_HIGHLIGHT_TYPE, HighlightOptions } from '../store/types';
+import { LinkOptions, DocumentComponentConfig } from '../../store/types';
+import { DOCUMENT_COMPONENT_TYPE, DOCUMENT_HIGHLIGHT_TYPE, HighlightOptions } from '../../store/types';
 import { KeyMap } from './Animated';
 export interface DocumentComponentTypeSelectionProps {
     startOffset: number;

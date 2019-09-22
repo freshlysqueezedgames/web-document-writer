@@ -23,10 +23,6 @@ export function RenderDocument (OnSave: (document: Array<DocumentComponentDefini
   </ReactRedux.Provider>
 }
 
-export {
-  DOCUMENT_COMPONENT_TYPE
-}
-
 const app: HTMLElement | null = document.getElementById('web-document-writer-6nsy621t8hkjxsu8')
 
 if (app) {
