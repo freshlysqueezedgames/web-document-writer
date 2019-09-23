@@ -47,7 +47,7 @@ interface DocumentContainerMappedDispatchProps {
   OnHighlightTypeChange: (highlightType: DOCUMENT_HIGHLIGHT_TYPE, startOffset: number, endOffset: number) => void
   OnRemoveHighlightType: (highlightType: DOCUMENT_HIGHLIGHT_TYPE, startOffset: number, endOffset: number) => void
   OnDeleteHighlight: (componentId: string, id: string) => void
-  OnCursorOffsetChange: (offsetX: number, offsetY: number) => void
+  OnCursorOffsetChange: (offsetElement: HTMLElement) => void
   OnRemoveContent: (id: string) => void
   OnMoveTarget: (id: string, mode: DROP_MODE) => void
   OnMove: (id: string) => void
@@ -69,7 +69,7 @@ interface MapStateProps {
 const MapStateToProps = (state: EditorStateRecord): MapStateProps => ({state})
 
 const MapDispatchToProps = (dispatch: (action: Action) => void): DocumentContainerMappedDispatchProps => ({
-  OnAppendContent: (id: string, value: string, componentType: DOCUMENT_COMPONENT_TYPE = DOCUMENT_COMPONENT_TYPE.PARAGRAPH): void => dispatch(AppendComponent(id, shortid.generate(), value, false, componentType)),
+  OnAppendContent: (id: string, value: string, componentType: DOCUMENT_COMPONENT_TYPE = DOCUMENT_COMPONENT_TYPE.PARAGRAPH): void => dispatch(AppendComponent(id, shortid.generate(), value, true, componentType)),
   OnPrependContent: (id: string, value: string): void => dispatch(PrependComponent(id, shortid.generate(), value)),
   OnContentChange: (id: string, content: string, index: number, difference: number): void => dispatch(UpdateComponent(id, content, index, difference)),
   OnFocusChange: (id: string): void => dispatch(FocusComponent(id)),
@@ -78,7 +78,7 @@ const MapDispatchToProps = (dispatch: (action: Action) => void): DocumentContain
   OnHighlightTypeChange: (highlightType: DOCUMENT_HIGHLIGHT_TYPE, startOffset: number, endOffset: number, options?: HighlightOptions) => dispatch(UpdateHighlightType(highlightType, startOffset, endOffset, options)),
   OnRemoveHighlightType: (highlightType: DOCUMENT_HIGHLIGHT_TYPE, startOffset: number, endOffset: number) => dispatch(RemoveHighlightType(highlightType, startOffset, endOffset)),
   OnDeleteHighlight: (componentId: string, id: string) => dispatch(DeleteHighlight(componentId, id)),
-  OnCursorOffsetChange: (offsetX: number, offsetY: number) => dispatch(UpdateCursorOffsets(offsetX, offsetY)),
+  OnCursorOffsetChange: (offsetElement: HTMLElement) => dispatch(UpdateCursorOffsets(offsetElement)),
   OnRemoveContent: (id: string): void => dispatch(RemoveComponent(id)),
   OnMoveTarget: (id: string, mode: DROP_MODE): void => dispatch(MoveTargetComponent(id, mode)),
   OnMove: (id: string) => dispatch(MoveComponent(id))
@@ -103,9 +103,7 @@ class DocumentContainer extends React.Component<DocumentContainerProps & MapStat
       return
     }
 
-    const {top = 0, left = 0} = this.element.getBoundingClientRect()
-
-    this.props.OnCursorOffsetChange(left, top)
+    this.props.OnCursorOffsetChange(this.element)
   }
 
   render (): React.ReactElement<typeof React.Fragment> {

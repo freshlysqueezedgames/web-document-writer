@@ -78,8 +78,7 @@ export type CursorState = Readonly<{
   right: number
   bottom: number
   left: number
-  offsetX: number
-  offsetY: number
+  offsetElement: HTMLElement | null
 }>
 
 export type CursorStateRecord = RecordOf<CursorState> 

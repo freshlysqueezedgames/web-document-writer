@@ -61,8 +61,14 @@ if (app) {
   }
 
   render(
-    <div className={styles.wrapper}>
-      {RenderDocument(OnSave, OnImageUpload)}
-    </div>, app
+    <>
+      <div className={styles.wrapper}>
+        <div className={styles.gridPart1}/>
+        <div className={styles.gridPart2}>
+          <div className={styles.buffer}/>
+          {RenderDocument(OnSave, OnImageUpload)}
+        </div>
+      </div>
+    </>, app
   )
 }

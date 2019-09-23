@@ -66,6 +66,8 @@ const DocumentReducer = (state: DocumentStateRecord = defaultDocumentStateRecord
       return state.update('components', (list: List<DocumentComponentStateRecord>): List<DocumentComponentStateRecord> => {
         const index: number = list.findIndex((record: DocumentComponentStateRecord): boolean => record.get('id') === after)
 
+        console.log("focused", focused)
+
         if (focused) {
           list = SetBoolByID(id, list)
         }

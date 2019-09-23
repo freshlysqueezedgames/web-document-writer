@@ -12,8 +12,7 @@ export interface CursorContainerPresentationProps {
   right: number,
   bottom: number,
   left: number,
-  offsetX?: number,
-  offsetY?: number
+  offsetElement: HTMLElement | null
 }
 
 interface MappedStateProps {
@@ -26,7 +25,7 @@ export interface CursorContainerProps {
 
 const MapStateToProps = (state: EditorStateRecord): MappedStateProps => ({cursor: state})
 
-const CursorContainer = (props: CursorContainerProps & MappedStateProps): React.ReactElement<typeof React.Fragment> =>
+const CursorContainer = (props: CursorContainerProps & MappedStateProps): React.ReactElement<typeof React.Fragment> => 
   <React.Fragment>
     {props.presentation && props.presentation(props.cursor.toJSON().cursor)}
   </React.Fragment>

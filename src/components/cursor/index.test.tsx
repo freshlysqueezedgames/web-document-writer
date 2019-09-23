@@ -8,13 +8,13 @@ import * as styles from './index.scss'
 
 describe('<DocumentCursorComponent/>', (): void => {
   test('Should render a div representing the cursor element', (): void => {
-    const wrapper: ShallowWrapper = shallow(<DocumentCursorComponent left={0} top={0} bottom={0} right={0}/>)
+    const wrapper: ShallowWrapper = shallow(<DocumentCursorComponent left={0} top={0} bottom={0} right={0} offsetElement={null}/>)
 
     expect(wrapper.find(`.${styles.documentCursorComponent}`)).toHaveLength(1)
   })
 
   test('Should move the cursor position over time to the new location in props after 62 milleseconds', (done: Function): void => {
-    const wrapper: ShallowWrapper = shallow(<DocumentCursorComponent left={0} top={0} bottom={0} right={0}/>)
+    const wrapper: ShallowWrapper = shallow(<DocumentCursorComponent left={0} top={0} bottom={0} right={0} offsetElement={null}/>)
 
     expect(wrapper.find(`.${styles.documentCursorComponent}`)).toHaveLength(1)
 
@@ -32,7 +32,7 @@ describe('<DocumentCursorComponent/>', (): void => {
   })
 
   test('Should not animate again if the current position matches the next one', (): void => {
-    const wrapper: ShallowWrapper = shallow(<DocumentCursorComponent left={0} top={0} bottom={0} right={0}/>)
+    const wrapper: ShallowWrapper = shallow(<DocumentCursorComponent left={0} top={0} bottom={0} right={0} offsetElement={null}/>)
 
     expect(wrapper.find(`.${styles.documentCursorComponent}`)).toHaveLength(1)
 
@@ -47,7 +47,7 @@ describe('<DocumentCursorComponent/>', (): void => {
   })
 
   test('Should stop old animations when superseded by another one', (done: Function): void => {
-    const wrapper: ShallowWrapper = shallow(<DocumentCursorComponent left={0} top={0} bottom={0} right={0}/>)
+    const wrapper: ShallowWrapper = shallow(<DocumentCursorComponent left={0} top={0} bottom={0} right={0} offsetElement={null}/>)
 
     expect(wrapper.find(`.${styles.documentCursorComponent}`)).toHaveLength(1)
     
@@ -66,7 +66,7 @@ describe('<DocumentCursorComponent/>', (): void => {
   })
 
   test('Should move the cursor position based on the offsets', (): void => {
-    const wrapper: ShallowWrapper = shallow(<DocumentCursorComponent left={20} top={20} bottom={20} right={20} offsetX={20} offsetY={20}/>)
+    const wrapper: ShallowWrapper = shallow(<DocumentCursorComponent left={20} top={20} bottom={20} right={20} offsetElement={null}/>)
     const element: ShallowWrapper = wrapper.find(`.${styles.documentCursorComponent}`)
 
     expect(element).toHaveLength(1)

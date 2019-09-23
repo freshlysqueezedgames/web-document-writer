@@ -1,8 +1,54 @@
 const path = require('path')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const DTSBundle = require('dts-bundle')
+const fs = require('fs')
 
 const extractCSS = new ExtractTextPlugin('styles.css')
+
+
+function DtsBundlePlugin () {
+  DtsBundlePlugin.prototype.apply = function (compiler) {
+    compiler.plugin('done', function(){
+      DTSBundle.bundle({
+        name: 'index',
+        main: './dist/index.d.ts',
+        removeSource: true
+      })
+    })
+  }
+}
+
+function RemoveEmptyFoldersPlugin (path) {
+  RemoveEmptyFoldersPlugin.prototype.apply = function (compiler) {
+    compiler.plugin('done', function(){
+      function Route (path) {
+        let files = fs.readdirSync(path)
+        let i = files.length
+
+        while (i--) {
+          const location = path + '/' + files[i]
+          const stats = fs.lstatSync(location)
+          
+          if (stats.isDirectory() && Route(location)) {
+            files.splice(i, 1)
+          }
+        }
+
+        const empty = !files.length
+
+        if (empty) {
+          fs.rmdirSync(path)
+        }
+
+        return empty
+      }
+
+      Route(path)
+    })
+  }
+}
+
 
 module.exports = {
   entry: './src',
@@ -42,7 +88,7 @@ module.exports = {
           loader : 'typings-for-css-modules-loader',
           options : {
             modules : true,
-            localIndentName: '[local]_[name]_[hash:base64:5]',
+            localIndentName: '[local]_[hash:base64:5]',
             importLoaders: 3,
             namedExport: true,
             sourceMap: true,
@@ -80,6 +126,8 @@ module.exports = {
       filename: 'index.html',
       template: './src/index.html'
     }),
-    extractCSS
+    extractCSS,
+    new DtsBundlePlugin(),
+    new RemoveEmptyFoldersPlugin('./dist')
   ]
 }

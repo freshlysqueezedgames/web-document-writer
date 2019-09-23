@@ -4,8 +4,28 @@ body {
 }
 
 div.wrapper {
+  display: grid;
   float: left;
   width: 70%;
   height: 90%;
   margin: 10% 15% 0% 15%;
+
+  div.grid-part-1 {
+    grid-area: gridpart1
+  }
+
+  div.grid-part-2 {
+    grid-area: gridpart2
+  }
+
+  grid-template: "gridpart1" "gridpart2";
+
+  grid-template-rows: 100px 500px;
+}
+
+div.buffer {
+  display: block;
+  height: 100px;
+  width: 100%;
+  background-color: crimson;
 }

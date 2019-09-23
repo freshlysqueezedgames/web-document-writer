@@ -98,7 +98,16 @@ export default class DocumentCursorComponent extends React.Component<CursorConta
 
   render (): React.ReactElement<HTMLDivElement> {
     const state: CursorComponentState = this.state
-    const {offsetX = 0, offsetY = 0}: {offsetX?: number, offsetY?: number} = this.props
+    const element = this.props.offsetElement
+    let offsetX: number = 0
+    let offsetY: number = 0
+
+    if (element) {
+      const rect = element.getBoundingClientRect()
+
+      offsetX = rect.left
+      offsetY = rect.top
+    }
 
     const style = {
       top: Math.floor(state.top) - offsetY,

@@ -12,8 +12,7 @@ const CursorStateFactory = Record({
   right: 0,
   bottom: 0,
   left: 0,
-  offsetX: 0,
-  offsetY: 0
+  offsetElement: null
 })
 
 export const defaultCursorStateRecord: CursorStateRecord = CursorStateFactory()
@@ -26,9 +25,13 @@ const CursorReducer = (state: CursorStateRecord = defaultCursorStateRecord, acti
       return state.merge({top, right, bottom, left})
     }
     case 'UPDATE_CURSOR_OFFSETS': {
-      const {offsetX, offsetY} = action
+      const {offsetElement} = action
 
-      return state.merge({offsetX, offsetY})
+      if (!offsetElement) {
+        return state
+      }
+
+      return state.merge({offsetElement})
     }
     default: {
       return state

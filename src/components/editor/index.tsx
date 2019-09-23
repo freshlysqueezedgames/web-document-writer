@@ -96,7 +96,7 @@ class DocumentComponent extends React.Component<DocumentContainerPresentationPro
 }
 
 function RenderCursor (props: CursorContainerPresentationProps) {
-  return <DocumentCursorComponent top={props.top} right={props.right} bottom={props.bottom} left={props.left} offsetX={props.offsetX} offsetY={props.offsetY}/>
+  return <DocumentCursorComponent top={props.top} right={props.right} bottom={props.bottom} left={props.left} offsetElement={props.offsetElement}/>
 }
 
 export default DocumentEditorComponent

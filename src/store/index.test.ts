@@ -198,7 +198,7 @@ describe('#Store', (): void => {
     })
 
     test('Should be able to set the cursor offsets', (): void => {
-      store.dispatch(UpdateCursorOffsets(10, 11))
+      store.dispatch(UpdateCursorOffsets(document.createElement('div')))
   
       expect(store.getState().toJS().cursor).toMatchObject({
         offsetX: 10,

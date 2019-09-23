@@ -84,8 +84,7 @@ export interface UpdateCursorAction {
 
 export interface UpdateCursorOffsetsAction {
   type: 'UPDATE_CURSOR_OFFSETS';
-  offsetX: number;
-  offsetY: number;
+  offsetElement: HTMLElement
 }
 
 export interface MoveTargetComponentAction {
@@ -215,10 +214,9 @@ export const UpdateCursor = (top: number, right: number, bottom: number, left: n
   left
 })
 
-export const UpdateCursorOffsets = (offsetX: number, offsetY: number): UpdateCursorOffsetsAction => ({
+export const UpdateCursorOffsets = (offsetElement: HTMLElement): UpdateCursorOffsetsAction => ({
   type: 'UPDATE_CURSOR_OFFSETS',
-  offsetX,
-  offsetY
+  offsetElement
 })
 
 export const RemoveComponent = (id: string): RemoveComponentAction => ({
