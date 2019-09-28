@@ -13,8 +13,7 @@ import {DocumentContainerPresentationProps, DocumentContainer, CursorContainer, 
 import {WithPositionalDrag} from '../drag-and-drop'
 
 import * as styles from './index.scss'
-
-console.log("this is positional drag", WithPositionalDrag)
+import { Reader } from '../reader'
 
 export interface DocumentEditorComponentProps {
   OnSave?: (document: Array<DocumentComponentDefinition>) => Promise<void>,
@@ -60,27 +59,29 @@ class DocumentComponent extends React.Component<DocumentContainerPresentationPro
     let focusedComponent: DocumentComponentConfig | undefined
     
     return <>
-      {props.components && props.components.map((component: DocumentComponentConfig) => {
-        if (component.focused) {
-          focusedComponent = component
-        }
-        
-        return <DocumentComponentComponent
-          key={component.id}
-          {...component}
-          OnContentChange={props.OnContentChange}
-          OnAppendContent={props.OnAppendContent}
-          OnPrependContent={props.OnPrependContent}
-          OnFocus={props.OnFocusChange}
-          OnCursorChange={props.OnCursorChange}
-          OnRemoveContent={props.OnRemoveContent}
-          OnMoveTarget={props.OnMoveTarget}
-          OnMove={props.OnMove}
-          OnImageUpload={OnImageUpload}
-          OnHighlightChange={t.OnHighlightChange}
-          OnDeleteHighlight={props.OnDeleteHighlight}
-        />
-      })}
+      <Reader components={props.components}>
+        {(component: DocumentComponentConfig) => {
+          if (component.focused) {
+            focusedComponent = component
+          }
+
+          return <DocumentComponentComponent
+            key={component.id}
+            {...component}
+            OnContentChange={props.OnContentChange}
+            OnAppendContent={props.OnAppendContent}
+            OnPrependContent={props.OnPrependContent}
+            OnFocus={props.OnFocusChange}
+            OnCursorChange={props.OnCursorChange}
+            OnRemoveContent={props.OnRemoveContent}
+            OnMoveTarget={props.OnMoveTarget}
+            OnMove={props.OnMove}
+            OnImageUpload={OnImageUpload}
+            OnHighlightChange={t.OnHighlightChange}
+            OnDeleteHighlight={props.OnDeleteHighlight}
+          />
+        }}
+      </Reader>
       <WithPositionalDragDocumentComponentTypeSelection
         {...this.state}
         component={focusedComponent}

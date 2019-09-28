@@ -1,18 +1,16 @@
 const path = require('path')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const DTSBundle = require('dts-bundle')
 const fs = require('fs')
 
-const extractCSS = new ExtractTextPlugin('styles.css')
+function DtsBundlePlugin (name, out) {
+  name = name || 'index'
 
-
-function DtsBundlePlugin () {
   DtsBundlePlugin.prototype.apply = function (compiler) {
     compiler.plugin('done', function(){
       DTSBundle.bundle({
-        name: 'index',
-        main: './dist/index.d.ts',
+        name: name,
+        main: './dist/' + (out || name) + '.d.ts',
         removeSource: true
       })
     })
@@ -51,7 +49,10 @@ function RemoveEmptyFoldersPlugin (path) {
 
 
 module.exports = {
-  entry: './src',
+  entry: {
+    "web-document-writer": './src/web-document-writer.tsx',
+    "web-document-reader": './src/web-document-reader.tsx'
+  },
 
   target: 'web',
   devtool: 'source-map',
@@ -59,7 +60,7 @@ module.exports = {
 
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: 'web-document-writer.js',
+    filename: '[name].js',
     library: 'webDocumentWriter',
     libraryTarget: 'umd'
   },
@@ -82,27 +83,26 @@ module.exports = {
       loader: "source-map-loader"
     }, {
       test: /\.s?css$/,
-      use: extractCSS.extract({
-        fallback: "style-loader",
-        use: [{
-          loader : 'typings-for-css-modules-loader',
-          options : {
-            modules : true,
-            localIndentName: '[local]_[hash:base64:5]',
-            importLoaders: 3,
-            namedExport: true,
-            sourceMap: true,
-            camelCase: true
-          }
-        },
-        {
-          loader : 'sass-loader',
-          options: {
-            sourceMap: true,
-            sourceMapContents: false
-          }
-        }]
-      })
+      use: [
+      'style-loader',  
+      {
+        loader : 'typings-for-css-modules-loader',
+        options : {
+          modules : true,
+          localIndentName: '[index]_[hash:base64:5]',
+          importLoaders: 3,
+          namedExport: true,
+          sourceMap: true,
+          camelCase: true
+        }
+      },
+      {
+        loader : 'sass-loader',
+        options: {
+          sourceMap: true,
+          sourceMapContents: false
+        }
+      }]
     }, {
       test: /\.(graph|g)ql$/,
       use: [
@@ -123,11 +123,14 @@ module.exports = {
 
   plugins: [
     new HTMLWebpackPlugin({
-      filename: 'index.html',
-      template: './src/index.html'
+      filename: 'web-document-writer.html',
+      template: './src/web-document-writer.html'
     }),
-    extractCSS,
-    new DtsBundlePlugin(),
+    new HTMLWebpackPlugin({
+      filename: 'web-document-reader.html',
+      template: './src/web-document-reader.html'
+    }),
+    new DtsBundlePlugin('index', 'web-document-writer'),
     new RemoveEmptyFoldersPlugin('./dist')
   ]
 }

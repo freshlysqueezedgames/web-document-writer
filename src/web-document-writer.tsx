@@ -10,7 +10,7 @@ import {DOCUMENT_COMPONENT_TYPE, DocumentComponentDefinition, DOCUMENT_HIGHLIGHT
 
 import DocumentEditorComponent from './components'
 
-import * as styles from './index.scss'
+import * as styles from './web-document-writer.scss'
 import { DocumentContainer } from './containers'
 
 export function LoadDocument (name: string, document: Array<DocumentComponentDefinition>) {

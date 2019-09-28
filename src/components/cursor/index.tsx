@@ -38,6 +38,8 @@ export default class DocumentCursorComponent extends React.Component<CursorConta
     const props: CursorContainerPresentationProps = this.props
     const state: CursorComponentState = this.state
 
+    console.log("come now son!", props)
+
     if (!(
       this.lastTop !== props.top ||
       this.lastRight !== props.right ||

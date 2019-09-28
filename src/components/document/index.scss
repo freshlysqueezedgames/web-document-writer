@@ -1,12 +1,7 @@
+@import '../reader/index.scss';
+
 div.document-component-component {
-  width: 100%;
-  white-space: pre-wrap;
-  padding-bottom: 10px;
-  padding-top: 10px;
-  height: auto;
-  display: inline-grid;
-  position: relative;
-  float: left;
+  @include ReaderComponentWrapper;
 
   textarea {
     width: 1px;
@@ -15,13 +10,6 @@ div.document-component-component {
     top: 0px;
     opacity: 0.01;
     overflow: hidden;
-  }
-
-  span.selection {
-    min-height: 100%;
-    display: inline;
-    background-color: transparentize($color: #fd5720, $amount: 0.5);
-    text-transform: inherit;
   }
 
   .code {
@@ -82,22 +70,6 @@ div.document-component-component {
     }
   }
 
-  h1  {
-    text-align: center;
-    font-size: 2em;
-    float: left;
-  }
-
-  h2 {
-    font-size: 1.5em;
-    float: left;
-  }
-
-  h3 {
-    font-size: 1.3em;
-    float: left;
-  }
-
   div.remove,
   div.drag {
     width: 25px;
@@ -133,21 +105,5 @@ div.document-component-component {
     100% {
       border-top: 10px solid transparentize(#fd5720, 0)
     }
-  }
-
-  span.bold {
-    font-weight: bold;
-  }
-
-  span.italic {
-    font-style: italic;
-  }
-
-  span.underline {
-    text-decoration: underline;
-  }
-
-  a.link {
-    color: #fd5720;
   }
 }
